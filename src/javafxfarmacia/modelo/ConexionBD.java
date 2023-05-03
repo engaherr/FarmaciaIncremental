@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class ConexionBD {
     
     private static String driver = "com.mysql.jdbc.Driver";
-    private static String nombreBase = "controlescolar";
+    private static String nombreBase = "gestionfarmacia";
     private static String hostname = "localhost";
     private static String puerto = "3306";
     

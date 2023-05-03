@@ -15,18 +15,20 @@ public class Usuario {
     private String apellidoMaterno;
     private String username;
     private String password;
+    private String email;
     private int codigoRespuesta;
 
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String username, String password, int codigoRespuesta) {
+    public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String username, String password,String email, int codigoRespuesta) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.username = username;
         this.password = password;
+        this.email = email;
         this.codigoRespuesta = codigoRespuesta;
     }
 
@@ -89,6 +91,14 @@ public class Usuario {
     @Override
     public String toString(){
         return nombre + " " + apellidoPaterno + " " + apellidoMaterno;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
     
 }
