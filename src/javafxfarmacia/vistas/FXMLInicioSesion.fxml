@@ -8,8 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0" style="-fx-background-color: #2e2f40;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0" style="-fx-background-color: #2e2f40;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLInicioSesionController">
    <children>
       <Pane layoutX="-4.0" prefHeight="470.0" prefWidth="354.0" style="-fx-background-color: #f25d59;">
          <children>
@@ -18,7 +17,7 @@
                   <Font name="Microsoft JhengHei Light" size="30.0" />
                </font>
             </Label>
-            <Label layoutX="55.0" layoutY="225.0" text="Por favor, incia sesión para ingresar." textFill="WHITE">
+            <Label layoutX="55.0" layoutY="225.0" text="Por favor, inicia sesión para ingresar." textFill="WHITE">
                <font>
                   <Font name="Microsoft JhengHei Light" size="15.0" />
                </font>
@@ -30,20 +29,22 @@
             <Font name="Microsoft JhengHei Light" size="25.0" />
          </font>
       </Label>
-      <TextField layoutX="439.0" layoutY="191.0" prefHeight="25.0" prefWidth="185.0" promptText="Usuario" style="-fx-background-color: #2e2f40;">
+      <TextField fx:id="tfUsuario" layoutX="439.0" layoutY="191.0" prefHeight="25.0" prefWidth="185.0" promptText="Usuario" style="-fx-background-color: #2e2f40; -fx-text-fill: white;">
          <effect>
             <Glow level="0.5" />
          </effect>
       </TextField>
-      <PasswordField layoutX="439.0" layoutY="248.0" prefHeight="25.0" prefWidth="185.0" promptText="Contraseña" style="-fx-background-color: #2e2f40;">
+      <PasswordField fx:id="pwfContraseña" layoutX="439.0" layoutY="248.0" prefHeight="25.0" prefWidth="185.0" promptText="Contraseña" style="-fx-background-color: #2e2f40; -fx-text-fill: white;">
          <effect>
             <Glow level="0.5" />
          </effect>
       </PasswordField>
-      <Button layoutX="494.0" layoutY="320.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: #f25d59;" text="Ingresar" textFill="WHITE">
+      <Button layoutX="494.0" layoutY="320.0" mnemonicParsing="false" onAction="#clicIngresar" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: #f25d59;" text="Ingresar" textFill="WHITE">
          <effect>
             <DropShadow color="#d01919" />
          </effect>
       </Button>
+      <Label fx:id="lbErrorUsuario" layoutX="439.0" layoutY="216.0" prefHeight="20.0" prefWidth="185.0" textFill="RED" />
+      <Label fx:id="lbErrorContraseña" layoutX="439.0" layoutY="273.0" prefHeight="20.0" prefWidth="185.0" textFill="RED" />
    </children>
 </AnchorPane>
