@@ -66,7 +66,7 @@ public class FXMLMenuPrincipalController implements Initializable {
             "Adiós usuario,vuelva pronto",
             Alert.AlertType.INFORMATION);
         Stage escenarioBase = (Stage) lbTitulo.getScene().getWindow();
-        escenarioBase.setScene(Utilidades.inicializaEscena("vistas/InicioSesion.fxml"));
+        escenarioBase.setScene(Utilidades.inicializaEscena("vistas/FXMLInicioSesion.fxml"));
         escenarioBase.setTitle("Inicio de Sesión");
         escenarioBase.show();
     }
