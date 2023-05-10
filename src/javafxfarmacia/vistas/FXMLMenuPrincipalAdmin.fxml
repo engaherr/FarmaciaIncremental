@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -8,49 +9,42 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLMenuPrincipalController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0" style="-fx-background-color: #1b1b1b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLMenuPrincipalAdminController">
    <children>
-      <Label fx:id="lbTitulo" layoutX="191.0" layoutY="58.0" prefHeight="51.0" prefWidth="319.0" text="¿Qué desea hacer?" textFill="#fffdfd">
+      <Label fx:id="lbTitulo" layoutX="164.0" layoutY="27.0" prefHeight="57.0" prefWidth="372.0" text="¿Qué desea hacer?" textFill="#fffdfd">
          <font>
-            <Font name="Microsoft JhengHei Light" size="36.0" />
+            <Font name="Microsoft JhengHei Light" size="41.0" />
          </font>
       </Label>
-      <Button layoutX="115.0" layoutY="198.0" mnemonicParsing="false" onAction="#clicVender" prefHeight="50.0" prefWidth="192.0" style="-fx-background-color: #4E8098;" text="Vender" textFill="WHITE">
-         <effect>
-            <DropShadow color="#a49595" height="30.0" radius="14.5" width="30.0" />
-         </effect>
+      <Button layoutX="102.0" layoutY="184.0" mnemonicParsing="false" onAction="#clicInventario" prefHeight="67.0" prefWidth="214.0" style="-fx-background-color: #4E8098;" text="Inventario" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Button layoutX="394.0" layoutY="198.0" mnemonicParsing="false" onAction="#clicInventario" prefHeight="50.0" prefWidth="192.0" style="-fx-background-color: #4E8098;" text="Inventario" textFill="WHITE">
-         <effect>
-            <DropShadow color="#a49595" height="30.0" radius="14.5" width="30.0" />
-         </effect>
+      <Button layoutX="403.0" layoutY="184.0" mnemonicParsing="false" onAction="#clicReadquisicion" prefHeight="67.0" prefWidth="214.0" style="-fx-background-color: #4E8098;" text="Readquisición" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Button layoutX="115.0" layoutY="296.0" mnemonicParsing="false" onAction="#clicAbasto" prefHeight="50.0" prefWidth="192.0" style="-fx-background-color: #4E8098;" text="Abastecer " textFill="WHITE">
-         <effect>
-            <DropShadow color="#a49595" height="30.0" radius="14.5" width="30.0" />
-         </effect>
+      <Button layoutX="102.0" layoutY="317.0" mnemonicParsing="false" onAction="#clicAbasto" prefHeight="67.0" prefWidth="214.0" style="-fx-background-color: #4E8098;" text="Corte" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Button layoutX="394.0" layoutY="296.0" mnemonicParsing="false" onAction="#clicPromociones" prefHeight="50.0" prefWidth="192.0" style="-fx-background-color: #4E8098;" text="Promociones" textFill="WHITE">
-         <effect>
-            <DropShadow color="#a49595" height="30.0" radius="14.5" width="30.0" />
-         </effect>
+      <Button layoutX="403.0" layoutY="317.0" mnemonicParsing="false" onAction="#clicPromociones" prefHeight="67.0" prefWidth="214.0" style="-fx-background-color: #4E8098;" text="Empleados" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button layoutX="554.0" layoutY="416.0" mnemonicParsing="false" onAction="#clicCerrarSesion" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: F25D59;" text="Cerrar Sesión" textFill="WHITE">
+      <Button layoutX="568.0" layoutY="421.0" mnemonicParsing="false" onAction="#clicCerrarSesion" prefHeight="25.0" prefWidth="118.0" style="-fx-background-color: F25D59;" text="Cerrar Sesión" textFill="WHITE">
          <effect>
             <DropShadow />
          </effect>
       </Button>
+      <ImageView fitHeight="58.0" fitWidth="63.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/vectorAdmin.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
