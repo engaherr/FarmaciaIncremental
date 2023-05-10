@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="670.0" prefWidth="1175.0" style="-fx-background-color: #1b1b1b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLConsultarPedidosController">
+   <children>
+      <ImageView fitHeight="65.0" fitWidth="29.0" layoutX="32.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/vectorRegresar.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="85.0" layoutY="21.0" prefHeight="70.0" prefWidth="631.0" text="Estatus de pedido" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="50.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="57.0" fitWidth="90.0" layoutX="514.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/vectorAvionBlanco.png" />
+         </image>
+      </ImageView>
+      <TableView layoutX="66.0" layoutY="119.0" prefHeight="430.0" prefWidth="1026.0" style="-fx-background-color: #f8f2dc;">
+        <columns>
+          <TableColumn prefWidth="170.0" style="-fx-background-color: red;" text="ID pedido" />
+          <TableColumn prefWidth="170.0" text="Estatus" />
+            <TableColumn prefWidth="170.0" text="Productos" />
+            <TableColumn prefWidth="170.0" text="Cantidad" />
+            <TableColumn prefWidth="170.0" text="Fecha de pedido" />
+            <TableColumn prefWidth="170.0" text="Fecha de entrega" />
+        </columns>
+      </TableView>
+      <Button disable="true" layoutX="176.0" layoutY="570.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="303.0" style="-fx-background-color: #4E8098;" text="Modificar" textFill="WHITE">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Button>
+      <Button disable="true" layoutX="665.0" layoutY="570.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="303.0" style="-fx-background-color: #F25D59;" text="Eliminar" textFill="WHITE">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
