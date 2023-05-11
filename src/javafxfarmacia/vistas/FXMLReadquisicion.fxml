@@ -31,12 +31,12 @@
             <Image url="@../recursos/vectorRegresar.png" />
          </image>
       </ImageView>
-      <Label layoutX="277.0" layoutY="165.0" prefHeight="39.0" prefWidth="202.0" text="Generar pedido" textFill="WHITE">
+      <Label layoutX="277.0" layoutY="165.0" onMouseClicked="#lbClicGenerarPedido" prefHeight="39.0" prefWidth="202.0" text="Generar pedido" textFill="WHITE">
          <font>
             <Font name="Microsoft JhengHei Light" size="28.0" />
          </font>
       </Label>
-      <Label layoutX="255.0" layoutY="315.0" text="Ver estatus de pedido" textFill="WHITE">
+      <Label layoutX="255.0" layoutY="315.0" onMouseClicked="#lbClicVerEstatus" text="Ver estatus de pedido" textFill="WHITE">
          <font>
             <Font name="Microsoft JhengHei Light" size="28.0" />
          </font>

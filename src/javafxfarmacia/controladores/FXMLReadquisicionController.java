@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafxfarmacia.utils.Utilidades;
@@ -52,5 +53,24 @@ public class FXMLReadquisicionController implements Initializable {
         escenarioConsultarPedidos.show();
         
     }
+
+    @FXML
+    private void lbClicGenerarPedido(MouseEvent event) {
+       Stage escenarioPedido = new Stage();
+        escenarioPedido.setScene(Utilidades.inicializaEscena("vistas/FXMLGenerarPedido.fxml"));
+        escenarioPedido.setTitle("Generar pedido");
+        escenarioPedido.initModality(Modality.APPLICATION_MODAL);
+        escenarioPedido.show();
+    }
+
+    @FXML
+    private void lbClicVerEstatus(MouseEvent event) {
+          Stage escenarioConsultarPedidos = new Stage();
+        escenarioConsultarPedidos.setScene(Utilidades.inicializaEscena("vistas/FXMLConsultarPedidos.fxml"));
+        escenarioConsultarPedidos.setTitle("Consultar pedidos");
+        escenarioConsultarPedidos.initModality(Modality.APPLICATION_MODAL);
+        escenarioConsultarPedidos.show();
+    }
+    
     
 }
