@@ -9,19 +9,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0" style="-fx-background-color: #1b1b1b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLMenuPrincipalController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0" style="-fx-background-color: #1b1b1b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLReadquisicionController">
    <children>
       <Label fx:id="lbTitulo" layoutX="61.0" layoutY="14.0" prefHeight="51.0" prefWidth="513.0" text="Readquisición con proveedor" textFill="#fffdfd">
          <font>
             <Font name="Microsoft JhengHei Light" size="36.0" />
          </font>
       </Label>
-      <Button layoutX="130.0" layoutY="149.0" mnemonicParsing="false" onAction="#clicVender" prefHeight="71.0" prefWidth="441.0" style="-fx-background-color: #5FAD56;" textFill="WHITE">
+      <Button layoutX="130.0" layoutY="149.0" mnemonicParsing="false" onAction="#clicGenerarPedido" prefHeight="71.0" prefWidth="441.0" style="-fx-background-color: #5FAD56;" textFill="WHITE">
          <font>
             <Font name="Microsoft JhengHei UI Light" size="25.0" />
          </font>
       </Button>
-      <Button layoutX="130.0" layoutY="299.0" mnemonicParsing="false" onAction="#clicAbasto" prefHeight="71.0" prefWidth="441.0" style="-fx-background-color: #f25d59;" textFill="WHITE">
+      <Button layoutX="130.0" layoutY="299.0" mnemonicParsing="false" onAction="#clicVerEstatus" prefHeight="71.0" prefWidth="441.0" style="-fx-background-color: #f25d59;" textFill="WHITE">
          <font>
             <Font name="Microsoft JhengHei Light" size="25.0" />
          </font>

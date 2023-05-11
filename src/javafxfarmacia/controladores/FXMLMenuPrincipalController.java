@@ -32,35 +32,30 @@ public class FXMLMenuPrincipalController implements Initializable {
         // TODO
     }    
 
-    @FXML
     private void clicVender(ActionEvent event) {
         Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
             "Estamos trabajando para desarrollar esta funcionalidad",
             Alert.AlertType.INFORMATION);
     }
 
-    @FXML
     private void clicInventario(ActionEvent event) {
                 Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
             "Estamos trabajando para desarrollar esta funcionalidad",
             Alert.AlertType.INFORMATION);
     }
 
-    @FXML
     private void clicAbasto(ActionEvent event) {
                 Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
             "Estamos trabajando para desarrollar esta funcionalidad",
             Alert.AlertType.INFORMATION);
     }
 
-    @FXML
     private void clicPromociones(ActionEvent event) {
                 Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
             "Estamos trabajando para desarrollar esta funcionalidad",
             Alert.AlertType.INFORMATION);
     }
 
-    @FXML
     private void clicCerrarSesion(ActionEvent event) {
          Utilidades.mostrarDialogoSimple("Cierre de sesión",
             "Adiós usuario,vuelva pronto",
@@ -70,5 +65,7 @@ public class FXMLMenuPrincipalController implements Initializable {
         escenarioBase.setTitle("Inicio de Sesión");
         escenarioBase.show();
     }
+
+   
     
 }
