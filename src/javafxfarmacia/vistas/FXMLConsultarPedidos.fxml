@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<<<<<<< Updated upstream
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
+=======
+>>>>>>> Stashed changes
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<<<<<<< Updated upstream
 <AnchorPane id="AnchorPane" prefHeight="670.0" prefWidth="1175.0" style="-fx-background-color: #1b1b1b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLConsultarPedidosController">
    <children>
       <ImageView fitHeight="65.0" fitWidth="29.0" layoutX="32.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
@@ -46,4 +50,8 @@
          </font>
       </Button>
    </children>
+=======
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLConsultarPedidosController">
+    
+>>>>>>> Stashed changes
 </AnchorPane>
