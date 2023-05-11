@@ -5,8 +5,6 @@
 package javafxfarmacia.controladores;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
@@ -49,6 +47,8 @@ public class FXMLInventarioController implements Initializable {
     private TextField tfBusqueda;
     
     private ObservableList<Producto> productos;
+    private ObservableList<Producto> productosBusqueda;
+
     
     @FXML
     private TableColumn colPresentacion;
@@ -62,10 +62,6 @@ public class FXMLInventarioController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
         cargarInformacionTabla();
-        
-        tfBusqueda.textProperty().addListener((observable, oldValue, newValue) -> {
-            buscarProducto(null);
-        });
     }    
     
     public void configurarTabla(){
@@ -137,7 +133,7 @@ public class FXMLInventarioController implements Initializable {
     @FXML
     private void buscarProducto(KeyEvent event) {
         String busqueda = tfBusqueda.getText();
-        List<Producto> productosBusqueda = new ArrayList<Producto>();
+        productosBusqueda = FXCollections.observableArrayList();
         ProductoRespuesta respuestaBD = ProductoDAO.obtenerInformacionBusqueda(busqueda);
         switch(respuestaBD.getCodigoRespuesta()){
             case Constantes.ERROR_CONEXION:

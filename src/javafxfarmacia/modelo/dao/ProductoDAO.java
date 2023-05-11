@@ -62,9 +62,12 @@ public class ProductoDAO {
         Connection conexionBD = ConexionBD.abrirConexionBD();
         if(conexionBD != null){
             try {
-                String consulta = "SELECT * FROM producto WHERE nombre LIKE ?;";
+                String consulta = "select idProducto, nombre, fechaVencimiento, precio, ventaControlada, sucursal_idSucursal, \n" +
+                                "cantidad, presentacion, nombreSucursal \n" +
+                                "from producto \n" +
+                                "inner join sucursal on idSucursal = sucursal_idSucursal where nombre like ? order by fechaVencimiento asc;";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
-                prepararSentencia.setString(1, busqueda);
+                prepararSentencia.setString(1, "%" + busqueda + "%");
                 ResultSet resultado = prepararSentencia.executeQuery();
                 ArrayList<Producto> productosConsulta = new ArrayList();
                 while(resultado.next()){
