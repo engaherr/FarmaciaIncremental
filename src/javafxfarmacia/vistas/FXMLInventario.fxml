@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="1175.0" style="-fx-background-color: #1b1b1b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLInventarioController">
+   <children>
+      <TableView fx:id="tvInventario" layoutX="30.0" layoutY="151.0" prefHeight="502.0" prefWidth="1112.0" style="-fx-font-size: 14px;">
+        <columns>
+          <TableColumn fx:id="colProducto" editable="false" prefWidth="313.0" resizable="false" style="-fx-font-size: 16px;" text="Producto" />
+            <TableColumn fx:id="colPresentacion" editable="false" prefWidth="130.0" resizable="false" sortable="false" style="-fx-font-size: 16px;" text="Presentación" />
+          <TableColumn fx:id="colFechaVencimiento" editable="false" prefWidth="172.0" style="-fx-font-size: 16px;" text="Fecha de Vencimiento" />
+            <TableColumn fx:id="colSucursal" editable="false" prefWidth="150.0" resizable="false" style="-fx-font-size: 16px;" text="Sucursal" />
+            <TableColumn fx:id="colCantidad" editable="false" prefWidth="74.0" resizable="false" sortable="false" style="-fx-font-size: 16px;" text="Cantidad" />
+            <TableColumn fx:id="colPrecio" editable="false" prefWidth="170.0" resizable="false" style="-fx-font-size: 16px;" text="Precio" />
+            <TableColumn fx:id="colControlada" editable="false" prefWidth="101.0" resizable="false" sortable="false" style="-fx-font-size: 16px;" text="Controlada" />
+        </columns>
+      </TableView>
+      <Label layoutX="158.0" layoutY="43.0" prefWidth="462.0" text="Gestión de Inventario" textFill="#fffdfd">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="36.0" />
+         </font>
+      </Label>
+      <Button layoutX="578.0" layoutY="47.0" mnemonicParsing="false" onAction="#clicRegistrar" prefHeight="38.0" prefWidth="146.0" style="-fx-background-color: #5FAD56;" text="Registrar" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button disable="true" layoutX="783.0" layoutY="46.0" mnemonicParsing="false" onAction="#clicModificar" prefHeight="38.0" prefWidth="146.0" style="-fx-background-color: #4e8098;" text="Modificar" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button disable="true" layoutX="980.0" layoutY="47.0" mnemonicParsing="false" onAction="#clicEliminar" prefHeight="38.0" prefWidth="146.0" style="-fx-background-color: #F25D59;" text="Eliminar" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Bold" size="18.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="53.0" fitWidth="62.0" layoutX="41.0" layoutY="42.0" onMouseClicked="#clicRegresar" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/icons8-less-than-50.png" />
+         </image>
+      </ImageView>
+      <TextField fx:id="tfBusqueda" layoutX="104.0" layoutY="101.0" onKeyReleased="#buscarProducto" prefHeight="29.0" prefWidth="435.0" promptText="Buscar...">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="18.0" />
+         </font>
+      </TextField>
+   </children>
+</AnchorPane>
