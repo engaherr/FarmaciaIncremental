@@ -25,7 +25,7 @@ public class PedidoDAO {
         Connection conexionBD = ConexionBD.abrirConexionBD();
         if(conexionBD != null){
             try {
-                String consulta = "SELECT p.idpedido, p.estado, p.fecha_pedido, p.fecha_entrega, p.cantidad, pr.nombre FROM pedidos p JOIN producto pr ON p.idProducto = pr.idProducto;";
+                String consulta = "SELECT p.idpedido, p.estado, p.fecha_pedido, p.fecha_entrega, p.cantidad, pr.nombre FROM pedidos p INNER JOIN producto pr ON p.idProducto = pr.idProducto;";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 ResultSet resultado = prepararSentencia.executeQuery();
                 ArrayList<Pedido> pedidoConsulta = new ArrayList();
