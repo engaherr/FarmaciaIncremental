@@ -45,9 +45,7 @@ public class FXMLConsultarPedidosController implements Initializable {
     
 private ObservableList<Pedido> pedidos;
     
-    /**
-     * Initializes the controller class.
-     */
+   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
