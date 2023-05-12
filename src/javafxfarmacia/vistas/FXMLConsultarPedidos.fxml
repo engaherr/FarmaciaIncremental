@@ -25,14 +25,14 @@
             <Image url="@../recursos/vectorAvionBlanco.png" />
          </image>
       </ImageView>
-      <TableView layoutX="66.0" layoutY="119.0" prefHeight="430.0" prefWidth="1026.0" style="-fx-background-color: #f8f2dc;">
+      <TableView fx:id="tvPedidos" layoutX="66.0" layoutY="119.0" prefHeight="430.0" prefWidth="1026.0" style="-fx-background-color: #f8f2dc;">
         <columns>
-          <TableColumn prefWidth="170.0" text="ID pedido" />
-          <TableColumn prefWidth="170.0" text="Estado" />
-            <TableColumn prefWidth="170.0" text="Productos" />
-            <TableColumn prefWidth="170.0" text="Cantidad" />
-            <TableColumn prefWidth="170.0" text="Fecha de pedido" />
-            <TableColumn prefWidth="170.0" text="Fecha de entrega" />
+          <TableColumn fx:id="colPedido" prefWidth="170.0" text="ID pedido" />
+          <TableColumn fx:id="colEstado" prefWidth="170.0" text="Estado" />
+            <TableColumn fx:id="colProducto" prefWidth="170.0" text="Productos" />
+            <TableColumn fx:id="colCantidad" prefWidth="170.0" text="Cantidad" />
+            <TableColumn fx:id="colFechaPedido" prefWidth="170.0" text="Fecha de pedido" />
+            <TableColumn fx:id="colFechaEntrega" prefWidth="175.0" text="Fecha de entrega" />
         </columns>
       </TableView>
       <Button disable="true" layoutX="176.0" layoutY="570.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="303.0" style="-fx-background-color: #4E8098;" text="Modificar" textFill="WHITE">
