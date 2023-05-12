@@ -34,7 +34,7 @@ public class PedidoRespuesta {
         return pedido;
     }
 
-    public void setProductos(ArrayList<Pedido> pedido) {
+    public void setPedidos(ArrayList<Pedido> pedido) {
         this.pedido = pedido;
     }
     
