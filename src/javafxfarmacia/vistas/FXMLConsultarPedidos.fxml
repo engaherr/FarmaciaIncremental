@@ -28,7 +28,7 @@
       <TableView layoutX="66.0" layoutY="119.0" prefHeight="430.0" prefWidth="1026.0" style="-fx-background-color: #f8f2dc;">
         <columns>
           <TableColumn prefWidth="170.0" text="ID pedido" />
-          <TableColumn prefWidth="170.0" text="Estatus" />
+          <TableColumn prefWidth="170.0" text="Estado" />
             <TableColumn prefWidth="170.0" text="Productos" />
             <TableColumn prefWidth="170.0" text="Cantidad" />
             <TableColumn prefWidth="170.0" text="Fecha de pedido" />
