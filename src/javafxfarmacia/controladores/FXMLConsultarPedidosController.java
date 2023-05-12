@@ -50,7 +50,8 @@ private ObservableList<Pedido> pedidos;
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        configurarTabla();
+        cargarInformacionTabla();
     }    
     
     public void configurarTabla(){
