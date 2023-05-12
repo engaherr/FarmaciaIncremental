@@ -14,6 +14,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafxfarmacia.modelo.dao.PedidoDAO;
 import javafxfarmacia.modelo.pojo.Pedido;
 import javafxfarmacia.modelo.pojo.PedidoRespuesta;
@@ -84,5 +86,11 @@ private ObservableList<Pedido> pedidos;
             break;
     }
 }
+
+    @FXML
+    private void clicRegresar(MouseEvent event) {
+        Stage escenarioPrincipal = (Stage) tvPedidos.getScene().getWindow();
+        escenarioPrincipal.close();
+    }
     
 }

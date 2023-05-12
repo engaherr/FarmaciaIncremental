@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="670.0" prefWidth="1175.0" style="-fx-background-color: #1b1b1b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLConsultarPedidosController">
    <children>
-      <ImageView fitHeight="65.0" fitWidth="29.0" layoutX="32.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="65.0" fitWidth="29.0" layoutX="32.0" layoutY="33.0" onMouseClicked="#clicRegresar" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../recursos/vectorRegresar.png" />
          </image>

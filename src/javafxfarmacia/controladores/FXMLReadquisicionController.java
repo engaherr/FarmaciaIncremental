@@ -71,6 +71,13 @@ public class FXMLReadquisicionController implements Initializable {
         escenarioConsultarPedidos.initModality(Modality.APPLICATION_MODAL);
         escenarioConsultarPedidos.show();
     }
+
+    @FXML
+    private void clicRegresar(MouseEvent event) {
+         Stage escenarioPrincipal = (Stage) lbTitulo.getScene().getWindow();
+        escenarioPrincipal.close();
+    }
+    
     
     
 }
