@@ -6,10 +6,19 @@ package javafxfarmacia.controladores;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafxfarmacia.modelo.dao.PedidoDAO;
+import javafxfarmacia.modelo.pojo.Pedido;
+import javafxfarmacia.modelo.pojo.PedidoRespuesta;
+import javafxfarmacia.utils.Constantes;
+import javafxfarmacia.utils.Utilidades;
 
 /**
  * FXML Controller class
@@ -19,20 +28,23 @@ import javafx.scene.control.TableView;
 public class FXMLConsultarPedidosController implements Initializable {
 
     @FXML
-    private TableView<?> tvPedidos;
+    private TableView<Pedido> tvPedidos;
     @FXML
-    private TableColumn<?, ?> colPedido;
+    private TableColumn colPedido;
     @FXML
-    private TableColumn<?, ?> colEstado;
+    private TableColumn colEstado;
     @FXML
-    private TableColumn<?, ?> colProducto;
+    private TableColumn colProducto;
     @FXML
-    private TableColumn<?, ?> colCantidad;
+    private TableColumn colCantidad;
     @FXML
-    private TableColumn<?, ?> colFechaPedido;
+    private TableColumn colFechaPedido;
     @FXML
-    private TableColumn<?, ?> colFechaEntrega;
+    private TableColumn colFechaEntrega;
 
+    
+private ObservableList<Pedido> pedidos;
+    
     /**
      * Initializes the controller class.
      */
@@ -40,5 +52,38 @@ public class FXMLConsultarPedidosController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+    
+    public void configurarTabla(){
+    colCantidad.setCellValueFactory(new PropertyValueFactory("cantidad"));
+    colFechaEntrega.setCellValueFactory(new PropertyValueFactory("fechaEntrega"));
+    colFechaPedido.setCellValueFactory(new PropertyValueFactory("fechaPedido"));
+    colProducto.setCellValueFactory(new PropertyValueFactory("nombre"));
+    colEstado.setCellValueFactory(new PropertyValueFactory("estado"));
+    colPedido.setCellValueFactory(new PropertyValueFactory("pedido"));
+    
+    
+    }
+    
+    
+    public void cargarInformacionTabla(){
+    pedidos = FXCollections.observableArrayList();
+    PedidoRespuesta respuestaBD = PedidoDAO.obtenerInformacionPedido();
+    switch(respuestaBD.getCodigoRespuesta()){
+        case Constantes.ERROR_CONEXION:
+            Utilidades.mostrarDialogoSimple("Sin conexion", 
+                    "No se pudo conectar con la base de datos. Intente de nuevo o hágalo más tarde",
+                    Alert.AlertType.ERROR);
+            break;
+        case Constantes.ERROR_CONSULTA:
+            Utilidades.mostrarDialogoSimple("Error al cargar los datos", 
+                    "Hubo un error al cargar la información por favor inténtelo de nuevo más tarde",
+                    Alert.AlertType.WARNING);
+            break;
+        case Constantes.OPERACION_EXITOSA:
+            pedidos.addAll(respuestaBD.getPedidos());
+            tvPedidos.setItems(pedidos);
+            break;
+    }
+}
     
 }
