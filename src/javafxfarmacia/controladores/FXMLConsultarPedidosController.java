@@ -56,11 +56,11 @@ private ObservableList<Pedido> pedidos;
     
     public void configurarTabla(){
     colCantidad.setCellValueFactory(new PropertyValueFactory("cantidad"));
-    colFechaEntrega.setCellValueFactory(new PropertyValueFactory("fechaEntrega"));
-    colFechaPedido.setCellValueFactory(new PropertyValueFactory("fechaPedido"));
+    colFechaEntrega.setCellValueFactory(new PropertyValueFactory("fecha_entrega"));
+    colFechaPedido.setCellValueFactory(new PropertyValueFactory("fecha_pedido"));
     colProducto.setCellValueFactory(new PropertyValueFactory("nombre"));
     colEstado.setCellValueFactory(new PropertyValueFactory("estado"));
-    colPedido.setCellValueFactory(new PropertyValueFactory("pedido"));
+    colPedido.setCellValueFactory(new PropertyValueFactory("IdPedido"));
     
     
     }
