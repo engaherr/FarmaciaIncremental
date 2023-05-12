@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javafxfarmacia.modelo.ConexionBD;
+import javafxfarmacia.modelo.pojo.PedidoRespuesta;
 import javafxfarmacia.utils.Constantes;
 
 /**
