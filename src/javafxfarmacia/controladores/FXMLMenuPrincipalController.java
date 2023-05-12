@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafxfarmacia.utils.Utilidades;
 
@@ -55,10 +56,13 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     @FXML
     private void clicPromociones(ActionEvent event) {
-                Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
-            "Estamos trabajando para desarrollar esta funcionalidad",
-            Alert.AlertType.INFORMATION);
-    }
+        Stage escenarioPromociones = (Stage) lbTitulo.getScene().getWindow();
+        escenarioPromociones.setScene(Utilidades.inicializaEscena("vistas/FXMLPromociones.fxml"));
+        escenarioPromociones.setTitle("Lista de promociones");
+        escenarioPromociones.initModality(Modality.APPLICATION_MODAL);
+        escenarioPromociones.showAndWait();
+        
+   }
 
     @FXML
     private void clicCerrarSesion(ActionEvent event) {
@@ -66,7 +70,7 @@ public class FXMLMenuPrincipalController implements Initializable {
             "Adiós usuario,vuelva pronto",
             Alert.AlertType.INFORMATION);
         Stage escenarioBase = (Stage) lbTitulo.getScene().getWindow();
-        escenarioBase.setScene(Utilidades.inicializaEscena("vistas/InicioSesion.fxml"));
+        escenarioBase.setScene(Utilidades.inicializaEscena("vistas/FXMLInicioSesion.fxml"));
         escenarioBase.setTitle("Inicio de Sesión");
         escenarioBase.show();
     }
