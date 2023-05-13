@@ -1,7 +1,10 @@
 package javafxfarmacia.controladores;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.ResourceBundle;
+import java.util.Set;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -28,22 +31,32 @@ public class FXMLGenerarPedidoController implements Initializable {
         cargarInformacionTipo();
     }
 
-    private void cargarInformacionTipo() {
-        tipos = FXCollections.observableArrayList();
-        TipoRespuesta tiposBD = TipoProductoDAO.obtenerInformacionTipo();
-        switch (tiposBD.getCodigoRespuesta()) {
-            case Constantes.ERROR_CONEXION:
-                Utilidades.mostrarDialogoSimple("Error de conexión", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
-                break;
+private void cargarInformacionTipo() {
+    tipos = FXCollections.observableArrayList();
+    TipoRespuesta tiposBD = TipoProductoDAO.obtenerInformacionTipo();
+    switch (tiposBD.getCodigoRespuesta()) {
+        case Constantes.ERROR_CONEXION:
+            Utilidades.mostrarDialogoSimple("Error de conexión", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
+            break;
 
-            case Constantes.ERROR_CONSULTA:
-                Utilidades.mostrarDialogoSimple("Error de consulta", "Por el momento no se puede mostrar la información", Alert.AlertType.WARNING);
-                break;
+        case Constantes.ERROR_CONSULTA:
+            Utilidades.mostrarDialogoSimple("Error de consulta", "Por el momento no se puede mostrar la información", Alert.AlertType.WARNING);
+            break;
 
-            case Constantes.OPERACION_EXITOSA:
-                tipos.addAll(tiposBD.getTipos());
-                cbTipo.setItems(tipos);
-                break;
-        }
+        case Constantes.OPERACION_EXITOSA:
+            ArrayList<Tipo> tiposOriginales = tiposBD.getTipos();
+            HashSet<String> nombresTipos = new HashSet<>();
+
+            for (Tipo tipo : tiposOriginales) {
+                if (nombresTipos.add(tipo.getNombre())) {
+                    tipos.add(tipo);
+                }
+            }
+            cbTipo.setItems(tipos);
+            break;
     }
+}
+
+
+
 }
