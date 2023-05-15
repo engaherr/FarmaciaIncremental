@@ -11,34 +11,45 @@ package javafxfarmacia.modelo.pojo;
 
  
 public class Tipo {
-    private int idProducto;
+    private int idTipo;
     private String nombre;
+    private int idPresentacion;
 
     public Tipo() {
     }
 
-    public Tipo(int idProducto, String nombre) {
-        this.idProducto = idProducto;
+    public Tipo(int idTipo, String nombre, int idPresentacion) {
+        this.idTipo = idTipo;
         this.nombre = nombre;
+        this.idPresentacion = idPresentacion;
     }
 
-    public int getIdProducto() {
-        return idProducto;
+    public int getIdTipo() {
+        return idTipo;
+    }
+
+    public void setIdTipo(int idTipo) {
+        this.idTipo = idTipo;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
-    }
-
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    public String toString(){
+
+    public int getIdPresentacion() {
+        return idPresentacion;
+    }
+
+    public void setIdPresentacion(int idPresentacion) {
+        this.idPresentacion = idPresentacion;
+    }
+
+    @Override
+    public String toString() {
         return nombre;
     }
 }

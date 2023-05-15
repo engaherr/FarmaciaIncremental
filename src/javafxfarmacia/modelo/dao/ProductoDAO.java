@@ -1,4 +1,3 @@
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -11,48 +10,34 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javafxfarmacia.modelo.ConexionBD;
-import javafxfarmacia.modelo.pojo.Tipo;
-import javafxfarmacia.modelo.pojo.TipoRespuesta;
+import javafxfarmacia.modelo.pojo.Producto;
+import javafxfarmacia.modelo.pojo.ProductoRespuesta;
 import javafxfarmacia.utils.Constantes;
-
-import javafxfarmacia.modelo.pojo.Tipo;
-
-import java.sql.ResultSet;
-
-import java.sql.PreparedStatement;
-
-import java.sql.PreparedStatement;
-
-import java.sql.Connection;
-
-import java.sql.Connection;
-
-import java.sql.Connection;
 
 /**
  *
  * @author dplat
  */
-public class TipoProductoDAO {
-    public static TipoRespuesta obtenerInformacionTipo(){
-    TipoRespuesta respuesta = new TipoRespuesta();
+public class ProductoDAO {
+    public static ProductoRespuesta obtenerInformacionProducto(int idProducto){
+    ProductoRespuesta respuesta = new ProductoRespuesta();
     Connection conexionBD = ConexionBD.abrirConexionBD();
       if(conexionBD != null){
             try{
-                String consulta = "SELECT idProducto,tipo FROM producto";
+                String consulta = "SELECT idProducto,nombre FROM producto";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 ResultSet resultado = prepararSentencia.executeQuery();
-                ArrayList <Tipo> tipos = new ArrayList();
+                ArrayList <Producto> productos = new ArrayList();
                 
                 while(resultado.next()){
-                    Tipo tipo = new Tipo();
-                    tipo.setIdTipo(resultado.getInt("idProducto"));
-                    tipo.setNombre(resultado.getString("tipo"));
-                    tipos.add(tipo);
+                    Producto producto = new Producto();
+                    producto.setIdProducto(resultado.getInt("idProducto"));
+                    producto.setNombre(resultado.getString("nombre"));
+                    productos.add(producto);
                     
                 
                 }
-                respuesta.setTipos(tipos);
+                respuesta.setProductos(productos);
                 respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
 
                 conexionBD.close();
@@ -67,5 +52,4 @@ public class TipoProductoDAO {
         return respuesta;
    
     }
-    
 }

@@ -27,9 +27,9 @@
          </font>
       </Label>
       <ComboBox fx:id="cbTipo" layoutX="33.0" layoutY="104.0" prefHeight="68.0" prefWidth="470.0" promptText="Tipo de producto" style="-fx-font-size: 30;" />
-      <ComboBox layoutX="567.0" layoutY="99.0" prefHeight="68.0" prefWidth="557.0" promptText="Proveedor" style="-fx-font-size: 30;" />
-      <ComboBox layoutX="32.0" layoutY="209.0" prefHeight="68.0" prefWidth="712.0" promptText="Producto" style="-fx-font-size: 30;" />
-      <TextField layoutX="821.0" layoutY="209.0" prefHeight="68.0" prefWidth="301.0" promptText="Cantidad" text="Cantidad por producto">
+      <ComboBox fx:id="cbProveedor" layoutX="567.0" layoutY="99.0" prefHeight="68.0" prefWidth="557.0" promptText="Proveedor" style="-fx-font-size: 30;" />
+      <ComboBox fx:id="cbProducto" layoutX="32.0" layoutY="209.0" prefHeight="68.0" prefWidth="712.0" promptText="Producto" style="-fx-font-size: 30;" />
+      <TextField fx:id="tfCantidad" layoutX="821.0" layoutY="209.0" prefHeight="68.0" prefWidth="301.0" promptText="Cantidad por producto">
          <font>
             <Font size="26.0" />
          </font>
@@ -37,17 +37,17 @@
       <TableView layoutX="35.0" layoutY="316.0" prefHeight="284.0" prefWidth="712.0">
         <columns>
           <TableColumn minWidth="0.0" prefWidth="100.0" text="Cantidad" />
-          <TableColumn prefWidth="425.0" text="Producto" />
+          <TableColumn fx:id="tvCarrito" prefWidth="425.0" text="Producto" />
             <TableColumn prefWidth="261.0" text="Precio unitario" />
         </columns>
       </TableView>
-      <DatePicker layoutX="825.0" layoutY="316.0" prefHeight="68.0" prefWidth="301.0" promptText="Día de entrega" style="-fx-font-size: 30;" />
-      <Button layoutX="825.0" layoutY="412.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="301.0" style="-fx-background-color: #4E8098;" text="Agregar a carrito" textFill="WHITE">
+      <DatePicker fx:id="dpDiaEntrega" layoutX="825.0" layoutY="316.0" prefHeight="68.0" prefWidth="301.0" promptText="Día de entrega" style="-fx-font-size: 30;" />
+      <Button layoutX="825.0" layoutY="412.0" mnemonicParsing="false" onAction="#clicAgregar" prefHeight="24.0" prefWidth="301.0" style="-fx-background-color: #4E8098;" text="Agregar a carrito" textFill="WHITE">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Button>
-      <Button layoutX="825.0" layoutY="557.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="301.0" style="-fx-background-color: #5FAD56;" text="Generar pedido" textFill="WHITE">
+      <Button layoutX="825.0" layoutY="557.0" mnemonicParsing="false" onAction="#clicGenerar" prefHeight="68.0" prefWidth="301.0" style="-fx-background-color: #5FAD56;" text="Generar pedido" textFill="WHITE">
          <font>
             <Font name="System Bold" size="34.0" />
          </font>
@@ -60,7 +60,7 @@
             <Glow />
          </effect>
       </Label>
-      <Button layoutX="826.0" layoutY="484.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="301.0" style="-fx-background-color: #F25D59;" text="Eliminar de carrito" textFill="WHITE">
+      <Button layoutX="826.0" layoutY="484.0" mnemonicParsing="false" onAction="#clicEliminar" prefHeight="24.0" prefWidth="301.0" style="-fx-background-color: #F25D59;" text="Eliminar de carrito" textFill="WHITE">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
