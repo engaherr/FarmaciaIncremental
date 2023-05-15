@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="670.0" prefWidth="1275.0" style="-fx-background-color: #2e2f40;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLRegistroPromocionController">
+   <children>
+      <Text fill="WHITE" layoutX="149.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Registro de promoción">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="41.0" />
+         </font>
+      </Text>
+      <Label layoutX="105.0" layoutY="156.0" text="Descripción" textFill="WHITE">
+         <font>
+            <Font size="26.0" />
+         </font></Label>
+      <Label layoutX="638.0" layoutY="158.0" text="Producto" textFill="WHITE">
+         <font>
+            <Font size="25.0" />
+         </font></Label>
+      <TextField layoutX="292.0" layoutY="155.0" />
+      <ComboBox layoutX="882.0" layoutY="155.0" prefHeight="39.0" prefWidth="224.0" />
+      <Label layoutX="105.0" layoutY="271.0" text="Descuento" textFill="WHITE">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="90.0" layoutY="395.0" text="Fecha de inicio" textFill="WHITE">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="138.0" layoutY="490.0" text="Fecha de término" />
+      <TextField layoutX="292.0" layoutY="268.0" />
+      <TextField layoutX="292.0" layoutY="393.0" />
+      <TextField layoutX="882.0" layoutY="393.0" />
+      <Label layoutX="638.0" layoutY="395.0" text="Fecha de término" textFill="WHITE">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Button layoutX="876.0" layoutY="573.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="118.0" style="-fx-background-color: #5FAD56;" text="Registrar" textFill="WHITE" />
+      <Button layoutX="1087.0" layoutY="573.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="125.0" style="-fx-background-color: #4E8098;" text="Cancelar" textFill="WHITE" />
+   </children>
+</AnchorPane>

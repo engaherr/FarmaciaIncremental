@@ -57,10 +57,13 @@ public class FXMLMenuPrincipalAdminController implements Initializable {
 
     @FXML
     private void clicPromociones(ActionEvent event) {
-                Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
-            "Estamos trabajando para desarrollar esta funcionalidad",
-            Alert.AlertType.INFORMATION);
-    }
+        Stage escenarioPromociones = (Stage) lbTitulo.getScene().getWindow();
+        escenarioPromociones.setScene(Utilidades.inicializaEscena("vistas/FXMLPromociones.fxml"));
+        escenarioPromociones.setTitle("Lista de promociones");
+        escenarioPromociones.initModality(Modality.APPLICATION_MODAL);
+        escenarioPromociones.showAndWait();
+        
+   }
 
     @FXML
     private void clicCerrarSesion(ActionEvent event) {
