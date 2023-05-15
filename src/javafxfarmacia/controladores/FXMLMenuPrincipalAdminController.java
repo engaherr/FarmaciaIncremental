@@ -18,6 +18,7 @@ import javafxfarmacia.utils.Utilidades;
 /**
  * FXML Controller class
  *
+ * @author dplat
  * @author kikga
  */
 public class FXMLMenuPrincipalAdminController implements Initializable {
@@ -33,13 +34,38 @@ public class FXMLMenuPrincipalAdminController implements Initializable {
         // TODO
     }    
 
+
+    @FXML
+    private void clicInventario(ActionEvent event) {
+    }
+
+    @FXML
+    private void clicReadquisicion(ActionEvent event) {
+        Stage escenarioReadquisicion = new Stage();
+        escenarioReadquisicion.setScene(Utilidades.inicializaEscena("vistas/FXMLReadquisicion.fxml"));
+        escenarioReadquisicion.setTitle("Readquisicion");
+        escenarioReadquisicion.initModality(Modality.APPLICATION_MODAL);
+        escenarioReadquisicion.show();
+    }
+
+    @FXML
+    private void clicAbasto(ActionEvent event) {
+    }
+
+    @FXML
+    private void clicPromociones(ActionEvent event) {
+    }
+
+    @FXML
+    private void clicCerrarSesion(ActionEvent event) {
+    }
+
     private void clicVender(ActionEvent event) {
         Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
             "Estamos trabajando para desarrollar esta funcionalidad",
             Alert.AlertType.INFORMATION);
     }
 
-    @FXML
     private void clicInventario(ActionEvent event) {
         Stage escenarioInventario = new Stage();
         escenarioInventario.setScene(Utilidades.inicializaEscena("vistas/FXMLInventario.fxml"));
@@ -48,14 +74,12 @@ public class FXMLMenuPrincipalAdminController implements Initializable {
         escenarioInventario.showAndWait();
     }
 
-    @FXML
     private void clicAbasto(ActionEvent event) {
                 Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
             "Estamos trabajando para desarrollar esta funcionalidad",
             Alert.AlertType.INFORMATION);
     }
 
-    @FXML
     private void clicPromociones(ActionEvent event) {
         Stage escenarioPromociones = (Stage) lbTitulo.getScene().getWindow();
         escenarioPromociones.setScene(Utilidades.inicializaEscena("vistas/FXMLPromociones.fxml"));
@@ -65,7 +89,6 @@ public class FXMLMenuPrincipalAdminController implements Initializable {
         
    }
 
-    @FXML
     private void clicCerrarSesion(ActionEvent event) {
          Utilidades.mostrarDialogoSimple("Cierre de sesión",
             "Adiós usuario,vuelva pronto",
@@ -76,6 +99,7 @@ public class FXMLMenuPrincipalAdminController implements Initializable {
         escenarioBase.show();
     }
 
+   
     @FXML
     private void clicReadquisicion(ActionEvent event) {
     }
