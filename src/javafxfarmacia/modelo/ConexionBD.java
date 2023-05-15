@@ -20,7 +20,7 @@ public class ConexionBD {
     private static String puerto = "3306";
     
     private static String usuario = "root";
-    private static String password = "karma";
+    private static String password = "gokuesmydios";
 
     private static String urlConexion = "jdbc:mysql://" + hostname + ":" + puerto 
             + "/" + nombreBase +"?allowPublicKeyRetrieval=true&useSSL=false";
