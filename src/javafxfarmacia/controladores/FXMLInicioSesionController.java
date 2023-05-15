@@ -66,9 +66,9 @@ public class FXMLInicioSesionController implements Initializable {
             validarCredencialesUsuario(usuario, password);
         }
     }
-    private void irPantallaPrincipal(){
+    private void irPantallaPrincipalAdmin(){
         Stage escenarioBase = (Stage) tfUsuario.getScene().getWindow();
-        escenarioBase.setScene(Utilidades.inicializaEscena("vistas/FXMLMenuPrincipal.fxml"));
+        escenarioBase.setScene(Utilidades.inicializaEscena("vistas/FXMLMenuPrincipalAdmin.fxml"));
         escenarioBase.setTitle("Menú Principal");
         escenarioBase.show();
     }
@@ -91,6 +91,9 @@ public class FXMLInicioSesionController implements Initializable {
                     Utilidades.mostrarDialogoSimple("Usuario verificado",
                             "Bienvenid@ " + usuarioRespuesta.toString() + " al sistema...", 
                             Alert.AlertType.INFORMATION);
+                    if(usuarioRespuesta.getTipo() == 1)
+                     irPantallaPrincipalAdmin();
+                    else
                      irPantallaPrincipal();
                 }else{
                     Utilidades.mostrarDialogoSimple("Credenciales Incorrectas",
@@ -103,6 +106,13 @@ public class FXMLInicioSesionController implements Initializable {
                         "El sistema no está disponible por el momento...",
                         Alert.AlertType.ERROR);
         }
+    }
+
+    private void irPantallaPrincipal() {
+        Stage escenarioBase = (Stage) tfUsuario.getScene().getWindow();
+        escenarioBase.setScene(Utilidades.inicializaEscena("vistas/FXMLMenuPrincipal.fxml"));
+        escenarioBase.setTitle("Menú Principal");
+        escenarioBase.show();
     }
     
 }
