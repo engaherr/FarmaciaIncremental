@@ -1,5 +1,5 @@
 /build/
 /dist/
-nbproject/private/
-*.class
-*.jar
+/nbproject/private/
+/*.class
+/*.jar
