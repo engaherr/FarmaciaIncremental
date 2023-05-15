@@ -4,16 +4,23 @@
  */
 package javafxfarmacia.controladores;
 
+import com.sun.javafx.scene.control.skin.TableHeaderRow;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -21,8 +28,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafxfarmacia.JavaFXFarmacia;
 import javafxfarmacia.modelo.dao.ProductoDAO;
 import javafxfarmacia.modelo.pojo.Producto;
 import javafxfarmacia.modelo.pojo.ProductoRespuesta;
@@ -54,6 +63,10 @@ public class FXMLInventarioController implements Initializable {
     private TableColumn colPresentacion;
     @FXML
     private TableColumn<Producto, Boolean> colControlada;
+    @FXML
+    private Button btnModificar;
+    @FXML
+    private Button btnEliminar;
 
     /**
      * Initializes the controller class.
@@ -62,6 +75,18 @@ public class FXMLInventarioController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
         cargarInformacionTabla();
+        
+        tvInventario.setOnMouseClicked(event -> {
+            if(event.getClickCount() == 2){
+                mostrarDetalles();
+            } else if(event.getClickCount() == 1){
+                Producto productoSeleccionado = tvInventario.getSelectionModel().getSelectedItem();
+                if(productoSeleccionado != null){
+                    btnModificar.setDisable(false);
+                    btnEliminar.setDisable(false);
+                }
+            }
+        });
     }    
     
     public void configurarTabla(){
@@ -88,6 +113,18 @@ public class FXMLInventarioController implements Initializable {
             }
         });
         colPresentacion.setCellValueFactory(new PropertyValueFactory("presentacion"));
+        tvInventario.widthProperty().addListener(new ChangeListener<Number>(){
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                TableHeaderRow header = (TableHeaderRow) tvInventario.lookup("TableHeaderRow");
+                header.reorderingProperty().addListener(new ChangeListener<Boolean>(){
+                    @Override
+                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                        header.setReordering(false);
+                    }
+                });
+            }
+        });
     }
     
     public void cargarInformacionTabla(){
@@ -114,6 +151,7 @@ public class FXMLInventarioController implements Initializable {
 
     @FXML
     private void clicRegistrar(ActionEvent event) {
+        irFormulario();
     }
 
     @FXML
@@ -151,5 +189,31 @@ public class FXMLInventarioController implements Initializable {
                 tvInventario.setItems(FXCollections.observableList(productosBusqueda));
                 break;
         }
+    }
+
+    private void irFormulario() {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(
+                    JavaFXFarmacia.class.getResource("vistas/FXMLProductoFormulario.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLProductoFormularioController formulario = accesoControlador.getController();
+            formulario.inicializarInformacionFormulario(false, null);
+            
+            Stage escenarioFormulario = new Stage();
+            escenarioFormulario.setScene(new Scene(vista));
+            escenarioFormulario.setTitle("Formulario de Producto");
+            escenarioFormulario.initModality(Modality.APPLICATION_MODAL);
+            escenarioFormulario.showAndWait();
+        } catch (IOException e) {
+            e.getMessage();
+        }
+    }
+
+    private void mostrarDetalles() {
+        Stage escenarioDetalles = new Stage();
+        escenarioDetalles.setScene(Utilidades.inicializaEscena("vistas/FXMLMenuPrincipal.fxml"));
+        escenarioDetalles.setTitle("Detalles de Producto");
+        escenarioDetalles.initModality(Modality.APPLICATION_MODAL);
+        escenarioDetalles.showAndWait();
     }
 }

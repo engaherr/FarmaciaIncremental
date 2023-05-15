@@ -93,4 +93,33 @@ public class ProductoDAO {
         }
         return respuesta;
     }
+    
+    public static int guardarProducto(Producto productoNuevo){
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try {
+                String sentencia = "insert into producto(nombre, fechaVencimiento, precio, "
+                        + "ventaControlada, sucursal_idSucursal, cantidad, presentacion)"
+                        + " values (?, ?, ?, ?, ?, ?, ?)";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setString(1, productoNuevo.getNombre());
+                prepararSentencia.setString(2, productoNuevo.getFechaVencimiento());
+                prepararSentencia.setDouble(3, productoNuevo.getPrecio());
+                prepararSentencia.setBoolean(4, productoNuevo.isVentaControlada());
+                prepararSentencia.setInt(5, productoNuevo.getIdSucursal());
+                prepararSentencia.setInt(6, productoNuevo.getCantidad());
+                prepararSentencia.setString(7, productoNuevo.getPresentacion());
+                int filasAfectadas = prepararSentencia.executeUpdate();
+                respuesta = (filasAfectadas == 1) ?
+                        Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+                conexionBD.close();
+            } catch (SQLException e) {
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
+        }else{
+            respuesta = Constantes.ERROR_CONEXION;
+        }
+        return respuesta;
+    }
 }

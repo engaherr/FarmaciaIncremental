@@ -37,12 +37,12 @@
             <Font name="Microsoft JhengHei Bold" size="18.0" />
          </font>
       </Button>
-      <Button disable="true" layoutX="783.0" layoutY="46.0" mnemonicParsing="false" onAction="#clicModificar" prefHeight="38.0" prefWidth="146.0" style="-fx-background-color: #4e8098;" text="Modificar" textFill="WHITE">
+      <Button fx:id="btnModificar" disable="true" layoutX="783.0" layoutY="46.0" mnemonicParsing="false" onAction="#clicModificar" prefHeight="38.0" prefWidth="146.0" style="-fx-background-color: #4e8098;" text="Modificar" textFill="WHITE">
          <font>
             <Font name="Microsoft JhengHei Bold" size="18.0" />
          </font>
       </Button>
-      <Button disable="true" layoutX="980.0" layoutY="47.0" mnemonicParsing="false" onAction="#clicEliminar" prefHeight="38.0" prefWidth="146.0" style="-fx-background-color: #F25D59;" text="Eliminar" textFill="WHITE">
+      <Button fx:id="btnEliminar" disable="true" layoutX="980.0" layoutY="47.0" mnemonicParsing="false" onAction="#clicEliminar" prefHeight="38.0" prefWidth="146.0" style="-fx-background-color: #F25D59;" text="Eliminar" textFill="WHITE">
          <font>
             <Font name="Microsoft JhengHei Bold" size="18.0" />
          </font>

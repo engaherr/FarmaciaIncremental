@@ -5,8 +5,10 @@
         <group>
             <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/modelo/pojo/Producto.java</file>
             <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/modelo/dao/ProductoDAO.java</file>
+            <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/controladores/FXMLProductoFormularioController.java</file>
             <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/controladores/FXMLMenuPrincipalAdminController.java</file>
             <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/controladores/FXMLInventarioController.java</file>
+            <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/modelo/pojo/Sucursal.java</file>
         </group>
     </open-files>
 </project-private>
