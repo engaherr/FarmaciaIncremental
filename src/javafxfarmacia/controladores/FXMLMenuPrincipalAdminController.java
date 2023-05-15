@@ -20,7 +20,7 @@ import javafxfarmacia.utils.Utilidades;
  *
  * @author kikga
  */
-public class FXMLMenuPrincipalController implements Initializable {
+public class FXMLMenuPrincipalAdminController implements Initializable {
 
     @FXML
     private Label lbTitulo;
@@ -33,7 +33,6 @@ public class FXMLMenuPrincipalController implements Initializable {
         // TODO
     }    
 
-    @FXML
     private void clicVender(ActionEvent event) {
         Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
             "Estamos trabajando para desarrollar esta funcionalidad",
@@ -42,9 +41,11 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     @FXML
     private void clicInventario(ActionEvent event) {
-                Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
-            "Estamos trabajando para desarrollar esta funcionalidad",
-            Alert.AlertType.INFORMATION);
+        Stage escenarioInventario = new Stage();
+        escenarioInventario.setScene(Utilidades.inicializaEscena("vistas/FXMLInventario.fxml"));
+        escenarioInventario.setTitle("Gestión de Inventario");
+        escenarioInventario.initModality(Modality.APPLICATION_MODAL);
+        escenarioInventario.showAndWait();
     }
 
     @FXML
@@ -73,6 +74,10 @@ public class FXMLMenuPrincipalController implements Initializable {
         escenarioBase.setScene(Utilidades.inicializaEscena("vistas/FXMLInicioSesion.fxml"));
         escenarioBase.setTitle("Inicio de Sesión");
         escenarioBase.show();
+    }
+
+    @FXML
+    private void clicReadquisicion(ActionEvent event) {
     }
     
 }

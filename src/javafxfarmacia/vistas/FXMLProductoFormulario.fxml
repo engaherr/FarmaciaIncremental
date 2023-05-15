@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="670.0" prefWidth="1175.0" style="-fx-background-color: #1b1b1b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLProductoFormularioController">
+   <children>
+      <TextField fx:id="tfNombre" layoutX="60.0" layoutY="163.0" prefHeight="24.0" prefWidth="269.0" promptText="ej. Naproxeno 500mg ASDA5566">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="14.0" />
+         </font>
+      </TextField>
+      <Label fx:id="lbTitulo" layoutX="60.0" layoutY="51.0" text="Producto" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="36.0" />
+         </font>
+      </Label>
+      <TextField fx:id="tfFechaVencimiento" layoutX="360.0" layoutY="163.0" prefHeight="24.0" prefWidth="269.0" promptText="dd/mm/yyyy">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="14.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="tfCantidad" layoutX="60.0" layoutY="292.0" prefHeight="24.0" prefWidth="269.0" promptText="ej. 500">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="14.0" />
+         </font>
+      </TextField>
+      <CheckBox fx:id="ckboxVentaControlada" layoutX="443.0" layoutY="534.0" mnemonicParsing="false" text="Venta Controlada" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="18.0" />
+         </font>
+      </CheckBox>
+      <TextField fx:id="tfPresentacion" layoutX="360.0" layoutY="292.0" prefHeight="24.0" prefWidth="269.0" promptText="ej. Tabletas">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="14.0" />
+         </font>
+      </TextField>
+      <ComboBox fx:id="cbSucursal" layoutX="60.0" layoutY="529.0" prefHeight="32.0" prefWidth="237.0" style="-fx-text-size: 13;" />
+      <Button layoutX="556.0" layoutY="611.0" mnemonicParsing="false" onAction="#clicAceptar" style="-fx-background-color: #5fad56;" text="Aceptar" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Bold" size="13.0" />
+         </font>
+      </Button>
+      <Button layoutX="426.0" layoutY="612.0" mnemonicParsing="false" onAction="#clicCancelar" style="-fx-background-color: #F25d58;" text="Cancelar" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Bold" size="13.0" />
+         </font>
+      </Button>
+      <Label layoutX="60.0" layoutY="137.0" text="Nombre del Producto" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="360.0" layoutY="137.0" text="Fecha de Vencimiento (opcional)" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="61.0" layoutY="266.0" text="Cantidad" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="361.0" layoutY="266.0" text="Presentación" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="59.0" layoutY="498.0" text="Sucursal" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="18.0" />
+         </font>
+      </Label>
+      <Button layoutX="371.0" layoutY="421.0" mnemonicParsing="false" onAction="#seleccionarFoto" prefHeight="24.0" prefWidth="259.0" style="-fx-background-color: #4e8098;" text="Seleccionar Foto" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Bold" size="13.0" />
+         </font>
+      </Button>
+      <ImageView fx:id="ivFoto" fitHeight="573.0" fitWidth="462.0" layoutX="677.0" layoutY="61.0" pickOnBounds="true">
+         <image>
+            <Image url="@../recursos/imagenNoSeleccionada.png" />
+         </image></ImageView>
+      <TextField fx:id="tfPrecio" layoutX="60.0" layoutY="422.0" prefHeight="24.0" prefWidth="269.0" promptText="ej. 59.90">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="14.0" />
+         </font>
+      </TextField>
+      <Label layoutX="61.0" layoutY="391.0" text="Precio" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
