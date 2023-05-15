@@ -2,3 +2,6 @@
 /dist/
 /nbproject/
 *.properties
+/nbproject/private/
+/*.class
+/*.jar

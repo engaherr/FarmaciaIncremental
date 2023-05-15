@@ -17,11 +17,12 @@ public class Usuario {
     private String password;
     private String email;
     private int codigoRespuesta;
+    private int tipo;
 
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String username, String password,String email, int codigoRespuesta) {
+    public Usuario(int idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String username, String password,String email, int codigoRespuesta, int tipo) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
@@ -30,6 +31,7 @@ public class Usuario {
         this.password = password;
         this.email = email;
         this.codigoRespuesta = codigoRespuesta;
+        this.tipo = tipo;
     }
 
     public int getIdUsuario() {
@@ -100,5 +102,14 @@ public class Usuario {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
+    }
+    
     
 }

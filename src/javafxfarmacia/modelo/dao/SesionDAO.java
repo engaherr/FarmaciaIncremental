@@ -38,6 +38,7 @@ public class SesionDAO {
                     usuarioVerificado.setEmail(resultado.getString("email"));
                     usuarioVerificado.setUsername(resultado.getString("username"));
                     usuarioVerificado.setPassword(resultado.getString("password"));
+                    usuarioVerificado.setTipo(resultado.getInt("tipoUsuario"));
                 }
                 conexion.close();
             } catch (SQLException ex) {
