@@ -5,3 +5,4 @@
 /nbproject/private/
 /*.class
 /*.jar
+/src/javafxfarmacia/modelo/ConexionBD.java
