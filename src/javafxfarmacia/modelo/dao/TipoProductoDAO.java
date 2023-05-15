@@ -39,7 +39,7 @@ public class TipoProductoDAO {
     Connection conexionBD = ConexionBD.abrirConexionBD();
       if(conexionBD != null){
             try{
-                String consulta = "SELECT idProducto,tipo FROM producto";
+                String consulta = "SELECT idProducto,presentacion FROM producto";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 ResultSet resultado = prepararSentencia.executeQuery();
                 ArrayList <Tipo> tipos = new ArrayList();
@@ -47,7 +47,7 @@ public class TipoProductoDAO {
                 while(resultado.next()){
                     Tipo tipo = new Tipo();
                     tipo.setIdTipo(resultado.getInt("idProducto"));
-                    tipo.setNombre(resultado.getString("tipo"));
+                    tipo.setNombre(resultado.getString("presentacion"));
                     tipos.add(tipo);
                     
                 
