@@ -17,6 +17,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafxfarmacia.modelo.dao.ProductoDAO;
 import javafxfarmacia.modelo.dao.TipoProductoDAO;
 import javafxfarmacia.modelo.pojo.Producto;
@@ -44,7 +45,7 @@ public class FXMLGenerarPedidoController implements Initializable {
     private DatePicker dpDiaEntrega;
 @FXML
 private TextField tfBusqueda;
-
+private ObservableList<Producto> productosBusqueda;
     
     
     @Override
@@ -95,7 +96,7 @@ private void cargarInformacionProducto(int idProducto) {
     @FXML
     private void clicEliminar(ActionEvent event) {
     }
-/*
+
 private void buscarProducto(KeyEvent event) {
         String busqueda = tfBusqueda.getText();
         productosBusqueda = FXCollections.observableArrayList();
@@ -118,6 +119,6 @@ private void buscarProducto(KeyEvent event) {
         }
     }
 
-*/
+
     
 }
