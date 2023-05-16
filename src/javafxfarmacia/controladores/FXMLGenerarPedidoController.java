@@ -43,7 +43,7 @@ public class FXMLGenerarPedidoController implements Initializable {
     @FXML
     private DatePicker dpDiaEntrega;
 @FXML
-private ObservableList<Producto> productosBusqueda;
+private TextField tfBusqueda;
 
     
     
