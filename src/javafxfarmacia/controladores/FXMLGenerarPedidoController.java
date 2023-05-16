@@ -140,6 +140,13 @@ private void clicAgregar(ActionEvent event) {
         carrito.add(productoEnCarrito);
        
         actualizarTablaCarrito();
+        
+    
+        tfCantidad.clear();
+
+
+        cbProducto.getSelectionModel().clearSelection();
+
     }
 }
 
