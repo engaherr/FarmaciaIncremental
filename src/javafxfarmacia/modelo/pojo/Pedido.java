@@ -16,17 +16,47 @@ public class Pedido {
     private String fecha_entrega;
     private int cantidad;
     private String estado;
-    
-    public Pedido() {
+    private float total;
+    private int idProducto;
+
+    public int getIdProducto() {
+        return idProducto;
     }
 
-    public Pedido(int idPedido, String nombre, String fecha_pedido, String fecha_entrega, int cantidad, String estado) {
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
+    }
+
+    public Pedido(int idPedido, String nombre, String fecha_pedido, String fecha_entrega, int cantidad, String estado, float total, int idProducto) {
         this.idPedido = idPedido;
         this.nombre = nombre;
         this.fecha_pedido = fecha_pedido;
         this.fecha_entrega = fecha_entrega;
         this.cantidad = cantidad;
         this.estado = estado;
+        this.total = total;
+        this.idProducto = idProducto;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
+    
+    public Pedido() {
+    }
+
+    public Pedido(int idPedido, String nombre, String fecha_pedido, String fecha_entrega, int cantidad, String estado, float total) {
+        this.idPedido = idPedido;
+        this.nombre = nombre;
+        this.fecha_pedido = fecha_pedido;
+        this.fecha_entrega = fecha_entrega;
+        this.cantidad = cantidad;
+        this.estado = estado;
+        this.total = total;
     }
     
     public int getIdPedido() {

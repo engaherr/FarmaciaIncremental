@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javafxfarmacia.modelo.ConexionBD;
 import javafxfarmacia.modelo.pojo.Pedido;
 import javafxfarmacia.modelo.pojo.PedidoRespuesta;
+import javafxfarmacia.modelo.pojo.Producto;
 import javafxfarmacia.utils.Constantes;
 
 /**
@@ -51,6 +52,28 @@ public class PedidoDAO {
         return respuesta;
     }
      
-     
+      public static int guardarPedido(Pedido pedidoNuevo){
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try {
+                String sentencia = "insert into pedidos(fecha_pedido,fecha_entrega, cantidad,idProducto) values (?,?, ?, ?)";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setString(1, pedidoNuevo.getFecha_pedido());
+                 prepararSentencia.setString(1, pedidoNuevo.getFecha_entrega());
+                prepararSentencia.setInt(6, pedidoNuevo.getCantidad());
+                prepararSentencia.setInt(6, pedidoNuevo.getIdProducto());
+                int filasAfectadas = prepararSentencia.executeUpdate();
+                respuesta = (filasAfectadas == 1) ?
+                        Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+                conexionBD.close();
+            } catch (SQLException e) {
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
+        }else{
+            respuesta = Constantes.ERROR_CONEXION;
+        }
+        return respuesta;
+    }
    
 }
