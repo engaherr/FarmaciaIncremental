@@ -26,7 +26,6 @@
             <Font name="Microsoft JhengHei Light" size="54.0" />
          </font>
       </Label>
-      <ComboBox fx:id="cbTipo" layoutX="33.0" layoutY="104.0" prefHeight="68.0" prefWidth="470.0" promptText="Tipo de producto" style="-fx-font-size: 30;" />
       <ComboBox fx:id="cbProveedor" layoutX="567.0" layoutY="99.0" prefHeight="68.0" prefWidth="557.0" promptText="Proveedor" style="-fx-font-size: 30;" />
       <ComboBox fx:id="cbProducto" layoutX="32.0" layoutY="209.0" prefHeight="68.0" prefWidth="712.0" promptText="Producto" style="-fx-font-size: 30;" />
       <TextField fx:id="tfCantidad" layoutX="821.0" layoutY="209.0" prefHeight="68.0" prefWidth="301.0" promptText="Cantidad por producto">
