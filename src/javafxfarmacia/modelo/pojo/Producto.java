@@ -15,6 +15,15 @@ public class Producto {
     private String nombre;
     private float precio;
     private int cantidad; 
+    private float precioUnitario;
+
+    public float getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setPrecioUnitario(float precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
 
     public int getCantidad() {
         return cantidad;

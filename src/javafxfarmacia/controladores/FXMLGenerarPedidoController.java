@@ -66,7 +66,7 @@ private ObservableList<Producto> carrito;
         carrito = FXCollections.observableArrayList();
   tcCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
     tcProducto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-    tcPrecioUnidad.setCellValueFactory(new PropertyValueFactory<>("precio"));
+    tcPrecioUnidad.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
    
     }
 
@@ -100,33 +100,38 @@ private void cargarInformacionProducto(int idProducto) {
 
 
 
-    @FXML
+@FXML
 private void clicAgregar(ActionEvent event) {
-    // Obtener el producto seleccionado en el ComboBox
     Producto productoSeleccionado = cbProducto.getSelectionModel().getSelectedItem();
-
- int cantidad = Integer.parseInt(tfCantidad.getText());
+    int cantidad = Integer.parseInt(tfCantidad.getText());
     
     // Verificar si se seleccionó un producto y se ingresó una cantidad válida
     if (productoSeleccionado != null && cantidad > 0) {
         // Establecer la cantidad en el producto
         productoSeleccionado.setCantidad(cantidad);
-
+        
+        // Calcular el precio unitario
+        float precioUnitario = productoSeleccionado.getPrecio();
+        productoSeleccionado.setPrecioUnitario(precioUnitario);
+        
         // Agregar el producto al carrito
         carrito.add(productoSeleccionado);
-
+        
         // Actualizar la tabla del carrito
         actualizarTablaCarrito();
     }
 }
 
+
+
 private void actualizarTablaCarrito() {
     // Crear una lista observable a partir de la lista 'carrito'
     ObservableList<Producto> listaCarrito = FXCollections.observableArrayList(carrito);
-    
+
     // Asignar la lista observable a la tabla
     tvCarrito.setItems(listaCarrito);
 }
+
 
 
     @FXML

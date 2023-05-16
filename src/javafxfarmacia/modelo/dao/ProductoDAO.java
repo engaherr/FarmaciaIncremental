@@ -24,7 +24,7 @@ public class ProductoDAO {
     Connection conexionBD = ConexionBD.abrirConexionBD();
       if(conexionBD != null){
             try{
-                String consulta = "SELECT idProducto,nombre FROM producto";
+                String consulta = "SELECT idProducto,nombre,precio FROM producto";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 ResultSet resultado = prepararSentencia.executeQuery();
                 ArrayList <Producto> productos = new ArrayList();
@@ -33,6 +33,7 @@ public class ProductoDAO {
                     Producto producto = new Producto();
                     producto.setIdProducto(resultado.getInt("idProducto"));
                     producto.setNombre(resultado.getString("nombre"));
+                    producto.setPrecio(resultado.getFloat("precio"));
                     productos.add(producto);
                     
                 
