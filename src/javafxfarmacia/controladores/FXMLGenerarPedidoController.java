@@ -16,7 +16,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafxfarmacia.modelo.dao.ProductoDAO;
 import javafxfarmacia.modelo.dao.TipoProductoDAO;
@@ -40,18 +42,31 @@ public class FXMLGenerarPedidoController implements Initializable {
     @FXML
     private TextField tfCantidad;
     @FXML
-    private TableColumn<?, ?> tvCarrito;
+    private TableView<Producto> tvCarrito;
     @FXML
     private DatePicker dpDiaEntrega;
 @FXML
 private TextField tfBusqueda;
 private ObservableList<Producto> productosBusqueda;
+
+private ObservableList<Producto> carrito;
+
+    @FXML
+    private TableColumn<Producto, Integer> tcCantidad;
+    @FXML
+    private TableColumn<Producto, String> tcProducto;
+    @FXML
+    private TableColumn<Producto, Float> tcPrecioUnidad;
     
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        
         cargarInformacionProducto(0);
+        carrito = FXCollections.observableArrayList();
+  tcCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
+    tcProducto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+    tcPrecioUnidad.setCellValueFactory(new PropertyValueFactory<>("precio"));
    
     }
 
@@ -86,8 +101,28 @@ private void cargarInformacionProducto(int idProducto) {
 
 
     @FXML
-    private void clicAgregar(ActionEvent event) {
+private void clicAgregar(ActionEvent event) {
+    // Obtener el producto seleccionado en el ComboBox
+    Producto productoSeleccionado = cbProducto.getSelectionModel().getSelectedItem();
+
+    // Verificar si se seleccionó un producto
+    if (productoSeleccionado != null) {
+        // Agregar el producto al carrito
+        carrito.add(productoSeleccionado);
+
+        // Actualizar la tabla del carrito
+        actualizarTablaCarrito();
     }
+}
+
+private void actualizarTablaCarrito() {
+    // Crear una lista observable a partir de la lista 'carrito'
+    ObservableList<Producto> listaCarrito = FXCollections.observableArrayList(carrito);
+    
+    // Asignar la lista observable a la tabla
+    tvCarrito.setItems(listaCarrito);
+}
+
 
     @FXML
     private void clicGenerar(ActionEvent event) {
