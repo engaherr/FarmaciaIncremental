@@ -47,8 +47,16 @@ public class FXMLGenerarPedidoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cargarInformacionProducto(0);
-       
+        cargarInformacionTipo();
+        cbTipo.valueProperty().addListener(new ChangeListener<Tipo>() {
+            
+            @Override
+            public void changed(ObservableValue<? extends Tipo> observable, Tipo oldValue, Tipo newValue) {
+                if(newValue != null){
+                    cargarInformacionProducto(newValue.getIdTipo());
+                }
+            }
+        });
     }
 
 private void cargarInformacionTipo() {
