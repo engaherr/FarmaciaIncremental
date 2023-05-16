@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -59,6 +60,8 @@ private ObservableList<Producto> carrito;
     private TableColumn<Producto, Float> tcPrecioUnidad;
     @FXML
     private TableColumn<Producto, Float> tcPrecioFinal;
+    @FXML
+    private Label txTotal;
     
     
     @Override
@@ -144,6 +147,17 @@ private void actualizarTablaCarrito() {
 
     // Asignar la lista observable a la tabla
     tvCarrito.setItems(listaCarrito);
+    
+    float sumaPrecios = 0;
+
+// Calcular la suma de los precios finales
+for (Producto producto : listaCarrito) {
+    sumaPrecios += producto.getPrecioFinal();
+}
+
+// Mostrar la suma en el Label txTotal
+txTotal.setText("$"+String.valueOf(sumaPrecios)+" mxn");
+
 }
 
 
