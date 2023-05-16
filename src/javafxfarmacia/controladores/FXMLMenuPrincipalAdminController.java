@@ -33,6 +33,19 @@ public class FXMLMenuPrincipalAdminController implements Initializable {
         // TODO
     }    
 
+<<<<<<< Updated upstream
+=======
+    @FXML
+    private void clicReadquisicion(ActionEvent event) {
+        Stage escenarioReadquisicion = new Stage();
+        escenarioReadquisicion.setScene(Utilidades.inicializaEscena("vistas/FXMLReadquisicion.fxml"));
+        escenarioReadquisicion.setTitle("Readquisicion");
+        escenarioReadquisicion.initModality(Modality.APPLICATION_MODAL);
+        escenarioReadquisicion.show();
+    }
+
+    @FXML
+>>>>>>> Stashed changes
     private void clicVender(ActionEvent event) {
         Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
             "Estamos trabajando para desarrollar esta funcionalidad",
@@ -74,10 +87,14 @@ public class FXMLMenuPrincipalAdminController implements Initializable {
         escenarioBase.setScene(Utilidades.inicializaEscena("vistas/FXMLInicioSesion.fxml"));
         escenarioBase.setTitle("Inicio de Sesión");
         escenarioBase.show();
+<<<<<<< Updated upstream
     }
 
     @FXML
     private void clicReadquisicion(ActionEvent event) {
     }
     
+=======
+    }    
+>>>>>>> Stashed changes
 }
