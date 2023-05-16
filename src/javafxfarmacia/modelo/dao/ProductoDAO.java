@@ -52,4 +52,41 @@ public class ProductoDAO {
         return respuesta;
    
     }
+    
+         public static ProductoRespuesta obtenerInformacionBusqueda(String busqueda){
+    ProductoRespuesta respuesta = new ProductoRespuesta();
+    Connection conexionBD = ConexionBD.abrirConexionBD();
+      if(conexionBD != null){
+            try{
+                String consulta = "SELECT idProducto,nombre FROM producto";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                ArrayList <Producto> productos = new ArrayList();
+                
+                while(resultado.next()){
+                    Producto producto = new Producto();
+                    producto.setIdProducto(resultado.getInt("idProducto"));
+                    producto.setNombre(resultado.getString("nombre"));
+                    productos.add(producto);
+                    
+                
+                }
+                respuesta.setProductos(productos);
+                respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
+
+                conexionBD.close();
+          
+                
+            }catch(SQLException ex){
+                respuesta.setCodigoRespuesta(Constantes.ERROR_CONSULTA);
+            }
+        }else{
+            respuesta.setCodigoRespuesta(Constantes.ERROR_CONEXION);
+        }
+        return respuesta;
+   
+    }
+    
+    
+    
 }

@@ -44,7 +44,11 @@ public class FXMLGenerarPedidoController implements Initializable {
     private TableColumn<?, ?> tvCarrito;
     @FXML
     private DatePicker dpDiaEntrega;
+@FXML
+private ObservableList<Producto> productosBusqueda;
 
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarInformacionTipo();
@@ -124,7 +128,29 @@ private void cargarInformacionProducto(int idProducto) {
     @FXML
     private void clicEliminar(ActionEvent event) {
     }
+/*
+private void buscarProducto(KeyEvent event) {
+        String busqueda = tfBusqueda.getText();
+        productosBusqueda = FXCollections.observableArrayList();
+        ProductoRespuesta respuestaBD = ProductoDAO.obtenerInformacionBusqueda(busqueda);
+        switch(respuestaBD.getCodigoRespuesta()){
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple("Sin conexion", 
+                        "No se pudo conectar con la base de datos. Intente de nuevo o hágalo más tarde",
+                        Alert.AlertType.ERROR);
+                break;
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error al cargar los datos", 
+                        "Hubo un error al cargar la información por favor inténtelo de nuevo más tarde",
+                        Alert.AlertType.WARNING);
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                productosBusqueda.addAll(respuestaBD.getProductos());
+                cbProducto.setItems(FXCollections.observableList(productosBusqueda));
+                break;
+        }
+    }
 
-
-
+*/
+    
 }
