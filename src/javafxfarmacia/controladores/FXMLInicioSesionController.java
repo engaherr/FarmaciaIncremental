@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafxfarmacia.modelo.dao.SesionDAO;
 import javafxfarmacia.modelo.pojo.Usuario;
@@ -67,10 +68,11 @@ public class FXMLInicioSesionController implements Initializable {
         }
     }
     private void irPantallaPrincipal(){
-        Stage escenarioBase = (Stage) tfUsuario.getScene().getWindow();
-        escenarioBase.setScene(Utilidades.inicializaEscena("vistas/FXMLMenuPrincipalAdmin.fxml"));
-        escenarioBase.setTitle("Menú Principal");
-        escenarioBase.show();
+         Stage escenarioReadquisicion = new Stage();
+        escenarioReadquisicion.setScene(Utilidades.inicializaEscena("vistas/FXMLReadquisicion.fxml"));
+        escenarioReadquisicion.setTitle("Readquisicion");
+        escenarioReadquisicion.initModality(Modality.APPLICATION_MODAL);
+        escenarioReadquisicion.show();
     }
     
     private void validarCredencialesUsuario(String usuario, String password){
