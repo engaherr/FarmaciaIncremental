@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -62,6 +63,8 @@ private ObservableList<Producto> carrito;
     private TableColumn<Producto, Float> tcPrecioFinal;
     @FXML
     private Label txTotal;
+    @FXML
+    private Button btnEliminar;
     
     
     @Override
@@ -73,6 +76,14 @@ private ObservableList<Producto> carrito;
     tcProducto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
     tcPrecioUnidad.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
     tcPrecioFinal.setCellValueFactory(new PropertyValueFactory<>("precioFinal"));
+    btnEliminar.setDisable(true);
+    tvCarrito.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Producto>() {
+    @Override
+    public void changed(ObservableValue<? extends Producto> observable, Producto oldValue, Producto newValue) {
+        // Habilita el botón "Eliminar" solo si hay una fila seleccionada
+        btnEliminar.setDisable(newValue == null);
+    }
+});
 
    
     }
@@ -169,8 +180,20 @@ txTotal.setText("$"+String.valueOf(sumaPrecios)+" mxn");
 
     @FXML
     private void clicEliminar(ActionEvent event) {
-    }
+         Producto productoSeleccionado = tvCarrito.getSelectionModel().getSelectedItem();
+    if (productoSeleccionado != null) {
+        // Elimina el producto seleccionado de la tabla
+        tvCarrito.getItems().remove(productoSeleccionado);
 
+        // Elimina el producto seleccionado del listado 'carrito'
+        carrito.remove(productoSeleccionado);
+        
+        // Deshabilita el botón "Eliminar" después de la eliminación
+        btnEliminar.setDisable(true);
+        }
+    }
+    
+    
 private void buscarProducto(KeyEvent event) {
         String busqueda = tfBusqueda.getText();
         productosBusqueda = FXCollections.observableArrayList();
