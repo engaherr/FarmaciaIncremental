@@ -1,43 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0" style="-fx-background-color: #2e2f40;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLMenuPrincipalController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0" style="-fx-background-color: #2e2f40;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLMenuPrincipalaController">
    <children>
-      <Label fx:id="lbTitulo" layoutX="180.0" layoutY="59.0" prefHeight="51.0" prefWidth="341.0" text="¿Qué desea hacer?" textFill="#fffdfd">
+      <Label fx:id="lbTitulo" layoutX="154.0" layoutY="41.0" prefHeight="51.0" prefWidth="392.0" text="Bienvenido, encargado " textFill="#fffdfd">
          <font>
             <Font name="Microsoft JhengHei Light" size="36.0" />
          </font>
       </Label>
-      <Button layoutX="109.0" layoutY="196.0" mnemonicParsing="false" onAction="#clicVender" prefHeight="50.0" prefWidth="192.0" style="-fx-background-color: #f25d59;" text="Vender" textFill="WHITE">
-         <font>
-            <Font size="20.0" />
-         </font>
-         <effect>
-            <DropShadow color="#a49595" height="30.0" radius="14.5" width="30.0" />
-         </effect>
-      </Button>
-      <Button layoutX="388.0" layoutY="196.0" mnemonicParsing="false" onAction="#clicInventario" prefHeight="50.0" prefWidth="192.0" style="-fx-background-color: #f25d59;" text="Inventario" textFill="WHITE">
-         <font>
-            <Font size="20.0" />
-         </font>
-         <effect>
-            <DropShadow color="#a49595" height="30.0" radius="14.5" width="30.0" />
-         </effect>
-      </Button>
-      <Button layoutX="109.0" layoutY="294.0" mnemonicParsing="false" onAction="#clicAbasto" prefHeight="50.0" prefWidth="192.0" style="-fx-background-color: #f25d59;" text="Abastecer " textFill="WHITE">
-         <font>
-            <Font size="20.0" />
-         </font>
-         <effect>
-            <DropShadow color="#a49595" height="30.0" radius="14.5" width="30.0" />
-         </effect>
-      </Button>
-      <Button layoutX="388.0" layoutY="294.0" mnemonicParsing="false" onAction="#clicPromociones" prefHeight="50.0" prefWidth="192.0" style="-fx-background-color: #f25d59;" text="Promociones" textFill="WHITE">
+      <Button layoutX="254.0" layoutY="366.0" mnemonicParsing="false" onAction="#clicPromociones" prefHeight="50.0" prefWidth="192.0" style="-fx-background-color: #f25d59;" text="Promociones" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>
@@ -50,5 +27,10 @@
             <Glow level="0.5" />
          </effect>
       </Button>
+      <ImageView fitHeight="190.0" fitWidth="289.0" layoutX="247.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/WhatsApp%20Image%202023-05-05%20at%208.19.43%20AM.jpeg" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
