@@ -2,6 +2,7 @@ package javafxfarmacia.controladores;
 
 import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.ResourceBundle;
@@ -37,6 +38,8 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.control.ListView;
 import javafx.util.StringConverter;
+import javafxfarmacia.modelo.dao.PedidoDAO;
+import javafxfarmacia.modelo.pojo.Pedido;
 
 
 public class FXMLGenerarPedidoController implements Initializable {
@@ -180,7 +183,46 @@ private void actualizarTablaCarrito() {
 
 @FXML
 private void clicGenerar(ActionEvent event) {
+     // Obtener la fecha de entrega seleccionada
+    LocalDate fechaEntrega = dpDiaEntrega.getValue();
+    
+    // Verificar que se haya seleccionado una fecha de entrega
+    if (fechaEntrega == null) {
+        Utilidades.mostrarDialogoSimple("Error", "Por favor, seleccione una fecha de entrega", Alert.AlertType.ERROR);
+        return;
+    }
+    
+    // Crear el objeto Pedido con la fecha de pedido y fecha de entrega
+    Pedido pedidoNuevo = new Pedido();
+    pedidoNuevo.setFecha_pedido(Utilidades.obtenerFechaActual());
+    pedidoNuevo.setFecha_entrega(fechaEntrega.toString());
+    
+    // Obtener los productos del carrito
+    ObservableList<Producto> productosCarrito = tvCarrito.getItems();
+    
+    // Verificar que el carrito no esté vacío
+    if (productosCarrito.isEmpty()) {
+        Utilidades.mostrarDialogoSimple("Error", "El carrito está vacío", Alert.AlertType.ERROR);
+        return;
+    }
+    
+    // Guardar cada producto del carrito en la base de datos
+    for (Producto producto : productosCarrito) {
+        pedidoNuevo.setCantidad(producto.getCantidad());
+        pedidoNuevo.setIdProducto(producto.getIdProducto());
+        
+        registrarPedido(pedidoNuevo);
+    }
+    
+    // Limpiar el carrito
+    carrito.clear();
+    actualizarTablaCarrito();
+    
+    // Mostrar mensaje de éxito
+    Utilidades.mostrarDialogoSimple("Pedido Generado", "El pedido ha sido generado exitosamente", Alert.AlertType.INFORMATION);
 }
+    
+
 
 @FXML
 private void clicEliminar(ActionEvent event) {
@@ -260,5 +302,26 @@ public static <T> void makeComboBoxSearchable(ComboBox<T> comboBox, Function<T, 
         });
     });
 }
+
+ private void registrarPedido(Pedido pedidoNuevo){
+       int codigoRespuesta = PedidoDAO.guardarPedido(pedidoNuevo);
+        switch(codigoRespuesta){
+            case Constantes.ERROR_CONEXION:
+                    Utilidades.mostrarDialogoSimple("Error de conexión",
+                            "Por el momento no hay conexión, por favor inténtelo más tarde"
+                            , Alert.AlertType.ERROR);
+                break;
+            case Constantes.ERROR_CONSULTA:
+                    Utilidades.mostrarDialogoSimple("Error de consulta", 
+                            "Hubo un error al cargar la información por favor intentélo de nuevo más tarde",
+                            Alert.AlertType.INFORMATION);
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                    Utilidades.mostrarDialogoSimple("Producto Registrado",
+                            "El producto fue registrado exitosamente", 
+                            Alert.AlertType.INFORMATION);
+                break;
+        }
+    }
 
 }

@@ -5,6 +5,8 @@
 package javafxfarmacia.utils;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,6 +24,12 @@ public class Utilidades {
         alertaSimple.setContentText(mensaje);
         alertaSimple.setHeaderText(null);
         alertaSimple.showAndWait();
+    }
+    
+    public static String obtenerFechaActual() {
+        LocalDate fechaActual = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return fechaActual.format(formatter);
     }
     
     public static Scene inicializaEscena(String ruta){
