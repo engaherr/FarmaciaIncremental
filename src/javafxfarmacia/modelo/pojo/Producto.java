@@ -16,6 +16,15 @@ public class Producto {
     private float precio;
     private int cantidad; 
     private float precioUnitario;
+    private float precioFinal;
+
+    public float getPrecioFinal() {
+        return precioFinal;
+    }
+
+    public void setPrecioFinal(float precioFinal) {
+        this.precioFinal = precioFinal;
+    }
 
     public float getPrecioUnitario() {
         return precioUnitario;

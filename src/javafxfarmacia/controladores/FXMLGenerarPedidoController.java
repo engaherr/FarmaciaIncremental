@@ -57,6 +57,8 @@ private ObservableList<Producto> carrito;
     private TableColumn<Producto, String> tcProducto;
     @FXML
     private TableColumn<Producto, Float> tcPrecioUnidad;
+    @FXML
+    private TableColumn<Producto, Float> tcPrecioFinal;
     
     
     @Override
@@ -67,6 +69,8 @@ private ObservableList<Producto> carrito;
   tcCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
     tcProducto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
     tcPrecioUnidad.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
+    tcPrecioFinal.setCellValueFactory(new PropertyValueFactory<>("precioFinal"));
+
    
     }
 
@@ -104,23 +108,27 @@ private void cargarInformacionProducto(int idProducto) {
 private void clicAgregar(ActionEvent event) {
     Producto productoSeleccionado = cbProducto.getSelectionModel().getSelectedItem();
     int cantidad = Integer.parseInt(tfCantidad.getText());
-    
-    // Verificar si se seleccionó un producto y se ingresó una cantidad válida
+   
     if (productoSeleccionado != null && cantidad > 0) {
-        // Establecer la cantidad en el producto
-        productoSeleccionado.setCantidad(cantidad);
+        // Crear una nueva instancia de Producto con los mismos datos
+        Producto productoEnCarrito = new Producto();
+        productoEnCarrito.setIdProducto(productoSeleccionado.getIdProducto());
+        productoEnCarrito.setNombre(productoSeleccionado.getNombre());
+        productoEnCarrito.setPrecio(productoSeleccionado.getPrecio());
+        productoEnCarrito.setCantidad(cantidad);
         
-        // Calcular el precio unitario
+        // Calcular el precio unitario y el precio final
         float precioUnitario = productoSeleccionado.getPrecio();
-        productoSeleccionado.setPrecioUnitario(precioUnitario);
+        float precioFinal = precioUnitario * cantidad;
+        productoEnCarrito.setPrecioUnitario(precioUnitario);
+        productoEnCarrito.setPrecioFinal(precioFinal);
         
-        // Agregar el producto al carrito
-        carrito.add(productoSeleccionado);
-        
-        // Actualizar la tabla del carrito
+        carrito.add(productoEnCarrito);
+       
         actualizarTablaCarrito();
     }
 }
+
 
 
 
@@ -128,9 +136,16 @@ private void actualizarTablaCarrito() {
     // Crear una lista observable a partir de la lista 'carrito'
     ObservableList<Producto> listaCarrito = FXCollections.observableArrayList(carrito);
 
+    // Calcular el precio final para cada producto y actualizar la lista 'carrito'
+    for (Producto producto : listaCarrito) {
+        float precioFinal = producto.getPrecioUnitario() * producto.getCantidad();
+        producto.setPrecioFinal(precioFinal);
+    }
+
     // Asignar la lista observable a la tabla
     tvCarrito.setItems(listaCarrito);
 }
+
 
 
 
