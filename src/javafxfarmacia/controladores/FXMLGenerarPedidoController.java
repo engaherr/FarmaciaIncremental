@@ -105,8 +105,13 @@ private void clicAgregar(ActionEvent event) {
     // Obtener el producto seleccionado en el ComboBox
     Producto productoSeleccionado = cbProducto.getSelectionModel().getSelectedItem();
 
-    // Verificar si se seleccionó un producto
-    if (productoSeleccionado != null) {
+ int cantidad = Integer.parseInt(tfCantidad.getText());
+    
+    // Verificar si se seleccionó un producto y se ingresó una cantidad válida
+    if (productoSeleccionado != null && cantidad > 0) {
+        // Establecer la cantidad en el producto
+        productoSeleccionado.setCantidad(cantidad);
+
         // Agregar el producto al carrito
         carrito.add(productoSeleccionado);
 
