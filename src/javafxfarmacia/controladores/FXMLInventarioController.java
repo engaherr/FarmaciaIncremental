@@ -8,6 +8,8 @@ import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -77,10 +79,12 @@ public class FXMLInventarioController implements Initializable {
         cargarInformacionTabla();
         
         tvInventario.setOnMouseClicked(event -> {
+            Producto productoSeleccionado = tvInventario.getSelectionModel().getSelectedItem();
             if(event.getClickCount() == 2){
-                mostrarDetalles();
+                if(productoSeleccionado != null){
+                    mostrarDetalles(productoSeleccionado);
+                }
             } else if(event.getClickCount() == 1){
-                Producto productoSeleccionado = tvInventario.getSelectionModel().getSelectedItem();
                 if(productoSeleccionado != null){
                     btnModificar.setDisable(false);
                     btnEliminar.setDisable(false);
@@ -95,7 +99,8 @@ public class FXMLInventarioController implements Initializable {
         colPrecio.setCellValueFactory(new PropertyValueFactory("precio"));
         colProducto.setCellValueFactory(new PropertyValueFactory("nombre"));
         colSucursal.setCellValueFactory(new PropertyValueFactory("nombreSucursal"));
-        colControlada.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Producto, Boolean>, ObservableValue<Boolean>>() {
+        colControlada.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Producto, 
+                Boolean>, ObservableValue<Boolean>>() {
             @Override
             public ObservableValue<Boolean> call(TableColumn.CellDataFeatures<Producto, Boolean> p) {
                 return new SimpleBooleanProperty(p.getValue().isVentaControlada());
@@ -115,11 +120,13 @@ public class FXMLInventarioController implements Initializable {
         colPresentacion.setCellValueFactory(new PropertyValueFactory("presentacion"));
         tvInventario.widthProperty().addListener(new ChangeListener<Number>(){
             @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, 
+                    Number newValue) {
                 TableHeaderRow header = (TableHeaderRow) tvInventario.lookup("TableHeaderRow");
                 header.reorderingProperty().addListener(new ChangeListener<Boolean>(){
                     @Override
-                    public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    public void changed(ObservableValue<? extends Boolean> observable,
+                            Boolean oldValue, Boolean newValue) {
                         header.setReordering(false);
                     }
                 });
@@ -209,11 +216,21 @@ public class FXMLInventarioController implements Initializable {
         }
     }
 
-    private void mostrarDetalles() {
-        Stage escenarioDetalles = new Stage();
-        escenarioDetalles.setScene(Utilidades.inicializaEscena("vistas/FXMLMenuPrincipal.fxml"));
-        escenarioDetalles.setTitle("Detalles de Producto");
-        escenarioDetalles.initModality(Modality.APPLICATION_MODAL);
-        escenarioDetalles.showAndWait();
+    private void mostrarDetalles(Producto productoSeleccion) {
+        try {
+            FXMLLoader accesoControlador = new FXMLLoader(
+                    JavaFXFarmacia.class.getResource("vistas/FXMLProductoDetalles.fxml"));
+            Parent vista = accesoControlador.load();
+            FXMLProductoDetallesController detalles = accesoControlador.getController();
+            detalles.inicializarInformacionDetalles(productoSeleccion);
+            
+            Stage escenarioDetalles = new Stage();
+            escenarioDetalles.setScene(new Scene(vista));
+            escenarioDetalles.setTitle("Detalles de Producto");
+            escenarioDetalles.initModality(Modality.APPLICATION_MODAL);
+            escenarioDetalles.showAndWait();
+        } catch (IOException ex) {
+            ex.getMessage();
+        }
     }
 }

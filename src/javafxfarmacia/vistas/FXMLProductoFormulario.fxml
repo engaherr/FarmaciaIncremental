@@ -83,10 +83,6 @@
             <Font name="Microsoft JhengHei Bold" size="13.0" />
          </font>
       </Button>
-      <ImageView fx:id="ivFoto" fitHeight="573.0" fitWidth="462.0" layoutX="677.0" layoutY="61.0" pickOnBounds="true">
-         <image>
-            <Image url="@../recursos/imagenNoSeleccionada.png" />
-         </image></ImageView>
       <TextField fx:id="tfPrecio" layoutX="60.0" layoutY="422.0" prefHeight="24.0" prefWidth="269.0" promptText="ej. 59.90">
          <font>
             <Font name="Microsoft JhengHei Light" size="14.0" />
@@ -97,5 +93,14 @@
             <Font name="Microsoft JhengHei Light" size="18.0" />
          </font>
       </Label>
+      <Pane layoutX="670.0" layoutY="40.0" prefHeight="605.0" prefWidth="479.0">
+         <children>
+            <ImageView fx:id="ivFoto" fitHeight="573.0" fitWidth="462.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../recursos/imagenNoSeleccionada.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

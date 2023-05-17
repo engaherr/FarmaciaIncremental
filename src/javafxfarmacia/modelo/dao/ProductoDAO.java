@@ -26,7 +26,7 @@ public class ProductoDAO {
         if(conexionBD != null){
             try {
                 String consulta = "select idProducto, nombre, fechaVencimiento, precio, ventaControlada, sucursal_idSucursal, \n" +
-                                "cantidad, presentacion, nombreSucursal \n" +
+                                "cantidad, presentacion, nombreSucursal, foto \n" +
                                 "from producto \n" +
                                 "inner join sucursal on idSucursal = sucursal_idSucursal order by fechaVencimiento asc;";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
@@ -43,6 +43,7 @@ public class ProductoDAO {
                     producto.setNombreSucursal(resultado.getString("nombreSucursal"));
                     producto.setCantidad(resultado.getInt("cantidad"));
                     producto.setPresentacion(resultado.getString("presentacion"));
+                    producto.setFoto(resultado.getBytes("foto"));
                     productosConsulta.add(producto);
                 }
                 respuesta.setProductos(productosConsulta);
@@ -100,8 +101,8 @@ public class ProductoDAO {
         if(conexionBD != null){
             try {
                 String sentencia = "insert into producto(nombre, fechaVencimiento, precio, "
-                        + "ventaControlada, sucursal_idSucursal, cantidad, presentacion)"
-                        + " values (?, ?, ?, ?, ?, ?, ?)";
+                        + "ventaControlada, sucursal_idSucursal, cantidad, presentacion, foto)"
+                        + " values (?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
                 prepararSentencia.setString(1, productoNuevo.getNombre());
                 prepararSentencia.setString(2, productoNuevo.getFechaVencimiento());
@@ -110,6 +111,7 @@ public class ProductoDAO {
                 prepararSentencia.setInt(5, productoNuevo.getIdSucursal());
                 prepararSentencia.setInt(6, productoNuevo.getCantidad());
                 prepararSentencia.setString(7, productoNuevo.getPresentacion());
+                prepararSentencia.setBytes(8, productoNuevo.getFoto());
                 int filasAfectadas = prepararSentencia.executeUpdate();
                 respuesta = (filasAfectadas == 1) ?
                         Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;

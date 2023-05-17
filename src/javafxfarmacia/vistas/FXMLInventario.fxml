@@ -23,8 +23,8 @@
           <TableColumn fx:id="colFechaVencimiento" editable="false" prefWidth="172.0" style="-fx-font-size: 16px;" text="Fecha de Vencimiento" />
             <TableColumn fx:id="colSucursal" editable="false" prefWidth="150.0" resizable="false" style="-fx-font-size: 16px;" text="Sucursal" />
             <TableColumn fx:id="colCantidad" editable="false" prefWidth="74.0" resizable="false" sortable="false" style="-fx-font-size: 16px;" text="Cantidad" />
-            <TableColumn fx:id="colPrecio" editable="false" prefWidth="170.0" resizable="false" style="-fx-font-size: 16px;" text="Precio" />
-            <TableColumn fx:id="colControlada" editable="false" prefWidth="101.0" resizable="false" sortable="false" style="-fx-font-size: 16px;" text="Controlada" />
+            <TableColumn fx:id="colPrecio" editable="false" prefWidth="130.0" resizable="false" style="-fx-font-size: 16px;" text="Precio" />
+            <TableColumn fx:id="colControlada" editable="false" prefWidth="141.0" resizable="false" sortable="false" style="-fx-font-size: 16px;" text="Controlada" />
         </columns>
       </TableView>
       <Label layoutX="158.0" layoutY="43.0" prefWidth="462.0" text="Gestión de Inventario" textFill="#fffdfd">

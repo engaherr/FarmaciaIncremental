@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<HBox prefHeight="470.0" prefWidth="700.0" style="-fx-background-color: #1b1b1b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLProductoDetallesController">
+   <children>
+      <Pane prefHeight="470.0" prefWidth="345.0" style="-fx-background-color: white;">
+         <children>
+            <ImageView fx:id="ivFotoProducto" fitHeight="430.0" fitWidth="300.0" layoutX="23.0" layoutY="20.0" pickOnBounds="true">
+               <viewport>
+                  <Rectangle2D minX="20.0" minY="20.0" />
+               </viewport>
+               <image>
+                  <Image url="@../recursos/imagenNoSeleccionada.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane prefHeight="470.0" prefWidth="345.0">
+         <children>
+            <Label fx:id="lbProducto" layoutX="34.0" layoutY="27.0" prefHeight="86.0" prefWidth="277.0" text="Ibuprofeno 600mg 23445DCA" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Microsoft JhengHei Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbHdrVencimiento" layoutX="34.0" layoutY="390.0" prefHeight="45.0" prefWidth="87.0" text="Vence el: " textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Microsoft JhengHei Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="185.0" prefHeight="45.0" prefWidth="87.0" text="Cantidad:" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Microsoft JhengHei Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbHdrPresentacion" layoutX="34.0" layoutY="324.0" prefHeight="45.0" prefWidth="122.0" text="Presentación: " textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Microsoft JhengHei Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="254.0" prefHeight="45.0" prefWidth="81.0" text="Precio: " textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Microsoft JhengHei Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="123.0" prefHeight="45.0" prefWidth="87.0" text="Sucursal: " textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Microsoft JhengHei Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbSucursal" layoutX="119.0" layoutY="125.0" prefHeight="45.0" prefWidth="214.0" text="Xalapa Centro" textFill="WHITE">
+               <font>
+                  <Font name="Microsoft JhengHei" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbCantidad" layoutX="126.0" layoutY="186.0" prefHeight="45.0" prefWidth="214.0" text="56" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Microsoft JhengHei" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbPrecio" layoutX="106.0" layoutY="256.0" prefHeight="45.0" prefWidth="222.0" text="\$129.30" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Microsoft JhengHei" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbPresentacion" layoutX="160.0" layoutY="326.0" prefHeight="45.0" prefWidth="171.0" text="Tabletas" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Microsoft JhengHei" size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbFechaVencimiento" layoutX="120.0" layoutY="392.0" prefHeight="45.0" prefWidth="222.0" text="2025-09-12" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Microsoft JhengHei" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</HBox>
