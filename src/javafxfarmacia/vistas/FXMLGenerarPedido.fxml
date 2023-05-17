@@ -79,5 +79,15 @@
             <Font name="Microsoft JhengHei Light" size="54.0" />
          </font>
       </Label>
+      <RadioButton fx:id="rbInternos" layoutX="623.0" layoutY="39.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="243.0" text="Proveedores internos" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </RadioButton>
+      <RadioButton fx:id="rbExternos" layoutX="901.0" layoutY="39.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="243.0" text="Proveedores externos" textFill="WHITE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </RadioButton>
    </children>
 </AnchorPane>

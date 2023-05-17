@@ -76,4 +76,59 @@ public class PedidoDAO {
     return respuesta;
 }
 
+         public static PedidoRespuesta obtenerProveedoresInternos() {
+    PedidoRespuesta respuesta = new PedidoRespuesta();
+    respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
+    Connection conexionBD = ConexionBD.abrirConexionBD();
+    if (conexionBD != null) {
+        try {
+            String consulta = "select idSucursal, nombreSucursal from sucursal;";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            ResultSet resultado = prepararSentencia.executeQuery();
+            ArrayList<Pedido> pedidoConsulta = new ArrayList<>();
+            while (resultado.next()) {
+                Pedido pedido = new Pedido();
+                pedido.setIdPedido(resultado.getInt("idSucursal")); 
+                pedido.setNombre(resultado.getString("nombreSucursal"));
+                pedidoConsulta.add(pedido);
+            }
+            respuesta.setPedidos(pedidoConsulta);
+            conexionBD.close();
+        } catch (SQLException e) {
+            respuesta.setCodigoRespuesta(Constantes.ERROR_CONSULTA);
+        }
+    } else {
+        respuesta.setCodigoRespuesta(Constantes.ERROR_CONEXION);
+    }
+    return respuesta;
+}
+
+  
+             public static PedidoRespuesta obtenerProveedoresExternos() {
+    PedidoRespuesta respuesta = new PedidoRespuesta();
+    respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
+    Connection conexionBD = ConexionBD.abrirConexionBD();
+    if (conexionBD != null) {
+        try {
+            String consulta = "select idProveedor, nombre from proveedor;";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+            ResultSet resultado = prepararSentencia.executeQuery();
+            ArrayList<Pedido> pedidoConsulta = new ArrayList<>();
+            while (resultado.next()) {
+                Pedido pedido = new Pedido();
+                pedido.setIdPedido(resultado.getInt("idProveedor")); 
+                pedido.setNombre(resultado.getString("nombre"));
+                pedidoConsulta.add(pedido);
+            }
+            respuesta.setPedidos(pedidoConsulta);
+            conexionBD.close();
+        } catch (SQLException e) {
+            respuesta.setCodigoRespuesta(Constantes.ERROR_CONSULTA);
+        }
+    } else {
+        respuesta.setCodigoRespuesta(Constantes.ERROR_CONEXION);
+    }
+    return respuesta;
+}
+         
 }

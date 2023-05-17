@@ -37,16 +37,18 @@ import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
 import javafx.util.StringConverter;
 import javafxfarmacia.modelo.dao.PedidoDAO;
 import javafxfarmacia.modelo.pojo.Pedido;
+import javafxfarmacia.modelo.pojo.PedidoRespuesta;
 
 
 public class FXMLGenerarPedidoController implements Initializable {
 
     private ObservableList<Tipo> tipos;
     @FXML
-    private ComboBox<?> cbProveedor;
+    private ComboBox<Pedido> cbProveedor;
     @FXML
     private ComboBox<Producto> cbProducto;
 
@@ -75,11 +77,25 @@ public class FXMLGenerarPedidoController implements Initializable {
     private Label txTotal;
     @FXML
     private Button btnEliminar;
-
+    @FXML
+    private RadioButton rbInternos;
+    @FXML
+    private RadioButton rbExternos;
+    private ObservableList<Pedido> proveedoresInternos;
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        proveedoresInternos = FXCollections.observableArrayList();
+    // Obtener los proveedores internos utilizando PedidoDAO
+    PedidoRespuesta respuesta = PedidoDAO.obtenerProveedoresInternos();
+    if (respuesta.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
+        ArrayList<Pedido> proveedoresInternosList = respuesta.getPedidos();
+        proveedoresInternos.addAll(proveedoresInternosList);
+    } else {
+Utilidades.mostrarDialogoSimple("Error de conexión", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
+    }
         makeComboBoxSearchable(cbProducto, Producto::toString);
-  
         cargarInformacionProducto(0);
         carrito = FXCollections.observableArrayList();
         tcCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
@@ -95,26 +111,36 @@ public class FXMLGenerarPedidoController implements Initializable {
             }
         });
 
+        cbProveedor.setConverter(new StringConverter<Pedido>() {
+    @Override
+    public String toString(Pedido pedido) {
+        return pedido != null ? pedido.getNombre() : "";
+    }
+
+    @Override
+    public Pedido fromString(String string) {
+        // Implementación necesaria solo si se requiere la edición del ComboBox
+        return null;
+    }
+    
+    });
         // Agrega el listener para la búsqueda del producto
         tfBusqueda.setOnKeyReleased(this::buscarProducto);
+        cbProveedor.setItems(proveedoresInternos);
+
     }
 
     private void cargarInformacionProducto(int idProducto) {
         productos = FXCollections.observableArrayList();
         ProductoRespuesta productosBD = ProductoDAO.obtenerInformacionProducto(idProducto);
         switch (productosBD.getCodigoRespuesta
-
 ()) {
 case Constantes.ERROR_CONEXION:
 Utilidades.mostrarDialogoSimple("Error de conexión", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
 break;
-
-
-
         case Constantes.ERROR_CONSULTA:
             Utilidades.mostrarDialogoSimple("Error de consulta", "Por el momento no se puede mostrar la información", Alert.AlertType.WARNING);
             break;
-
         case Constantes.OPERACION_EXITOSA:
             ArrayList<Producto> productosOriginales = productosBD.getProductos();
             HashSet<String> nombresProductos = new HashSet<>();

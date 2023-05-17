@@ -18,6 +18,49 @@ public class Pedido {
     private String estado;
     private float total;
     private int idProducto;
+    private String idProveedor;
+    private String idSucursal;
+
+    public String getIdSucursal() {
+        return idSucursal;
+    }
+
+    public void setIdSucursal(String idSucursal) {
+        this.idSucursal = idSucursal;
+    }
+
+    public Pedido(int idPedido, String nombre, String fecha_pedido, String fecha_entrega, int cantidad, String estado, float total, int idProducto, String idProveedor, String idSucursal) {
+        this.idPedido = idPedido;
+        this.nombre = nombre;
+        this.fecha_pedido = fecha_pedido;
+        this.fecha_entrega = fecha_entrega;
+        this.cantidad = cantidad;
+        this.estado = estado;
+        this.total = total;
+        this.idProducto = idProducto;
+        this.idProveedor = idProveedor;
+        this.idSucursal = idSucursal;
+    }
+
+    public String getIdProveedor() {
+        return idProveedor;
+    }
+
+    public void setIdProveedor(String idProveedor) {
+        this.idProveedor = idProveedor;
+    }
+
+    public Pedido(int idPedido, String nombre, String fecha_pedido, String fecha_entrega, int cantidad, String estado, float total, int idProducto, String idProveedor) {
+        this.idPedido = idPedido;
+        this.nombre = nombre;
+        this.fecha_pedido = fecha_pedido;
+        this.fecha_entrega = fecha_entrega;
+        this.cantidad = cantidad;
+        this.estado = estado;
+        this.total = total;
+        this.idProducto = idProducto;
+        this.idProveedor = idProveedor;
+    }
 
     public int getIdProducto() {
         return idProducto;
