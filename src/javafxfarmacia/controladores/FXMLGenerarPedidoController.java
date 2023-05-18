@@ -39,6 +39,8 @@ import javafx.collections.transformation.SortedList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafxfarmacia.modelo.dao.PedidoDAO;
 import javafxfarmacia.modelo.dao.PedidoDAO.TipoProveedor;
@@ -417,6 +419,13 @@ public static <T> void makeComboBoxSearchable(ComboBox<T> comboBox, Function<T, 
             }
     }
 
+    @FXML
+    private void clicRegresar(MouseEvent event) {
+   
+       Stage escenarioPrincipal = (Stage) cbProducto.getScene().getWindow();
+        escenarioPrincipal.close();
     }
+    
+}
 
 

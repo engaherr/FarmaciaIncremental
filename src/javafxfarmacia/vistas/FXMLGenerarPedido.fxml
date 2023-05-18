@@ -16,7 +16,7 @@
             <Image url="@../recursos/fondoDegradado1.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="65.0" fitWidth="29.0" layoutX="42.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="65.0" fitWidth="29.0" layoutX="42.0" layoutY="20.0" onMouseClicked="#clicRegresar" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../recursos/vectorRegresar.png" />
          </image>
@@ -41,13 +41,13 @@
             <TableColumn fx:id="tcPrecioFinal" prefWidth="140.66668701171875" text="Precio final" />
         </columns>
       </TableView>
-      <DatePicker fx:id="dpDiaEntrega" layoutX="825.0" layoutY="316.0" prefHeight="68.0" prefWidth="301.0" promptText="Día de entrega" style="-fx-font-size: 30;" />
-      <Button layoutX="825.0" layoutY="412.0" mnemonicParsing="false" onAction="#clicAgregar" prefHeight="24.0" prefWidth="301.0" style="-fx-background-color: #4E8098;" text="Agregar a carrito" textFill="WHITE">
+      <DatePicker fx:id="dpDiaEntrega" layoutX="34.0" layoutY="100.0" prefHeight="68.0" prefWidth="487.0" promptText="Día de entrega" style="-fx-font-size: 30;" />
+      <Button layoutX="827.0" layoutY="315.0" mnemonicParsing="false" onAction="#clicAgregar" prefHeight="44.0" prefWidth="301.0" style="-fx-background-color: #4E8098;" text="Agregar a carrito" textFill="WHITE">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
       </Button>
-      <Button layoutX="825.0" layoutY="557.0" mnemonicParsing="false" onAction="#clicGenerar" prefHeight="68.0" prefWidth="301.0" style="-fx-background-color: #5FAD56;" text="Generar pedido" textFill="WHITE">
+      <Button layoutX="827.0" layoutY="489.0" mnemonicParsing="false" onAction="#clicGenerar" prefHeight="88.0" prefWidth="301.0" style="-fx-background-color: #5FAD56;" text="Generar pedido" textFill="WHITE">
          <font>
             <Font name="System Bold" size="34.0" />
          </font>
@@ -60,7 +60,7 @@
             <Glow />
          </effect>
       </Label>
-      <Button fx:id="btnEliminar" layoutX="826.0" layoutY="484.0" mnemonicParsing="false" onAction="#clicEliminar" prefHeight="24.0" prefWidth="301.0" style="-fx-background-color: #F25D59;" text="Eliminar de carrito" textFill="WHITE">
+      <Button fx:id="btnEliminar" layoutX="827.0" layoutY="401.0" mnemonicParsing="false" onAction="#clicEliminar" prefHeight="44.0" prefWidth="301.0" style="-fx-background-color: #F25D59;" text="Eliminar de carrito" textFill="WHITE">
          <font>
             <Font name="System Bold" size="19.0" />
          </font>
@@ -70,7 +70,7 @@
             <Image url="@../recursos/vectorCarrito.png" />
          </image>
       </ImageView>
-      <TextField fx:id="tfBusqueda" layoutX="59.0" layoutY="109.0" prefHeight="60.0" prefWidth="332.0" />
+      <TextField fx:id="tfBusqueda" layoutX="567.0" layoutY="14.0" prefHeight="60.0" prefWidth="29.0" style="-fx-background-color: #1b1b1b;" />
       <Label fx:id="txTotal" layoutX="187.0" layoutY="599.0" prefHeight="75.0" prefWidth="452.0" textFill="WHITE">
          <effect>
             <Glow />
