@@ -38,10 +38,15 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.util.StringConverter;
 import javafxfarmacia.modelo.dao.PedidoDAO;
+import javafxfarmacia.modelo.dao.PedidoDAO.TipoProveedor;
+import static javafxfarmacia.modelo.dao.PedidoDAO.guardarPedidoExterno;
+import static javafxfarmacia.modelo.dao.PedidoDAO.guardarPedidoInterno;
 import javafxfarmacia.modelo.pojo.Pedido;
 import javafxfarmacia.modelo.pojo.PedidoRespuesta;
+
 
 
 public class FXMLGenerarPedidoController implements Initializable {
@@ -82,10 +87,14 @@ public class FXMLGenerarPedidoController implements Initializable {
     @FXML
     private RadioButton rbExternos;
     private ObservableList<Pedido> proveedoresInternos;
-    
+    private ObservableList<Pedido> proveedoresExternos;
+    private ObservableList<Pedido> todosLosProveedores;
+    private String tipoProveedor;
+
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        rbInternos.setSelected(true);
         proveedoresInternos = FXCollections.observableArrayList();
     // Obtener los proveedores internos utilizando PedidoDAO
     PedidoRespuesta respuesta = PedidoDAO.obtenerProveedoresInternos();
@@ -95,6 +104,15 @@ public class FXMLGenerarPedidoController implements Initializable {
     } else {
 Utilidades.mostrarDialogoSimple("Error de conexión", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
     }
+    
+    proveedoresExternos = FXCollections.observableArrayList();
+PedidoRespuesta respuestaExternos = PedidoDAO.obtenerProveedoresExternos();
+if (respuestaExternos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
+    ArrayList<Pedido> proveedoresExternosList = respuestaExternos.getPedidos();
+    proveedoresExternos.addAll(proveedoresExternosList);
+} else {
+    Utilidades.mostrarDialogoSimple("Error de conexión", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
+}
         makeComboBoxSearchable(cbProducto, Producto::toString);
         cargarInformacionProducto(0);
         carrito = FXCollections.observableArrayList();
@@ -128,6 +146,22 @@ Utilidades.mostrarDialogoSimple("Error de conexión", "Error de conexión con la
         tfBusqueda.setOnKeyReleased(this::buscarProducto);
         cbProveedor.setItems(proveedoresInternos);
 
+        todosLosProveedores = FXCollections.observableArrayList();
+        todosLosProveedores.addAll(proveedoresInternos);
+        todosLosProveedores.addAll(proveedoresExternos);
+
+        actualizarProveedores();
+
+         ToggleGroup proveedoresToggleGroup = new ToggleGroup();
+    rbInternos.setToggleGroup(proveedoresToggleGroup);
+    rbExternos.setToggleGroup(proveedoresToggleGroup);
+    
+    proveedoresToggleGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+        if (newValue != null) {
+            actualizarProveedores();
+        }
+    });
+        
     }
 
     private void cargarInformacionProducto(int idProducto) {
@@ -207,45 +241,77 @@ private void actualizarTablaCarrito() {
     txTotal.setText("$" + String.valueOf(sumaPrecios) + " mxn");
 }
 
+private void actualizarProveedores() {
+    if (rbInternos.isSelected()) {
+        cbProveedor.setItems(proveedoresInternos);
+        tipoProveedor = "interno";
+    } else if (rbExternos.isSelected()) {
+        cbProveedor.setItems(proveedoresExternos);
+        tipoProveedor = "externo"; 
+    
+    }
+}
+
+
 @FXML
 private void clicGenerar(ActionEvent event) {
-     // Obtener la fecha de entrega seleccionada
+    // Obtener la fecha de entrega seleccionada
     LocalDate fechaEntrega = dpDiaEntrega.getValue();
-    
+
     // Verificar que se haya seleccionado una fecha de entrega
     if (fechaEntrega == null) {
         Utilidades.mostrarDialogoSimple("Error", "Por favor, seleccione una fecha de entrega", Alert.AlertType.ERROR);
         return;
     }
-    
+
     // Crear el objeto Pedido con la fecha de pedido y fecha de entrega
-    Pedido pedidoNuevo = new Pedido();
-    pedidoNuevo.setFecha_pedido(Utilidades.obtenerFechaActual());
-    pedidoNuevo.setFecha_entrega(fechaEntrega.toString());
-    
+    Pedido proveedorSeleccionado = cbProveedor.getSelectionModel().getSelectedItem();
+    if (proveedorSeleccionado == null) {
+        Utilidades.mostrarDialogoSimple("Error", "Por favor, seleccione un proveedor", Alert.AlertType.ERROR);
+        return;
+    }
+
     // Obtener los productos del carrito
     ObservableList<Producto> productosCarrito = tvCarrito.getItems();
-    
+
     // Verificar que el carrito no esté vacío
     if (productosCarrito.isEmpty()) {
         Utilidades.mostrarDialogoSimple("Error", "El carrito está vacío", Alert.AlertType.ERROR);
         return;
     }
-    
-    // Guardar cada producto del carrito en la base de datos
+
     for (Producto producto : productosCarrito) {
+        Pedido pedidoNuevo = new Pedido();
+        pedidoNuevo.setFecha_pedido(Utilidades.obtenerFechaActual());
+        pedidoNuevo.setFecha_entrega(fechaEntrega.toString());
+
         pedidoNuevo.setCantidad(producto.getCantidad());
         pedidoNuevo.setIdProducto(producto.getIdProducto());
         
-        registrarPedido(pedidoNuevo);
-    }
-    
+
+      if (rbExternos.isSelected()){
+          pedidoNuevo.setIdProveedor(proveedorSeleccionado.getIdProveedor());
+          
+          guardarPedidoExterno(pedidoNuevo);
+      }
+      
+      if ( rbInternos.isSelected()){
+              pedidoNuevo.setIdSucursal(proveedorSeleccionado.getIdSucursal());
+          guardarPedidoInterno(pedidoNuevo);
+      
+      }
+        
+
     // Limpiar el carrito
     carrito.clear();
-    actualizarTablaCarrito();
     
+    actualizarTablaCarrito();
+    cbProveedor.getSelectionModel().clearSelection();
+    dpDiaEntrega.setValue(null);
+
     // Mostrar mensaje de éxito
     Utilidades.mostrarDialogoSimple("Pedido Generado", "El pedido ha sido generado exitosamente", Alert.AlertType.INFORMATION);
+}
 }
     
 
@@ -330,7 +396,8 @@ public static <T> void makeComboBoxSearchable(ComboBox<T> comboBox, Function<T, 
 }
 
  private void registrarPedido(Pedido pedidoNuevo){
-       int codigoRespuesta = PedidoDAO.guardarPedido(pedidoNuevo);
+      
+        int codigoRespuesta = PedidoDAO.guardarPedidoExterno(pedidoNuevo);
         switch(codigoRespuesta){
             case Constantes.ERROR_CONEXION:
                     Utilidades.mostrarDialogoSimple("Error de conexión",
@@ -347,7 +414,9 @@ public static <T> void makeComboBoxSearchable(ComboBox<T> comboBox, Function<T, 
                             "El producto fue registrado exitosamente", 
                             Alert.AlertType.INFORMATION);
                 break;
-        }
+            }
     }
 
-}
+    }
+
+

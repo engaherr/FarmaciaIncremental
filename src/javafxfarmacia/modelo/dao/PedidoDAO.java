@@ -53,28 +53,65 @@ public class PedidoDAO {
     }
      
      
-     public static int guardarPedido(Pedido pedidoNuevo) {
-    int respuesta;
-    Connection conexionBD = ConexionBD.abrirConexionBD();
-    if (conexionBD != null) {
-        try {
-            String sentencia = "INSERT INTO pedidos (fecha_pedido, fecha_entrega, cantidad, idProducto) VALUES (?, ?, ?, ?)";
-            PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
-            prepararSentencia.setString(1, pedidoNuevo.getFecha_pedido());
-            prepararSentencia.setString(2, pedidoNuevo.getFecha_entrega());
-            prepararSentencia.setInt(3, pedidoNuevo.getCantidad());
-            prepararSentencia.setInt(4, pedidoNuevo.getIdProducto());
-            int filasAfectadas = prepararSentencia.executeUpdate();
-            respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
-            conexionBD.close();
-        } catch (SQLException e) {
-            respuesta = Constantes.ERROR_CONSULTA;
+     
+      public static int guardarPedidoExterno(Pedido pedidoNuevo) {
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if (conexionBD != null) {
+            try {
+                String sentencia = "INSERT INTO pedidos (fecha_pedido, fecha_entrega, cantidad, idProducto, idProveedor) VALUES (?, ?, ?, ?, ?)";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setString(1, pedidoNuevo.getFecha_pedido());
+                prepararSentencia.setString(2, pedidoNuevo.getFecha_entrega());
+                prepararSentencia.setInt(3, pedidoNuevo.getCantidad());
+                prepararSentencia.setInt(4, pedidoNuevo.getIdProducto());
+                prepararSentencia.setInt(5, pedidoNuevo.getIdProveedor());
+
+                int filasAfectadas = prepararSentencia.executeUpdate();
+                respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+                conexionBD.close();
+            } catch (SQLException e) {
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
+        } else {
+            respuesta = Constantes.ERROR_CONEXION;
         }
-    } else {
-        respuesta = Constantes.ERROR_CONEXION;
+        return respuesta;
     }
-    return respuesta;
+
+    public static int guardarPedidoInterno(Pedido pedidoNuevo) {
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if (conexionBD != null) {
+            try {
+                String sentencia = "INSERT INTO pedidos (fecha_pedido, fecha_entrega, cantidad, idProducto, idSucursal) VALUES (?, ?, ?, ?, ?)";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setString(1, pedidoNuevo.getFecha_pedido());
+                prepararSentencia.setString(2, pedidoNuevo.getFecha_entrega());
+                prepararSentencia.setInt(3, pedidoNuevo.getCantidad());
+                prepararSentencia.setInt(4, pedidoNuevo.getIdProducto());
+                prepararSentencia.setInt(5, pedidoNuevo.getIdSucursal());
+
+                int filasAfectadas = prepararSentencia.executeUpdate();
+                respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+                conexionBD.close();
+            } catch (SQLException e) {
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
+        } else {
+            respuesta = Constantes.ERROR_CONEXION;
+        }
+        return respuesta;
+    }
+
+     
+     
+  public enum TipoProveedor {
+    INTERNO,
+    EXTERNO
 }
+     
+   
 
          public static PedidoRespuesta obtenerProveedoresInternos() {
     PedidoRespuesta respuesta = new PedidoRespuesta();
@@ -88,7 +125,7 @@ public class PedidoDAO {
             ArrayList<Pedido> pedidoConsulta = new ArrayList<>();
             while (resultado.next()) {
                 Pedido pedido = new Pedido();
-                pedido.setIdPedido(resultado.getInt("idSucursal")); 
+                pedido.setIdSucursal(resultado.getInt("idSucursal")); 
                 pedido.setNombre(resultado.getString("nombreSucursal"));
                 pedidoConsulta.add(pedido);
             }
@@ -116,7 +153,7 @@ public class PedidoDAO {
             ArrayList<Pedido> pedidoConsulta = new ArrayList<>();
             while (resultado.next()) {
                 Pedido pedido = new Pedido();
-                pedido.setIdPedido(resultado.getInt("idProveedor")); 
+                pedido.setIdProveedor(resultado.getInt("idProveedor")); 
                 pedido.setNombre(resultado.getString("nombre"));
                 pedidoConsulta.add(pedido);
             }
