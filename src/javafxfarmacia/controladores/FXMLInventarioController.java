@@ -34,13 +34,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafxfarmacia.JavaFXFarmacia;
+import javafxfarmacia.interfaz.INotificacionOperacion;
 import javafxfarmacia.modelo.dao.ProductoDAO;
 import javafxfarmacia.modelo.pojo.Producto;
 import javafxfarmacia.modelo.pojo.ProductoRespuesta;
 import javafxfarmacia.utils.Constantes;
 import javafxfarmacia.utils.Utilidades;
 
-public class FXMLInventarioController implements Initializable {
+public class FXMLInventarioController implements Initializable, INotificacionOperacion {
 
     @FXML
     private TableView<Producto> tvInventario;
@@ -158,11 +159,14 @@ public class FXMLInventarioController implements Initializable {
 
     @FXML
     private void clicRegistrar(ActionEvent event) {
-        irFormulario();
+        irFormulario(false,null);
     }
 
     @FXML
     private void clicModificar(ActionEvent event) {
+        int posicion = tvInventario.getSelectionModel().getSelectedIndex();
+        if(posicion != -1)
+            irFormulario(true, productos.get(posicion));
     }
 
     @FXML
@@ -198,13 +202,13 @@ public class FXMLInventarioController implements Initializable {
         }
     }
 
-    private void irFormulario() {
+    private void irFormulario(boolean esEdicion, Producto productoEdicion) {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(
                     JavaFXFarmacia.class.getResource("vistas/FXMLProductoFormulario.fxml"));
             Parent vista = accesoControlador.load();
             FXMLProductoFormularioController formulario = accesoControlador.getController();
-            formulario.inicializarInformacionFormulario(false, null);
+            formulario.inicializarInformacionFormulario(esEdicion, productoEdicion, this);
             
             Stage escenarioFormulario = new Stage();
             escenarioFormulario.setScene(new Scene(vista));
@@ -232,5 +236,15 @@ public class FXMLInventarioController implements Initializable {
         } catch (IOException ex) {
             ex.getMessage();
         }
+    }
+
+    @Override
+    public void notificarOperacionGuardar() {
+        cargarInformacionTabla();
+    }
+
+    @Override
+    public void notificarOperacionEditar() {
+        cargarInformacionTabla();
     }
 }

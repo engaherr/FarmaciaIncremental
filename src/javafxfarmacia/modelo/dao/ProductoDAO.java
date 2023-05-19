@@ -164,6 +164,16 @@ public class ProductoDAO {
         return respuesta;
     }
     
-    
-    
+    public static int modificarProducto(Producto productoEdicion){
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try {
+                String sentencia = "update producto set nombre = ?, fechaVencimiento = ?,"
+                        + " precio = ?, ventaControlada = ?, sucursal_idSucursal = ?, "
+                        + "cantidad = ?, presentacion = ?, foto = ? where idProducto = ?";
+            } catch (SQLException e) {
+            }
+        }
+    }
 }

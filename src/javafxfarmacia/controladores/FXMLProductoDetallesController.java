@@ -60,23 +60,29 @@ public class FXMLProductoDetallesController implements Initializable {
     
     private void cargarInformacionDetalles(){
         lbCantidad.setText(Integer.toString(productoDetalles.getCantidad()));
-        if(productoDetalles.getFechaVencimiento() == null)
+        if(productoDetalles.getFechaVencimiento() == null){
             lbHdrVencimiento.setVisible(false);
-        else
+            lbFechaVencimiento.setVisible(false);
+        }else{
             lbFechaVencimiento.setText(productoDetalles.getFechaVencimiento());
+        }
         lbPrecio.setText("$" + productoDetalles.getPrecio());
         lbProducto.setText(productoDetalles.getNombre());
         lbSucursal.setText(productoDetalles.getNombreSucursal());
-        if("N/A".equals(productoDetalles.getPresentacion()))
+        if("N/A".equals(productoDetalles.getPresentacion())){
             lbHdrPresentacion.setVisible(false);
-        else
+            lbPresentacion.setVisible(false);
+        }else{
             lbPresentacion.setText(productoDetalles.getPresentacion());
-        ByteArrayInputStream bais;
-        if(productoDetalles.getFoto().length != 0){
-            bais = new ByteArrayInputStream(productoDetalles.getFoto());
+        }
+        try{
+            ByteArrayInputStream bais = new ByteArrayInputStream(productoDetalles.getFoto());
             Image imagenProducto = new Image(bais);
             ivFotoProducto.setPreserveRatio(true);
             ivFotoProducto.setImage(imagenProducto);
+        }catch(Exception e){
+            e.printStackTrace();
         }
+        
     }
 }

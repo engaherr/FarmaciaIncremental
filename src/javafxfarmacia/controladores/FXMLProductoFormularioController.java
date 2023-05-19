@@ -5,6 +5,7 @@
 package javafxfarmacia.controladores;
 
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafxfarmacia.interfaz.INotificacionOperacion;
 import javafxfarmacia.modelo.dao.ProductoDAO;
 import javafxfarmacia.modelo.dao.SucursalDAO;
 import javafxfarmacia.modelo.pojo.Producto;
@@ -66,6 +68,8 @@ public class FXMLProductoFormularioController implements Initializable {
     private boolean esEdicion;
     private Producto productoEdicion;
     private byte[] imagenBytes;
+    
+    private INotificacionOperacion interfazNotificacion;
 
     /**
      * Initializes the controller class.
@@ -75,13 +79,35 @@ public class FXMLProductoFormularioController implements Initializable {
         cargarInformacionSucursal();
     }    
     
-    public void inicializarInformacionFormulario(boolean esEdicion, Producto producto){
+    public void inicializarInformacionFormulario(boolean esEdicion, 
+            Producto producto, INotificacionOperacion interfazNotificacion){
+        this.interfazNotificacion = interfazNotificacion;
         this.esEdicion = esEdicion;
         this.productoEdicion = producto;
         if(esEdicion){
-            lbTitulo.setText("Editar Producto");
+            lbTitulo.setText("Editar Información de " + producto.getNombre());
+            cargarInformacionEdicion();
         }else{
             lbTitulo.setText("Registrar Producto");
+        }
+    }
+    
+    private void cargarInformacionEdicion(){
+        tfNombre.setText(productoEdicion.getNombre());
+        tfCantidad.setText(Integer.toString(productoEdicion.getCantidad()));
+        tfFechaVencimiento.setText(productoEdicion.getFechaVencimiento());
+        tfPrecio.setText(Double.toString(productoEdicion.getPrecio()));
+        tfPresentacion.setText(productoEdicion.getPresentacion());
+        cbSucursal.getSelectionModel().select(obtenerPosicionComboSucursal(
+                productoEdicion.getIdSucursal()));
+        ckboxVentaControlada.setSelected(productoEdicion.isVentaControlada());
+        
+        try {
+            ByteArrayInputStream baisFoto = new ByteArrayInputStream(productoEdicion.getFoto());
+            Image imgFoto = new Image(baisFoto);
+            ivFoto.setImage(imgFoto);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
     
@@ -196,7 +222,8 @@ public class FXMLProductoFormularioController implements Initializable {
             case Constantes.OPERACION_EXITOSA:
                     Utilidades.mostrarDialogoSimple("Producto Registrado",
                             "El producto fue registrado exitosamente", 
-                            Alert.AlertType.INFORMATION);
+                            Alert.AlertType.INFORMATION);        
+                    interfazNotificacion.notificarOperacionGuardar();
                     cerrarVentana();
                 break;
         }
@@ -205,5 +232,13 @@ public class FXMLProductoFormularioController implements Initializable {
     private void cerrarVentana(){
         Stage escenarioBase = (Stage) tfCantidad.getScene().getWindow();
         escenarioBase.close();
+    }
+    
+    private int obtenerPosicionComboSucursal(int idSucursal){
+        for(int i = 0; i < sucursales.size(); i++){
+            if(sucursales.get(i).getIdSucursal() == idSucursal)
+                return i;
+        }
+        return 0;
     }
 }
