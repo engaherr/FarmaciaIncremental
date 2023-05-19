@@ -3,10 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/controladores/FXMLProductoDetallesController.java</file>
+            <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/modelo/dao/SesionDAO.java</file>
+            <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/controladores/FXMLGenerarPedidoController.java</file>
+            <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/modelo/pojo/PromocionProducto.java</file>
             <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/controladores/FXMLMenuPrincipalAdminController.java</file>
-            <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/controladores/FXMLInventarioController.java</file>
-            <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/controladores/FXMLInicioSesionController.java</file>
+            <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/controladores/FXMLProductoFormularioController.java</file>
+            <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/controladores/FXMLReadquisicionController.java</file>
+            <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/controladores/FXMLPromocionesController.java</file>
+            <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/modelo/dao/SucursalDAO.java</file>
+            <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/modelo/dao/TipoProductoDAO.java</file>
+            <file>file:/C:/Users/kikga/OneDrive%20-%20Universidad%20Veracruzana/workspace/JFXFarmaciaIncremental/src/javafxfarmacia/modelo/dao/PromocionProductoDAO.java</file>
         </group>
     </open-files>
 </project-private>

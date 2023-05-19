@@ -18,7 +18,6 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -26,7 +25,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafxfarmacia.modelo.dao.ProductoDAO;
@@ -50,13 +48,13 @@ public class FXMLProductoFormularioController implements Initializable {
     @FXML
     private Label lbTitulo;
     @FXML
-    private TextField tfFechaVencimiento;
+    private TextField tfFechaVencimiento; //Opcional 
     @FXML
     private TextField tfCantidad;
     @FXML
     private CheckBox ckboxVentaControlada;
     @FXML
-    private TextField tfPresentacion;
+    private TextField tfPresentacion; //Opcional si(vacio) = 'N/A'
     @FXML
     private ComboBox<Sucursal> cbSucursal;
     @FXML
@@ -115,8 +113,7 @@ public class FXMLProductoFormularioController implements Initializable {
 
     @FXML
     private void clicCancelar(ActionEvent event) {
-        Stage escenarioBase = (Stage) tfCantidad.getScene().getWindow();
-        escenarioBase.close();
+        cerrarVentana();
     }
 
     @FXML
@@ -200,8 +197,13 @@ public class FXMLProductoFormularioController implements Initializable {
                     Utilidades.mostrarDialogoSimple("Producto Registrado",
                             "El producto fue registrado exitosamente", 
                             Alert.AlertType.INFORMATION);
+                    cerrarVentana();
                 break;
         }
     }
     
+    private void cerrarVentana(){
+        Stage escenarioBase = (Stage) tfCantidad.getScene().getWindow();
+        escenarioBase.close();
+    }
 }
