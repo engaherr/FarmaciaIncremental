@@ -9,9 +9,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafxfarmacia.modelo.pojo.Producto;
 
 /**
@@ -64,7 +67,7 @@ public class FXMLProductoDetallesController implements Initializable {
         lbPrecio.setText("$" + productoDetalles.getPrecio());
         lbProducto.setText(productoDetalles.getNombre());
         lbSucursal.setText(productoDetalles.getNombreSucursal());
-        if(productoDetalles.getPresentacion() == "N/A")
+        if("N/A".equals(productoDetalles.getPresentacion()))
             lbHdrPresentacion.setVisible(false);
         else
             lbPresentacion.setText(productoDetalles.getPresentacion());
@@ -72,6 +75,7 @@ public class FXMLProductoDetallesController implements Initializable {
         if(productoDetalles.getFoto().length != 0){
             bais = new ByteArrayInputStream(productoDetalles.getFoto());
             Image imagenProducto = new Image(bais);
+            ivFotoProducto.setPreserveRatio(true);
             ivFotoProducto.setImage(imagenProducto);
         }
     }

@@ -93,14 +93,14 @@
             <Font name="Microsoft JhengHei Light" size="18.0" />
          </font>
       </Label>
-      <Pane layoutX="670.0" layoutY="40.0" prefHeight="605.0" prefWidth="479.0">
+      <StackPane layoutX="647.0" prefHeight="670.0" prefWidth="587.5">
          <children>
-            <ImageView fx:id="ivFoto" fitHeight="573.0" fitWidth="462.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="ivFoto" fitHeight="469.0" fitWidth="470.0" pickOnBounds="true">
                <image>
                   <Image url="@../recursos/imagenNoSeleccionada.png" />
                </image>
             </ImageView>
          </children>
-      </Pane>
+      </StackPane>
    </children>
 </AnchorPane>

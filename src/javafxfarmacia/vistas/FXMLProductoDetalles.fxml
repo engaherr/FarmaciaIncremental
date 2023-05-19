@@ -13,9 +13,9 @@
 
 <HBox prefHeight="470.0" prefWidth="700.0" style="-fx-background-color: #1b1b1b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLProductoDetallesController">
    <children>
-      <Pane prefHeight="470.0" prefWidth="345.0" style="-fx-background-color: white;">
+      <StackPane prefHeight="470.0" prefWidth="350.0" style="-fx-background-color: white;">
          <children>
-            <ImageView fx:id="ivFotoProducto" fitHeight="430.0" fitWidth="300.0" layoutX="23.0" layoutY="20.0" pickOnBounds="true">
+            <ImageView fx:id="ivFotoProducto" fitHeight="430.0" fitWidth="300.0" pickOnBounds="true">
                <viewport>
                   <Rectangle2D minX="20.0" minY="20.0" />
                </viewport>
@@ -24,7 +24,7 @@
                </image>
             </ImageView>
          </children>
-      </Pane>
+      </StackPane>
       <Pane prefHeight="470.0" prefWidth="345.0">
          <children>
             <Label fx:id="lbProducto" layoutX="34.0" layoutY="27.0" prefHeight="86.0" prefWidth="277.0" text="Ibuprofeno 600mg 23445DCA" textAlignment="CENTER" textFill="WHITE" wrapText="true">
