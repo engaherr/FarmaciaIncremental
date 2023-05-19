@@ -41,14 +41,7 @@ public class FXMLMenuPrincipalAdminController implements Initializable {
         escenarioReadquisicion.initModality(Modality.APPLICATION_MODAL);
         escenarioReadquisicion.show();
     }
-
-    @FXML
-    private void clicVender(ActionEvent event) {
-        Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
-            "Estamos trabajando para desarrollar esta funcionalidad",
-            Alert.AlertType.INFORMATION);
-    }
-
+    
     @FXML
     private void clicInventario(ActionEvent event) {
         Stage escenarioInventario = new Stage();
@@ -59,23 +52,6 @@ public class FXMLMenuPrincipalAdminController implements Initializable {
     }
 
     @FXML
-    private void clicAbasto(ActionEvent event) {
-                Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
-            "Estamos trabajando para desarrollar esta funcionalidad",
-            Alert.AlertType.INFORMATION);
-    }
-
-    @FXML
-    private void clicPromociones(ActionEvent event) {
-        Stage escenarioPromociones = (Stage) lbTitulo.getScene().getWindow();
-        escenarioPromociones.setScene(Utilidades.inicializaEscena("vistas/FXMLPromociones.fxml"));
-        escenarioPromociones.setTitle("Lista de promociones");
-        escenarioPromociones.initModality(Modality.APPLICATION_MODAL);
-        escenarioPromociones.showAndWait();
-        
-   }
-
-    @FXML
     private void clicCerrarSesion(ActionEvent event) {
          Utilidades.mostrarDialogoSimple("Cierre de sesión",
             "Adiós usuario,vuelva pronto",
@@ -84,6 +60,20 @@ public class FXMLMenuPrincipalAdminController implements Initializable {
         escenarioBase.setScene(Utilidades.inicializaEscena("vistas/FXMLInicioSesion.fxml"));
         escenarioBase.setTitle("Inicio de Sesión");
         escenarioBase.show();
+    }
+
+    @FXML
+    private void clicCorte(ActionEvent event) {
+        Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
+            "Estamos trabajando para desarrollar esta funcionalidad",
+            Alert.AlertType.INFORMATION);
+    }
+
+    @FXML
+    private void clicEmpleados(ActionEvent event) {
+        Utilidades.mostrarDialogoSimple("Funcionalidad en progreso",
+            "Estamos trabajando para desarrollar esta funcionalidad",
+            Alert.AlertType.INFORMATION);
     }
     
 }

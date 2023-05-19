@@ -98,7 +98,7 @@ public class FXMLGenerarPedidoController implements Initializable {
     private ObservableList<Pedido> todosLosProveedores;
     private String tipoProveedor;
     
- private ObservableList<String> possibleSuggestions;
+    private ObservableList<String> possibleSuggestions;
 
 
     @FXML
@@ -134,7 +134,8 @@ public class FXMLGenerarPedidoController implements Initializable {
         ArrayList<Pedido> proveedoresInternosList = respuesta.getPedidos();
         proveedoresInternos.addAll(proveedoresInternosList);
     } else {
-Utilidades.mostrarDialogoSimple("Error de conexión", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
+        Utilidades.mostrarDialogoSimple("Error de conexión", 
+                "Error de conexión con la base de datos", Alert.AlertType.ERROR);
     }
     
     proveedoresExternos = FXCollections.observableArrayList();

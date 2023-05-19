@@ -26,12 +26,12 @@
             <Font size="20.0" />
          </font>
       </Button>
-      <Button layoutX="102.0" layoutY="317.0" mnemonicParsing="false" onAction="#clicAbasto" prefHeight="67.0" prefWidth="214.0" style="-fx-background-color: #4E8098;" text="Corte" textFill="WHITE">
+      <Button layoutX="102.0" layoutY="317.0" mnemonicParsing="false" onAction="#clicCorte" prefHeight="67.0" prefWidth="214.0" style="-fx-background-color: #4E8098;" text="Corte" textFill="WHITE">
          <font>
             <Font size="20.0" />
          </font>
       </Button>
-      <Button layoutX="403.0" layoutY="317.0" mnemonicParsing="false" onAction="#clicPromociones" prefHeight="67.0" prefWidth="214.0" style="-fx-background-color: #4E8098;" text="Empleados" textFill="WHITE">
+      <Button layoutX="403.0" layoutY="317.0" mnemonicParsing="false" onAction="#clicEmpleados" prefHeight="67.0" prefWidth="214.0" style="-fx-background-color: #4E8098;" text="Empleados" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>
