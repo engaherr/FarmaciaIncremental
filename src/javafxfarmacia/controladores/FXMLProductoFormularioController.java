@@ -4,19 +4,30 @@
  */
 package javafxfarmacia.controladores;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafxfarmacia.modelo.dao.ProductoDAO;
 import javafxfarmacia.modelo.dao.SucursalDAO;
@@ -25,6 +36,7 @@ import javafxfarmacia.modelo.pojo.Sucursal;
 import javafxfarmacia.modelo.pojo.SucursalRespuesta;
 import javafxfarmacia.utils.Constantes;
 import javafxfarmacia.utils.Utilidades;
+import javax.imageio.ImageIO;
 
 /**
  * FXML Controller class
@@ -55,6 +67,7 @@ public class FXMLProductoFormularioController implements Initializable {
     private ObservableList<Sucursal> sucursales;
     private boolean esEdicion;
     private Producto productoEdicion;
+    private byte[] imagenBytes;
 
     /**
      * Initializes the controller class.
@@ -67,6 +80,11 @@ public class FXMLProductoFormularioController implements Initializable {
     public void inicializarInformacionFormulario(boolean esEdicion, Producto producto){
         this.esEdicion = esEdicion;
         this.productoEdicion = producto;
+        if(esEdicion){
+            lbTitulo.setText("Editar Producto");
+        }else{
+            lbTitulo.setText("Registrar Producto");
+        }
     }
     
     private void cargarInformacionSucursal(){
@@ -103,6 +121,44 @@ public class FXMLProductoFormularioController implements Initializable {
 
     @FXML
     private void seleccionarFoto(ActionEvent event) {
+        List<String> tiposDeArchivo = Arrays.asList("*.png", "*.jpg", "*.jpeg");
+        FileChooser dialogoSeleccionImg = new FileChooser();
+        dialogoSeleccionImg.setTitle("Selecciona una imagen");
+        FileChooser.ExtensionFilter filtroDialogo = 
+                 new FileChooser.ExtensionFilter("Archivos de Imagen(*.png,*.jpg,*.jpeg)",
+                         tiposDeArchivo);
+        dialogoSeleccionImg.getExtensionFilters().add(filtroDialogo);
+        
+        Stage escenarioBase = (Stage) tfCantidad.getScene().getWindow();
+        File archivoSeleccionado = dialogoSeleccionImg.showOpenDialog(escenarioBase);
+        visualizarImagen(archivoSeleccionado);
+    }
+    
+    private void visualizarImagen(File imgSeleccionada) {
+        if(imgSeleccionada != null){
+            try {
+                BufferedImage bufferImg = ImageIO.read(imgSeleccionada);
+                Image imgDecodificada = SwingFXUtils.toFXImage(bufferImg, null);
+                ivFoto.setImage(imgDecodificada);
+                guardarImagen(bufferImg);
+            } catch (IOException ex) {
+                Utilidades.mostrarDialogoSimple("Error con imagen",
+                        "Hubo un error para mostrar la imagen seleccionada, inténtelo de nuevo",
+                        Alert.AlertType.ERROR);
+            }
+        }
+    }
+    
+    private void guardarImagen(BufferedImage bufferImg){
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bufferImg, "png", baos);
+            imagenBytes = baos.toByteArray();
+        } catch (IOException ex) {
+            Utilidades.mostrarDialogoSimple("Error con imagen",
+                        "Hubo un error para guardar la imagen seleccionada, inténtelo de nuevo",
+                        Alert.AlertType.ERROR);
+        }
     }
 
     private void validarCamposRegistro() {
@@ -123,6 +179,7 @@ public class FXMLProductoFormularioController implements Initializable {
         productoValidado.setPrecio(precio);
         productoValidado.setPresentacion(presentacion);
         productoValidado.setVentaControlada(esVentaControlada);
+        productoValidado.setFoto(imagenBytes);
         registrarProducto(productoValidado);
     }
     

@@ -4,9 +4,6 @@
  */
 package javafxfarmacia.modelo.pojo;
 
-import java.sql.Date;
-import java.time.LocalDate;
-
 public class Producto {
     private int idProducto;
     private String nombre;
@@ -20,6 +17,7 @@ public class Producto {
     
     private double precioUnitario;
     private double precioFinal;
+    private byte[] foto;
 
     public double getPrecioFinal() {
         return precioFinal;
@@ -37,10 +35,7 @@ public class Producto {
         this.precioUnitario = precioUnitario;
     }
 
-    public Producto() {
-    }
-
-    public Producto(int idProducto, String nombre, String fechaVencimiento, double precio, boolean ventaControlada, String nombreSucursal, int idSucursal, int cantidad, String presentacion) {
+    public Producto(int idProducto, String nombre, String fechaVencimiento, double precio, boolean ventaControlada, String nombreSucursal, int idSucursal, int cantidad, String presentacion, byte[] foto) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.fechaVencimiento = fechaVencimiento;
@@ -50,6 +45,11 @@ public class Producto {
         this.idSucursal = idSucursal;
         this.cantidad = cantidad;
         this.presentacion = presentacion;
+        this.foto = foto;
+    }
+    
+
+    public Producto() {
     }
 
     public int getIdProducto() {
@@ -124,5 +124,12 @@ public class Producto {
         this.presentacion = presentacion;
     }
 
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
+    }
     
 }
