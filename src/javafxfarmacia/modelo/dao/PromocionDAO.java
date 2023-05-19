@@ -24,12 +24,7 @@ public class PromocionDAO {
         Connection conexionBD = ConexionBD.abrirConexionBD();
         if(conexionBD != null){
             try{
-                String sentencia = "select idPromocion,descripcion,precioInicial,descuento,"
-                        + "precioFinal,fechaInicia,fechaTermino,\n" +
-                        "producto.idProducto, producto.nombre as nombreProducto from promocion\n" +
-                        "inner join producto on promocion.idProducto = producto.idProducto\n" +
-                        "inner join sucursal on producto.sucursal_idSucursal = sucursal.idSucursal order by "
-                        + "fechaTermino asc;";
+                String sentencia = "select idPromocion,descripcion,fechaInicia,fechaTermino,imagen from promocion;";
                 
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
                 ResultSet resultado = prepararSentencia.executeQuery();
@@ -38,17 +33,11 @@ public class PromocionDAO {
                 while(resultado.next()){
                     Promocion promocionTemporal = new Promocion();
                     promocionTemporal.setIdPromocion(resultado.getInt("idPromocion"));
-                    promocionTemporal.setDescripcion(resultado.getString("descripcion"));
-                    promocionTemporal.setNombreProducto(resultado.getString("nombreProducto"));
-                    promocionTemporal.setIdProducto(resultado.getInt("idProducto"));
-                    promocionTemporal.setDescuento(resultado.getDouble("descuento"));
-                    promocionTemporal.setPrecioInicial(resultado.getDouble("precioInicial"));
-                    promocionTemporal.setPrecioFinal(resultado.getDouble("precioFinal"));
+                    promocionTemporal.setDescripcion(resultado.getString("descripcion"));                 
                     promocionTemporal.setFechaInicio(resultado.getString("fechaInicia"));
                     promocionTemporal.setFechaTermino(resultado.getString("fechaTermino"));
-                    promocionConsulta.add(promocionTemporal);
-                    
-              
+                    promocionTemporal.setImagen(resultado.getBytes("imagen"));
+                    promocionConsulta.add(promocionTemporal); 
                 }
               
                 respuesta.setPromociones(promocionConsulta);
@@ -69,12 +58,9 @@ public class PromocionDAO {
         Connection conexionBD = ConexionBD.abrirConexionBD();
         if(conexionBD != null){
             try {
-                String consulta = "select idPromocion,descripcion,precioInicial,descuento,"
-                        + "precioFinal,fechaInicia,fechaTermino,\n" +
-                        "producto.idProducto, producto.nombre as nombreProducto from promocion\n" +
-                        "inner join producto on promocion.idProducto = producto.idProducto\n" +
-                        "inner join sucursal on producto.sucursal_idSucursal = sucursal.idSucursal  \n" +
-                        "where nombre like ? order by fechaTermino asc;";
+                String consulta = "select idPromocion, descripcion,fechaInicia,fechaTermino, "
+                        + "imagen from promocion \n" +
+                        "where descripcion like 'pañal' order by fechaTermino asc;";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 prepararSentencia.setString(1, "%" + busqueda + "%");
                 ResultSet resultado = prepararSentencia.executeQuery();
@@ -82,12 +68,7 @@ public class PromocionDAO {
                 while(resultado.next()){
                     Promocion promocionTemporal = new Promocion();
                     promocionTemporal.setIdPromocion(resultado.getInt("idPromocion"));
-                    promocionTemporal.setDescripcion(resultado.getString("descripcion"));
-                    promocionTemporal.setNombreProducto(resultado.getString("nombreProducto"));
-                    promocionTemporal.setIdProducto(resultado.getInt("idProducto"));
-                    promocionTemporal.setDescuento(resultado.getDouble("descuento"));
-                    promocionTemporal.setPrecioInicial(resultado.getDouble("precioInicial"));
-                    promocionTemporal.setPrecioFinal(resultado.getDouble("precioFinal"));
+                    promocionTemporal.setDescripcion(resultado.getString("descripcion"));           
                     promocionTemporal.setFechaInicio(resultado.getString("fechaInicia"));
                     promocionTemporal.setFechaTermino(resultado.getString("fechaTermino"));
                     promocionConsulta.add(promocionTemporal);
@@ -104,15 +85,18 @@ public class PromocionDAO {
         return respuesta;
     }
     
-    private static int registrarPromocion(Promocion promocionNueva){
+    public static int registrarPromocion(Promocion promocionNueva){
         int respuesta;
         Connection conexionBD = ConexionBD.abrirConexionBD();
         if(conexionBD != null){
             try{
-                String sentencia = "";
+                String sentencia = "insert into promocion (descripcion,fechaInicia,fechaTermino,imagen)"
+                        + "values (?,?,?,?)";
                 PreparedStatement prepararSetencia = conexionBD.prepareStatement(sentencia);
-                
-
+                prepararSetencia.setString(1,promocionNueva.getDescripcion());
+                prepararSetencia.setString(2,promocionNueva.getFechaInicio());
+                prepararSetencia.setString(3,promocionNueva.getFechaTermino());
+                prepararSetencia.setBytes(4,promocionNueva.getImagen());
                 
                 int filasAfectadas = prepararSetencia.executeUpdate();
                 respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : 

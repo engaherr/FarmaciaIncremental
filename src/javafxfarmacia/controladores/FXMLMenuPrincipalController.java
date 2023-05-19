@@ -39,7 +39,7 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     @FXML
     private void clicPromociones(ActionEvent event) {
-        Stage escenarioPromociones = (Stage) lbTitulo.getScene().getWindow();
+        Stage escenarioPromociones = new Stage ();
         escenarioPromociones.setScene(Utilidades.inicializaEscena("vistas/FXMLPromociones.fxml"));
         escenarioPromociones.setTitle("Lista de promociones");
         escenarioPromociones.initModality(Modality.APPLICATION_MODAL);
@@ -56,6 +56,14 @@ public class FXMLMenuPrincipalController implements Initializable {
         escenarioBase.setScene(Utilidades.inicializaEscena("vistas/FXMLInicioSesion.fxml"));
         escenarioBase.setTitle("Inicio de Sesión");
         escenarioBase.show();
+    }
+
+    @FXML
+    private void clicSiguiente(ActionEvent event) {
+    }
+
+    @FXML
+    private void clicAnterior(ActionEvent event) {
     }
     
 }

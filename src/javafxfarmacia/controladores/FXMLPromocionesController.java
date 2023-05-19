@@ -39,14 +39,7 @@ public class FXMLPromocionesController implements Initializable {
     @FXML
     private TableColumn colDescripcion;
     @FXML
-    private TableColumn colProducto;
-    @FXML
-    private TableColumn colPrecioActual;
-    @FXML
-    private TableColumn colDescuento;
-    @FXML
-    private TableColumn colPrecioFinal;
-    @FXML
+  
     private TableColumn colFechaInicio;
     @FXML
     private TableColumn colfechaTermino;
@@ -66,10 +59,6 @@ public class FXMLPromocionesController implements Initializable {
     
     private void configurarTabla(){
         colDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));
-        colProducto.setCellValueFactory(new PropertyValueFactory("nombreProducto"));
-        colDescuento.setCellValueFactory(new PropertyValueFactory("descuento"));
-        colPrecioActual.setCellValueFactory(new PropertyValueFactory("precioInicial"));
-        colPrecioFinal.setCellValueFactory(new PropertyValueFactory("precioFinal"));
         colFechaInicio.setCellValueFactory(new PropertyValueFactory("fechaInicio"));
         colfechaTermino.setCellValueFactory(new PropertyValueFactory("fechaTermino"));
     }
@@ -83,7 +72,7 @@ public class FXMLPromocionesController implements Initializable {
                 break;
             case Constantes.ERROR_CONSULTA:
                 Utilidades.mostrarDialogoSimple("Error al cargar los datos", "Hubo un error al cargar los datos"
-                        + "inténtelo más tarde", Alert.AlertType.WARNING);
+                        + " inténtelo más tarde", Alert.AlertType.WARNING);
                 break;
             case Constantes.OPERACION_EXITOSA:
                 promociones.addAll(respuestaBD.getPromociones());

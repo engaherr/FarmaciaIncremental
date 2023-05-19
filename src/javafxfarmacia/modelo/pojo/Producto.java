@@ -8,24 +8,16 @@ public class Producto {
     private int idProducto;
     private String nombre;
     private String fechaVencimiento;
-    private double precio;
+    private double precioUnitario;
     private boolean ventaControlada;
     private String nombreSucursal;
     private int idSucursal;
     private int cantidad;
     private String presentacion;
     
-    private double precioUnitario;
     private double precioFinal;
     private byte[] foto;
 
-    public double getPrecioFinal() {
-        return precioFinal;
-    }
-
-    public void setPrecioFinal(double precioFinal) {
-        this.precioFinal = precioFinal;
-    }
 
     public double getPrecioUnitario() {
         return precioUnitario;
@@ -35,23 +27,35 @@ public class Producto {
         this.precioUnitario = precioUnitario;
     }
 
-    public Producto(int idProducto, String nombre, String fechaVencimiento, double precio, boolean ventaControlada, String nombreSucursal, int idSucursal, int cantidad, String presentacion, byte[] foto) {
+    public Producto(int idProducto, String nombre, String fechaVencimiento, double precioUnitario, boolean ventaControlada, String nombreSucursal, int idSucursal, int cantidad, String presentacion, byte[] foto, double precioFinal) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.fechaVencimiento = fechaVencimiento;
-        this.precio = precio;
+        this.precioUnitario = precioUnitario;
         this.ventaControlada = ventaControlada;
         this.nombreSucursal = nombreSucursal;
         this.idSucursal = idSucursal;
         this.cantidad = cantidad;
         this.presentacion = presentacion;
         this.foto = foto;
+        this.precioFinal = precioFinal;
     }
     
 
     public Producto() {
+
     }
 
+    public double getPrecioFinal() {
+        return precioFinal;
+    }
+
+    public void setPrecioFinal(double precioFinal) {
+        this.precioFinal = precioFinal;
+    }
+
+    
+    
     public int getIdProducto() {
         return idProducto;
     }
@@ -77,11 +81,11 @@ public class Producto {
     }
 
     public double getPrecio() {
-        return precio;
+        return precioUnitario;
     }
 
     public void setPrecio(double precio) {
-        this.precio = precio;
+        this.precioUnitario = precio;
     }
 
     public boolean isVentaControlada() {
@@ -131,5 +135,10 @@ public class Producto {
     public void setFoto(byte[] foto) {
         this.foto = foto;
     }
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
     
 }

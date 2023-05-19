@@ -16,26 +16,27 @@
             <Font name="Microsoft JhengHei" size="41.0" />
          </font>
       </Text>
-      <Button layoutX="628.0" layoutY="134.0" mnemonicParsing="false" onAction="#clicRegistrarPromocion" prefHeight="40.0" prefWidth="125.0" style="-fx-background-color: #5FAD56;" styleClass="5FAD56" text="Registrar" textFill="WHITE">
+      <Button layoutX="615.0" layoutY="586.0" mnemonicParsing="false" onAction="#clicRegistrarPromocion" prefHeight="51.0" prefWidth="138.0" style="-fx-background-color: #5FAD56;" styleClass="5FAD56" text="Registrar" textFill="WHITE">
          <font>
-            <Font name="Microsoft JhengHei Light" size="18.0" />
+            <Font name="System Bold Italic" size="24.0" />
          </font>
       </Button>
-      <Button layoutX="813.0" layoutY="134.0" mnemonicParsing="false" onAction="#clicModiificarPromocion" prefHeight="40.0" prefWidth="125.0" style="-fx-background-color: #4E8098;" text="Modificar" textFill="WHITE" />
-      <Button graphicTextGap="6.0" layoutX="1002.0" layoutY="134.0" mnemonicParsing="false" onAction="#clicEliminarPromocion" prefHeight="40.0" prefWidth="125.0" style="-fx-background-color: F25D58;" text="Eliminar" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">
+      <Button layoutX="789.0" layoutY="586.0" mnemonicParsing="false" onAction="#clicModiificarPromocion" prefHeight="51.0" prefWidth="149.0" style="-fx-background-color: #4E8098;" text="Modificar" textFill="WHITE">
          <font>
-            <Font name="Microsoft JhengHei Light" size="18.0" />
+            <Font name="System Bold Italic" size="24.0" />
+         </font></Button>
+      <Button graphicTextGap="6.0" layoutX="989.0" layoutY="586.0" mnemonicParsing="false" onAction="#clicEliminarPromocion" prefHeight="51.0" prefWidth="138.0" style="-fx-background-color: F25D58;" text="Eliminar" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_WORD_ELLIPSIS">
+         <font>
+            <Font name="System Bold Italic" size="24.0" />
          </font>
       </Button>
-      <TableView fx:id="tvPromociones" layoutX="45.0" layoutY="212.0" prefHeight="444.0" prefWidth="1085.0" style="-fx-background-color: F8F2DC;">
+      <TableView fx:id="tvPromociones" layoutX="45.0" layoutY="212.0" prefHeight="324.0" prefWidth="1085.0" style="-fx-background-color: F8F2DC;">
         <columns>
-          <TableColumn fx:id="colDescripcion" prefWidth="247.0" text="Descripcion" />
-            <TableColumn fx:id="colProducto" prefWidth="165.0" text="Producto" />
-            <TableColumn fx:id="colPrecioActual" prefWidth="138.0" text="Precio inicial" />
-            <TableColumn fx:id="colDescuento" prefWidth="123.0" text="Descuento " />
-            <TableColumn fx:id="colPrecioFinal" prefWidth="137.0" text="Precio final" />
-            <TableColumn fx:id="colFechaInicio" prefWidth="130.0" text="Fecha inicio" />
-            <TableColumn fx:id="colfechaTermino" prefWidth="144.0" text="Fecha término" />
+          <TableColumn fx:id="colDescripcion" prefWidth="286.0" text="Descripcion" />
+            <TableColumn fx:id="colProducto" prefWidth="164.0" text="Productos" />
+            <TableColumn fx:id="colPrecioFinal" prefWidth="136.0" text="Precio final" />
+            <TableColumn fx:id="colFechaInicio" prefWidth="137.0" text="Fecha inicio" />
+            <TableColumn fx:id="colfechaTermino" prefWidth="162.0" text="Fecha término" />
         </columns>
       </TableView>
       <Label layoutX="938.0" layoutY="33.0" text="Sucursal: Xalapa" textFill="WHITE">
