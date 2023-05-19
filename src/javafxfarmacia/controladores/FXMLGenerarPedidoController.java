@@ -235,8 +235,8 @@ private void clicAgregar(ActionEvent event) {
         productoEnCarrito.setCantidad(cantidad);
 
         // Calcular el precio unitario y el precio final
-        float precioUnitario = productoSeleccionado.getPrecio();
-        float precioFinal = precioUnitario * cantidad;
+        double precioUnitario = productoSeleccionado.getPrecio();
+        double precioFinal = precioUnitario * cantidad;
         productoEnCarrito.setPrecioUnitario(precioUnitario);
         productoEnCarrito.setPrecioFinal(precioFinal);
 
@@ -255,14 +255,14 @@ private void actualizarTablaCarrito() {
 
     // Calcular el precio final para cada producto y actualizar la lista 'carrito'
     for (Producto producto : listaCarrito) {
-        float precioFinal = producto.getPrecioUnitario() * producto.getCantidad();
+        double precioFinal = producto.getPrecioUnitario() * producto.getCantidad();
         producto.setPrecioFinal(precioFinal);
     }
 
     // Asignar la lista observable a la tabla
     tvCarrito.setItems(listaCarrito);
 
-    float sumaPrecios = 0;
+    double sumaPrecios = 0;
 
     // Calcular la suma de los precios finales
     for (Producto producto : listaCarrito) {

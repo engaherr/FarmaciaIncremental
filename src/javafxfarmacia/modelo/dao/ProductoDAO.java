@@ -29,6 +29,34 @@ public class ProductoDAO {
                                 "cantidad, presentacion, nombreSucursal, foto \n" +
                                 "from producto \n" +
                                 "inner join sucursal on idSucursal = sucursal_idSucursal order by fechaVencimiento asc;";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                ArrayList<Producto> productosConsulta = new ArrayList();
+                while(resultado.next()){
+                    Producto producto = new Producto();
+                    producto.setIdProducto(resultado.getInt("idProducto"));
+                    producto.setFechaVencimiento(resultado.getString("fechaVencimiento"));
+                    producto.setNombre(resultado.getString("nombre"));
+                    producto.setPrecio(resultado.getDouble("precio"));
+                    producto.setVentaControlada(resultado.getBoolean("ventaControlada"));
+                    producto.setIdSucursal(resultado.getInt("sucursal_idSucursal"));
+                    producto.setNombreSucursal(resultado.getString("nombreSucursal"));
+                    producto.setCantidad(resultado.getInt("cantidad"));
+                    producto.setPresentacion(resultado.getString("presentacion"));
+                    producto.setFoto(resultado.getBytes("foto"));
+                    productosConsulta.add(producto);
+                }
+                respuesta.setProductos(productosConsulta);
+                conexionBD.close();
+            } catch (SQLException e) {
+                respuesta.setCodigoRespuesta(Constantes.ERROR_CONSULTA);
+            }
+        }else{
+            respuesta.setCodigoRespuesta(Constantes.ERROR_CONEXION);
+        }
+        return respuesta;
+    }
+    
     public static ProductoRespuesta obtenerInformacionProducto(int idProducto){
     ProductoRespuesta respuesta = new ProductoRespuesta();
     Connection conexionBD = ConexionBD.abrirConexionBD();
@@ -50,7 +78,7 @@ public class ProductoDAO {
                     producto.setCantidad(resultado.getInt("cantidad"));
                     producto.setPresentacion(resultado.getString("presentacion"));
                     producto.setFoto(resultado.getBytes("foto"));
-                    productosConsulta.add(producto);
+                    productos.add(producto);
                 }
                 respuesta.setProductos(productos);
                 respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
