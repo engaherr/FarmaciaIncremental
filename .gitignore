@@ -1,8 +1,46 @@
+# Archivos y directorios de compilacion
+/target/
 /build/
-/dist/
-/nbproject/
-*.properties
 /nbproject/private/
-/*.class
-/*.jar
-/src/javafxfarmacia/modelo/ConexionBD.java
+/dist/
+/classes/
+*.class
+*.log
+
+#Archivos de configuracion de IDE's
+/.classpath
+/.project
+/.settings/
+/.idea/
+*.iml
+*.ipr
+*.iws
+
+#Archivos de configuracion local o especificos del usuario
+private.properties
+
+#Archivos y directorios del sistema operativo 
+.DS_Store
+Thumbs.db
+
+#Archivos temporales
+*.tmp
+*.bak
+*.swp
+*.swo
+*~
+
+#Archivos de paquetes
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+.rar
+
+#Archivos especificos de NetBeans
+/nbproject/Makefile-.mk
+/nbproject/Package-*.bash
+/nbproject/build-impl.xml
+
+dist/
