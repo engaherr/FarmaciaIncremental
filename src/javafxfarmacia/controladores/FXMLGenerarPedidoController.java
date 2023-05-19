@@ -4,6 +4,7 @@ import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -33,12 +34,14 @@ import javafxfarmacia.modelo.pojo.TipoRespuesta;
 import javafxfarmacia.utils.Constantes;
 import javafxfarmacia.utils.Utilidades;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -48,6 +51,9 @@ import static javafxfarmacia.modelo.dao.PedidoDAO.guardarPedidoExterno;
 import static javafxfarmacia.modelo.dao.PedidoDAO.guardarPedidoInterno;
 import javafxfarmacia.modelo.pojo.Pedido;
 import javafxfarmacia.modelo.pojo.PedidoRespuesta;
+import org.controlsfx.control.textfield.AutoCompletionBinding;
+import org.controlsfx.control.textfield.TextFields;
+
 
 
 
@@ -66,7 +72,6 @@ public class FXMLGenerarPedidoController implements Initializable {
     private TableView<Producto> tvCarrito;
     @FXML
     private DatePicker dpDiaEntrega;
-    @FXML
     private TextField tfBusqueda;
     private ObservableList<Producto> productosBusqueda;
 
@@ -92,12 +97,37 @@ public class FXMLGenerarPedidoController implements Initializable {
     private ObservableList<Pedido> proveedoresExternos;
     private ObservableList<Pedido> todosLosProveedores;
     private String tipoProveedor;
+    
+ private ObservableList<String> possibleSuggestions;
+
+
+    @FXML
+    private TextField autoTextField;
+
 
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    
+     public void initialize(URL url, ResourceBundle rb) {
+    ProductoRespuesta respuestaProductos = ProductoDAO.obtenerInformacionProducto(0);
+    if (respuestaProductos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
+        productos = FXCollections.observableArrayList();
+        productos.addAll(respuestaProductos.getProductos());
+
+        // Obtener los nombres de los productos y almacenarlos en un ObservableList
+        possibleSuggestions = FXCollections.observableArrayList(
+            productos.stream()
+                .map(Producto::getNombre)
+                .collect(Collectors.toList())
+        );
+
+        // Asignar las sugerencias al campo de búsqueda
+        TextFields.bindAutoCompletion(autoTextField, possibleSuggestions);
+    }
+
         rbInternos.setSelected(true);
         proveedoresInternos = FXCollections.observableArrayList();
+        
     // Obtener los proveedores internos utilizando PedidoDAO
     PedidoRespuesta respuesta = PedidoDAO.obtenerProveedoresInternos();
     if (respuesta.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
@@ -145,7 +175,7 @@ if (respuestaExternos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
     
     });
         // Agrega el listener para la búsqueda del producto
-        tfBusqueda.setOnKeyReleased(this::buscarProducto);
+       
         cbProveedor.setItems(proveedoresInternos);
 
         todosLosProveedores = FXCollections.observableArrayList();
@@ -333,29 +363,8 @@ private void clicEliminar(ActionEvent event) {
     }
 }
 
-private void buscarProducto(KeyEvent event) {
-    String busqueda = tfBusqueda.getText();
-    productosBusqueda = FXCollections.observableArrayList();
-    ProductoRespuesta respuestaBD = ProductoDAO.obtenerInformacionBusqueda(busqueda);
-    switch (
 
-respuestaBD.getCodigoRespuesta()) {
-case Constantes.ERROR_CONEXION:
-Utilidades.mostrarDialogoSimple("Sin conexión",
-"No se pudo conectar con la base de datos. Intente de nuevo o hágalo más tarde",
-Alert.AlertType.ERROR);
-break;
-case Constantes.ERROR_CONSULTA:
-Utilidades.mostrarDialogoSimple("Error al cargar los datos",
-"Hubo un error al cargar la información, por favor inténtelo de nuevo más tarde",
-Alert.AlertType.WARNING);
-break;
-case Constantes.OPERACION_EXITOSA:
-productosBusqueda.addAll(respuestaBD.getProductos());
-cbProducto.setItems(FXCollections.observableList(productosBusqueda));
-break;
-}
-}
+
 
 
 
@@ -419,13 +428,31 @@ public static <T> void makeComboBoxSearchable(ComboBox<T> comboBox, Function<T, 
             }
     }
 
-    @FXML
     private void clicRegresar(MouseEvent event) {
    
        Stage escenarioPrincipal = (Stage) cbProducto.getScene().getWindow();
         escenarioPrincipal.close();
     }
-    
+
+ @FXML
+private void clicBuscarProducto(KeyEvent event) {
+    if (event.getCode() == KeyCode.ENTER) {
+        String texto = autoTextField.getText();
+        Producto productoSeleccionado = productos.stream()
+                .filter(p -> p.getNombre().equalsIgnoreCase(texto))
+                .findFirst()
+                .orElse(null);
+        
+        if (productoSeleccionado != null) {
+            cbProducto.getSelectionModel().select(productoSeleccionado);
+            autoTextField.clear();
+        }
+    }
 }
+
+}
+
+    
+
 
 
