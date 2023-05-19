@@ -18,6 +18,24 @@ public class Producto {
     private int cantidad;
     private String presentacion;
     
+    private double precioUnitario;
+    private double precioFinal;
+
+    public double getPrecioFinal() {
+        return precioFinal;
+    }
+
+    public void setPrecioFinal(double precioFinal) {
+        this.precioFinal = precioFinal;
+    }
+
+    public double getPrecioUnitario() {
+        return precioUnitario;
+    }
+
+    public void setPrecioUnitario(double precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
 
     public Producto() {
     }

@@ -4,6 +4,8 @@
  */
 package javafxfarmacia.modelo.pojo;
 
+import javafxfarmacia.modelo.dao.PedidoDAO.TipoProveedor;
+
 /**
  *
  * @author dplat
@@ -16,18 +18,77 @@ public class Pedido {
     private String fecha_entrega;
     private int cantidad;
     private String estado;
-    
-    public Pedido() {
-    }
+    private float total;
+    private int idProducto;
+    private int idProveedor;
+    private int idSucursal;
+private TipoProveedor tipoProveedor;
 
-    public Pedido(int idPedido, String nombre, String fecha_pedido, String fecha_entrega, int cantidad, String estado) {
+
+
+    public Pedido(int idPedido, String nombre, String fecha_pedido, String fecha_entrega, int cantidad, String estado, float total, int idProducto, int idProveedor, int idSucursal, TipoProveedor tipoProveedor) {
         this.idPedido = idPedido;
         this.nombre = nombre;
         this.fecha_pedido = fecha_pedido;
         this.fecha_entrega = fecha_entrega;
         this.cantidad = cantidad;
         this.estado = estado;
+        this.total = total;
+        this.idProducto = idProducto;
+        this.idProveedor = idProveedor;
+        this.idSucursal = idSucursal;
+        this.tipoProveedor = tipoProveedor;
     }
+
+    public TipoProveedor getTipoProveedor() {
+        return tipoProveedor;
+    }
+
+    public void setTipoProveedor(TipoProveedor TipoProveedor) {
+        this.tipoProveedor = TipoProveedor;
+    }
+    
+
+    public int getIdSucursal() {
+        return idSucursal;
+    }
+
+    public void setIdSucursal(int idSucursal) {
+        this.idSucursal = idSucursal;
+    }
+
+
+
+    public int getIdProveedor() {
+        return idProveedor;
+    }
+
+    public void setIdProveedor(int idProveedor) {
+        this.idProveedor = idProveedor;
+    }
+
+ 
+
+    public int getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
+    
+    public Pedido() {
+    }
+
+
     
     public int getIdPedido() {
         return idPedido;

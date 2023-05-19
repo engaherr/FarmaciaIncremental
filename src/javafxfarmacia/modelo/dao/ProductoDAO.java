@@ -29,31 +29,39 @@ public class ProductoDAO {
                                 "cantidad, presentacion, nombreSucursal \n" +
                                 "from producto \n" +
                                 "inner join sucursal on idSucursal = sucursal_idSucursal order by fechaVencimiento asc;";
+    public static ProductoRespuesta obtenerInformacionProducto(int idProducto){
+    ProductoRespuesta respuesta = new ProductoRespuesta();
+    Connection conexionBD = ConexionBD.abrirConexionBD();
+      if(conexionBD != null){
+            try{
+                String consulta = "SELECT idProducto,nombre,precio FROM producto";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 ResultSet resultado = prepararSentencia.executeQuery();
-                ArrayList<Producto> productosConsulta = new ArrayList();
+                ArrayList <Producto> productos = new ArrayList();
+                
                 while(resultado.next()){
                     Producto producto = new Producto();
                     producto.setIdProducto(resultado.getInt("idProducto"));
-                    producto.setFechaVencimiento(resultado.getString("fechaVencimiento"));
                     producto.setNombre(resultado.getString("nombre"));
-                    producto.setPrecio(resultado.getDouble("precio"));
-                    producto.setVentaControlada(resultado.getBoolean("ventaControlada"));
-                    producto.setIdSucursal(resultado.getInt("sucursal_idSucursal"));
-                    producto.setNombreSucursal(resultado.getString("nombreSucursal"));
-                    producto.setCantidad(resultado.getInt("cantidad"));
-                    producto.setPresentacion(resultado.getString("presentacion"));
-                    productosConsulta.add(producto);
+                    producto.setPrecio(resultado.getFloat("precio"));
+                    productos.add(producto);
+                    
+                
                 }
-                respuesta.setProductos(productosConsulta);
+                respuesta.setProductos(productos);
+                respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
+
                 conexionBD.close();
-            } catch (SQLException e) {
+          
+                
+            }catch(SQLException ex){
                 respuesta.setCodigoRespuesta(Constantes.ERROR_CONSULTA);
             }
         }else{
             respuesta.setCodigoRespuesta(Constantes.ERROR_CONEXION);
         }
         return respuesta;
+   
     }
     
     public static ProductoRespuesta obtenerInformacionBusqueda(String busqueda){
@@ -122,4 +130,7 @@ public class ProductoDAO {
         }
         return respuesta;
     }
+    
+    
+    
 }

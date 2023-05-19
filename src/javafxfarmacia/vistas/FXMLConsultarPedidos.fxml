@@ -27,12 +27,12 @@
       </ImageView>
       <TableView fx:id="tvPedidos" layoutX="66.0" layoutY="119.0" prefHeight="430.0" prefWidth="1026.0" style="-fx-background-color: #f8f2dc;">
         <columns>
-          <TableColumn fx:id="colPedido" prefWidth="170.0" text="ID pedido" />
-          <TableColumn fx:id="colEstado" prefWidth="170.0" text="Estado" />
-            <TableColumn fx:id="colProducto" prefWidth="170.0" text="Productos" />
-            <TableColumn fx:id="colCantidad" prefWidth="170.0" text="Cantidad" />
-            <TableColumn fx:id="colFechaPedido" prefWidth="170.0" text="Fecha de pedido" />
-            <TableColumn fx:id="colFechaEntrega" prefWidth="175.0" text="Fecha de entrega" />
+          <TableColumn fx:id="colPedido" prefWidth="170.0" sortType="DESCENDING" text="ID pedido" />
+          <TableColumn fx:id="colEstado" prefWidth="170.0" sortType="DESCENDING" text="Estado" />
+            <TableColumn fx:id="colProducto" prefWidth="170.0" sortType="DESCENDING" text="Productos" />
+            <TableColumn fx:id="colCantidad" prefWidth="170.0" sortType="DESCENDING" text="Cantidad" />
+            <TableColumn fx:id="colFechaPedido" prefWidth="170.0" sortType="DESCENDING" text="Fecha de pedido" />
+            <TableColumn fx:id="colFechaEntrega" prefWidth="175.0" sortType="DESCENDING" text="Fecha de entrega" />
         </columns>
       </TableView>
       <Button disable="true" layoutX="176.0" layoutY="570.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="303.0" style="-fx-background-color: #4E8098;" text="Modificar" textFill="WHITE">

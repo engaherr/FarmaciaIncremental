@@ -11,7 +11,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="593.0" prefWidth="365.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLFacturaController">
    <children>
-      <Label layoutX="118.0" layoutY="14.0" text="Factura">
+      <Label layoutX="63.0" layoutY="6.0" text="Comprobante">
          <font>
             <Font name="Bell MT" size="40.0" />
          </font>
