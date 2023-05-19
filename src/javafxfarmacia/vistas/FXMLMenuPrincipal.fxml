@@ -7,16 +7,16 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0" style="-fx-background-color: #2e2f40;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLMenuPrincipalaController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0" style="-fx-background-color: #2e2f40;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLMenuPrincipalController">
    <children>
-      <Label fx:id="lbTitulo" layoutX="154.0" layoutY="41.0" prefHeight="51.0" prefWidth="392.0" text="Bienvenido, encargado " textFill="#fffdfd">
+      <Label fx:id="lbTitulo" layoutX="14.0" layoutY="25.0" prefHeight="51.0" prefWidth="392.0" text="Bienvenido, encargado." textFill="#fffdfd">
          <font>
             <Font name="Microsoft JhengHei Light" size="36.0" />
          </font>
       </Label>
-      <Button layoutX="254.0" layoutY="366.0" mnemonicParsing="false" onAction="#clicPromociones" prefHeight="50.0" prefWidth="192.0" style="-fx-background-color: #f25d59;" text="Promociones" textFill="WHITE">
+      <Button alignment="CENTER_RIGHT" layoutX="253.0" layoutY="377.0" mnemonicParsing="false" onAction="#clicPromociones" prefHeight="84.0" prefWidth="207.0" style="-fx-background-color: #f25d59;" text="Promociones" textAlignment="RIGHT" textFill="#1e0d0d">
          <font>
-            <Font size="18.0" />
+            <Font name="System Bold Italic" size="18.0" />
          </font>
          <effect>
             <DropShadow color="#a49595" height="30.0" radius="14.5" width="30.0" />
@@ -27,9 +27,34 @@
             <Glow level="0.5" />
          </effect>
       </Button>
-      <ImageView fitHeight="190.0" fitWidth="289.0" layoutX="247.0" layoutY="122.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="166.0" fitWidth="215.0" layoutX="243.0" layoutY="152.0" pickOnBounds="true">
          <image>
-            <Image url="@../recursos/WhatsApp%20Image%202023-05-05%20at%208.19.43%20AM.jpeg" />
+            <Image url="@../recursos/farmacia.png" />
+         </image></ImageView>
+      <Label layoutX="63.0" layoutY="86.0" text="¡Dale un vistazo a las promociones del mes!" textFill="#f8f8f8">
+         <font>
+            <Font name="System Bold Italic" size="28.0" />
+         </font>
+      </Label>
+      <Button layoutX="570.0" layoutY="185.0" mnemonicParsing="false" onAction="#clicSiguiente" prefHeight="101.0" prefWidth="62.0" style="-fx-background-color: #2e2f40;" text="&gt;" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="30.0" />
+         </font>
+         <effect>
+            <Glow level="0.25" />
+         </effect>
+      </Button>
+      <Button layoutX="74.0" layoutY="185.0" mnemonicParsing="false" onAction="#clicAnterior" prefHeight="101.0" prefWidth="62.0" style="-fx-background-color: #2e2f40;" text="&lt;" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="30.0" />
+         </font>
+         <effect>
+            <Glow level="0.25" />
+         </effect>
+      </Button>
+      <ImageView fitHeight="69.0" fitWidth="75.0" layoutX="258.0" layoutY="385.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/promocion.png" />
          </image>
       </ImageView>
    </children>
