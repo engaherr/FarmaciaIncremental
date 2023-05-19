@@ -11,9 +11,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0" style="-fx-background-color: #1b1b1b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLReadquisicionController">
    <children>
-      <ImageView blendMode="OVERLAY" fitHeight="491.0" fitWidth="726.0" layoutX="-16.0" layoutY="-18.0">
+      <ImageView fitHeight="691.0" fitWidth="771.0" layoutX="-39.0" layoutY="-43.0" opacity="0.72" pickOnBounds="true">
          <image>
-            <Image url="@../../../../../../../../AppData/Local/Temp/istockphoto-1362422378-170667a.jpg" />
+            <Image url="@../recursos/fondoDegradado2.png" />
          </image>
       </ImageView>
       <Label fx:id="lbTitulo" layoutX="61.0" layoutY="14.0" prefHeight="51.0" prefWidth="513.0" text="Readquisición con proveedor" textFill="#fffdfd">

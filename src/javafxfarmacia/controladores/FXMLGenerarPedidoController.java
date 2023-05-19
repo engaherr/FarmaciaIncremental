@@ -428,6 +428,7 @@ public static <T> void makeComboBoxSearchable(ComboBox<T> comboBox, Function<T, 
             }
     }
 
+    @FXML
     private void clicRegresar(MouseEvent event) {
    
        Stage escenarioPrincipal = (Stage) cbProducto.getScene().getWindow();

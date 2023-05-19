@@ -16,7 +16,7 @@
             <Image url="@../recursos/fondoDegradado1.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="65.0" fitWidth="29.0" layoutX="42.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="65.0" fitWidth="29.0" layoutX="42.0" layoutY="20.0" onMouseClicked="#clicRegresar" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../recursos/vectorRegresar.png" />
          </image>
