@@ -4,15 +4,10 @@
  */
 package javafxfarmacia.controladores;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -21,6 +16,19 @@ import javafxfarmacia.modelo.pojo.Pedido;
 import javafxfarmacia.modelo.pojo.PedidoRespuesta;
 import javafxfarmacia.utils.Constantes;
 import javafxfarmacia.utils.Utilidades;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.util.Callback;
+import java.net.URL;
+import java.time.LocalDate;
+import java.util.ResourceBundle;
+import javafx.scene.control.TableRow;
 
 /**
  * FXML Controller class
@@ -31,8 +39,7 @@ public class FXMLConsultarPedidosController implements Initializable {
 
     @FXML
     private TableView<Pedido> tvPedidos;
-    @FXML
-    private TableColumn colEstado;
+
     @FXML
     private TableColumn colFechaPedido;
     @FXML
@@ -44,7 +51,7 @@ private ObservableList<Pedido> pedidos;
     private TableColumn<?, ?> colProductosCombinados;
     @FXML
     private TableColumn<?, ?> colProveedor;
-    
+    TableColumn<Pedido, ImageView> colEstado = new TableColumn<>("Estado");
    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -52,11 +59,79 @@ private ObservableList<Pedido> pedidos;
         cargarInformacionTabla();
     }    
     
+    
+    
+    
    public void configurarTabla() {
     colFechaPedido.setCellValueFactory(new PropertyValueFactory<>("fecha_pedido"));
     colFechaEntrega.setCellValueFactory(new PropertyValueFactory<>("fecha_entrega"));
     colProveedor.setCellValueFactory(new PropertyValueFactory<>("nombre_proveedor"));
     colProductosCombinados.setCellValueFactory(new PropertyValueFactory<>("productos_combinados"));
+    colEstado.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Pedido, ImageView>, ObservableValue<ImageView>>() {
+    @Override
+    public ObservableValue<ImageView> call(TableColumn.CellDataFeatures<Pedido, ImageView> param) {
+        Pedido pedido = param.getValue();
+        ImageView imageView = new ImageView();
+
+        // Obtener la fecha actual
+        LocalDate fechaActual = LocalDate.now();
+
+        // Obtener la fecha en la columna colFechaPedido
+        LocalDate fechaPedido = LocalDate.parse(pedido.getFecha_pedido());
+         LocalDate fechaEntrega = LocalDate.parse(pedido.getFecha_entrega());
+
+        // Verificar si la fecha es igual a la fecha actual
+     if (fechaPedido.isEqual(fechaActual)) {
+            // Cargar imagen para mostrar
+            Image imagenEstado = new Image("javafxfarmacia/recursos/stepper1.png");
+            imageView.setImage(imagenEstado);
+             double anchoDeseado = 286; 
+            double altoDeseado = 80; 
+            imageView.setFitWidth(anchoDeseado);
+            imageView.setFitHeight(altoDeseado);
+        } else if (fechaEntrega.isEqual(fechaActual)  || fechaEntrega.isBefore(fechaActual)) {
+            // Cargar otra imagen si la fecha de entrega es igual a la fecha actual
+            Image otraImagen = new Image("javafxfarmacia/recursos/stepper3.png");
+            imageView.setImage(otraImagen);
+            double anchoDeseado = 286; 
+            double altoDeseado = 82; 
+            imageView.setFitWidth(anchoDeseado);
+            imageView.setFitHeight(altoDeseado);
+        } else {
+            // Cargar imagen por defecto si no cumple ninguna de las condiciones anteriores
+            Image imagenDefault = new Image("javafxfarmacia/recursos/stepper2.png");
+            imageView.setImage(imagenDefault);
+            double anchoDeseado = 286; 
+            double altoDeseado = 82; 
+            imageView.setFitWidth(anchoDeseado);
+            imageView.setFitHeight(altoDeseado);
+        }
+
+
+        return new SimpleObjectProperty<>(imageView);
+        
+    }
+});
+
+ tvPedidos.getColumns().add(colEstado);
+ 
+ // Establecer estilo de la tabla
+tvPedidos.setStyle("-fx-background-color: #f8f2dc;");
+
+// Establecer estilo de las filas
+tvPedidos.setRowFactory(tv -> {
+    TableRow<Pedido> row = new TableRow<>();
+    row.setStyle("-fx-background-color: #f8f2dc;");
+    return row;
+});
+
+// Establecer estilo de los encabezados de columna
+colFechaPedido.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40; -fx-border-width: 1px;");
+colFechaEntrega.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40;-fx-border-width: 1px;");
+colProveedor.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40;-fx-border-width: 1px;");
+colProductosCombinados.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40;-fx-border-width: 1px;");
+colEstado.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40;-fx-border-width: 1px;");
+
 }
 
     
