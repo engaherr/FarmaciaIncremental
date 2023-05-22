@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="670.0" prefWidth="1175.0" style="-fx-background-color: #1b1b1b;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="javafxfarmacia.controladores.FXMLDetallesPedidoController">
+   <children>
+      <Label layoutX="99.0" layoutY="15.0" prefHeight="70.0" prefWidth="631.0" text="Detalles del pedido" textFill="WHITE">
+         <font>
+            <Font name="Microsoft JhengHei Light" size="54.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="65.0" fitWidth="29.0" layoutX="52.0" layoutY="30.0" onMouseClicked="#clicRegresar" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/vectorRegresar.png" />
+         </image>
+      </ImageView>
+      <TableView layoutX="50.0" layoutY="185.0" prefHeight="428.0" prefWidth="360.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Cantidad" />
+          <TableColumn prefWidth="131.0" text="Producto" />
+            <TableColumn prefWidth="93.0" text="Precio unitario" />
+        </columns>
+      </TableView>
+      <Label layoutX="55.0" layoutY="121.0" text="Productos:" textFill="WHITE">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Label>
+      <Label layoutX="477.0" layoutY="182.0" text="Identificador:" textFill="WHITE">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Label>
+      <Label layoutX="477.0" layoutY="253.0" text="Proveedor:" textFill="WHITE">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Label>
+      <Label layoutX="477.0" layoutY="321.0" text="Fecha de pedido:" textFill="WHITE">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Label>
+      <Label layoutX="477.0" layoutY="398.0" text="Fecha de entrega:" textFill="WHITE">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Label>
+      <Label layoutX="477.0" layoutY="480.0" text="Pedido realizado por:" textFill="WHITE">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Label>
+      <Label layoutX="491.0" layoutY="561.0" text="Total:" textFill="WHITE">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="188.0" fitWidth="448.0" layoutX="680.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="lbIdentificador" layoutX="723.0" layoutY="187.0" textFill="WHITE">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbProveedor" layoutX="693.0" layoutY="257.0" textFill="WHITE">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbFechaPedido" layoutX="789.0" layoutY="325.0" prefHeight="46.0" prefWidth="145.0" textFill="WHITE">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbFechaEntrega" layoutX="794.0" layoutY="404.0" prefHeight="46.0" prefWidth="167.0" textFill="WHITE">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbUsuario" layoutX="838.0" layoutY="482.0" textFill="WHITE">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+      <Label fx:id="lbTotal" layoutX="618.0" layoutY="564.0" textFill="WHITE">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

@@ -4,6 +4,7 @@
  */
 package javafxfarmacia.modelo.pojo;
 
+import java.util.List;
 import javafxfarmacia.modelo.dao.PedidoDAO.TipoProveedor;
 
 /**
@@ -22,11 +23,13 @@ public class Pedido {
     private int idProducto;
     private int idProveedor;
     private int idSucursal;
+    private String nombre_proveedor;
+    private String productos_combinados;
 private TipoProveedor tipoProveedor;
+private List<String> nombreProductos;
+private List<Integer> cantidadProductos;
 
-
-
-    public Pedido(int idPedido, String nombre, String fecha_pedido, String fecha_entrega, int cantidad, String estado, float total, int idProducto, int idProveedor, int idSucursal, TipoProveedor tipoProveedor) {
+    public Pedido(int idPedido, String nombre, String fecha_pedido, String fecha_entrega, int cantidad, String estado, float total, int idProducto, int idProveedor, int idSucursal, String nombre_proveedor, String productos_combinados, TipoProveedor tipoProveedor, List<String> nombreProductos, List<Integer> cantidadProductos) {
         this.idPedido = idPedido;
         this.nombre = nombre;
         this.fecha_pedido = fecha_pedido;
@@ -37,8 +40,53 @@ private TipoProveedor tipoProveedor;
         this.idProducto = idProducto;
         this.idProveedor = idProveedor;
         this.idSucursal = idSucursal;
+        this.nombre_proveedor = nombre_proveedor;
+        this.productos_combinados = productos_combinados;
         this.tipoProveedor = tipoProveedor;
+        this.nombreProductos = nombreProductos;
+        this.cantidadProductos = cantidadProductos;
     }
+
+
+
+    public List<String> getNombreProductos() {
+        return nombreProductos;
+    }
+
+    public void setNombreProductos(List<String> nombreProductos) {
+        this.nombreProductos = nombreProductos;
+    }
+
+    public List<Integer> getCantidadProductos() {
+        return cantidadProductos;
+    }
+
+    public void setCantidadProductos(List<Integer> cantidadProductos) {
+        this.cantidadProductos = cantidadProductos;
+    }
+
+    public String getNombre_proveedor() {
+        return nombre_proveedor;
+    }
+
+    public void setNombre_proveedor(String nombre_proveedor) {
+        this.nombre_proveedor = nombre_proveedor;
+    }
+
+    public String getProductos_combinados() {
+        return productos_combinados;
+    }
+
+    public void setProductos_combinados(String productos_combinados) {
+        this.productos_combinados = productos_combinados;
+    }
+    
+    
+
+    
+
+
+
 
     public TipoProveedor getTipoProveedor() {
         return tipoProveedor;

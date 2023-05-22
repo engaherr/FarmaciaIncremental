@@ -384,7 +384,7 @@ public static <T> void makeComboBoxSearchable(ComboBox<T> comboBox, Function<T, 
         }
     });
 
-    comboBox.setEditable(true);
+    comboBox.setEditable(false);
 
     final FilteredList<T> filteredItems = new FilteredList<>(comboBox.getItems(), item -> true);
     comboBox.setItems(filteredItems);

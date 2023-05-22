@@ -32,13 +32,7 @@ public class FXMLConsultarPedidosController implements Initializable {
     @FXML
     private TableView<Pedido> tvPedidos;
     @FXML
-    private TableColumn colPedido;
-    @FXML
     private TableColumn colEstado;
-    @FXML
-    private TableColumn colProducto;
-    @FXML
-    private TableColumn colCantidad;
     @FXML
     private TableColumn colFechaPedido;
     @FXML
@@ -46,6 +40,10 @@ public class FXMLConsultarPedidosController implements Initializable {
 
     
 private ObservableList<Pedido> pedidos;
+    @FXML
+    private TableColumn<?, ?> colProductosCombinados;
+    @FXML
+    private TableColumn<?, ?> colProveedor;
     
    
     @Override
@@ -54,30 +52,27 @@ private ObservableList<Pedido> pedidos;
         cargarInformacionTabla();
     }    
     
-    public void configurarTabla(){
-    colCantidad.setCellValueFactory(new PropertyValueFactory("cantidad"));
-    colFechaEntrega.setCellValueFactory(new PropertyValueFactory("fecha_entrega"));
-    colFechaPedido.setCellValueFactory(new PropertyValueFactory("fecha_pedido"));
-    colProducto.setCellValueFactory(new PropertyValueFactory("nombre"));
-    colEstado.setCellValueFactory(new PropertyValueFactory("estado"));
-    colPedido.setCellValueFactory(new PropertyValueFactory("IdPedido"));
+   public void configurarTabla() {
+    colFechaPedido.setCellValueFactory(new PropertyValueFactory<>("fecha_pedido"));
+    colFechaEntrega.setCellValueFactory(new PropertyValueFactory<>("fecha_entrega"));
+    colProveedor.setCellValueFactory(new PropertyValueFactory<>("nombre_proveedor"));
+    colProductosCombinados.setCellValueFactory(new PropertyValueFactory<>("productos_combinados"));
+}
+
     
     
-    }
-    
-    
-    public void cargarInformacionTabla(){
+    public void cargarInformacionTabla() {
     pedidos = FXCollections.observableArrayList();
     PedidoRespuesta respuestaBD = PedidoDAO.obtenerInformacionPedido();
-    switch(respuestaBD.getCodigoRespuesta()){
+    switch (respuestaBD.getCodigoRespuesta()) {
         case Constantes.ERROR_CONEXION:
-            Utilidades.mostrarDialogoSimple("Sin conexion", 
+            Utilidades.mostrarDialogoSimple("Sin conexión", 
                     "No se pudo conectar con la base de datos. Intente de nuevo o hágalo más tarde",
                     Alert.AlertType.ERROR);
             break;
         case Constantes.ERROR_CONSULTA:
             Utilidades.mostrarDialogoSimple("Error al cargar los datos", 
-                    "Hubo un error al cargar la información por favor inténtelo de nuevo más tarde",
+                    "Hubo un error al cargar la información. Por favor, inténtelo de nuevo más tarde",
                     Alert.AlertType.WARNING);
             break;
         case Constantes.OPERACION_EXITOSA:
