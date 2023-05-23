@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -67,13 +68,10 @@ public class FXMLProductoFormularioController implements Initializable {
     private ObservableList<Sucursal> sucursales;
     private boolean esEdicion;
     private Producto productoEdicion;
-    private byte[] imagenBytes;
+    private File imagenSeleccionada;
     
     private INotificacionOperacion interfazNotificacion;
 
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         cargarInformacionSucursal();
@@ -153,17 +151,13 @@ public class FXMLProductoFormularioController implements Initializable {
         dialogoSeleccionImg.getExtensionFilters().add(filtroDialogo);
         
         Stage escenarioBase = (Stage) tfCantidad.getScene().getWindow();
-        File archivoSeleccionado = dialogoSeleccionImg.showOpenDialog(escenarioBase);
-        visualizarImagen(archivoSeleccionado);
-    }
-    
-    private void visualizarImagen(File imgSeleccionada) {
-        if(imgSeleccionada != null){
+        imagenSeleccionada = dialogoSeleccionImg.showOpenDialog(escenarioBase);
+        
+        if(imagenSeleccionada != null){
             try {
-                BufferedImage bufferImg = ImageIO.read(imgSeleccionada);
+                BufferedImage bufferImg = ImageIO.read(imagenSeleccionada);
                 Image imgDecodificada = SwingFXUtils.toFXImage(bufferImg, null);
                 ivFoto.setImage(imgDecodificada);
-                guardarImagen(bufferImg);
             } catch (IOException ex) {
                 Utilidades.mostrarDialogoSimple("Error con imagen",
                         "Hubo un error para mostrar la imagen seleccionada, inténtelo de nuevo",
@@ -172,18 +166,6 @@ public class FXMLProductoFormularioController implements Initializable {
         }
     }
     
-    private void guardarImagen(BufferedImage bufferImg){
-        try {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(bufferImg, "png", baos);
-            imagenBytes = baos.toByteArray();
-        } catch (IOException ex) {
-            Utilidades.mostrarDialogoSimple("Error con imagen",
-                        "Hubo un error para guardar la imagen seleccionada, inténtelo de nuevo",
-                        Alert.AlertType.ERROR);
-        }
-    }
-
     private void validarCamposRegistro() {
         String nombre = tfNombre.getText();
         String fechaVencimiento = tfFechaVencimiento.getText();
@@ -202,8 +184,25 @@ public class FXMLProductoFormularioController implements Initializable {
         productoValidado.setPrecio(precio);
         productoValidado.setPresentacion(presentacion);
         productoValidado.setVentaControlada(esVentaControlada);
-        productoValidado.setFoto(imagenBytes);
-        registrarProducto(productoValidado);
+        
+        try {
+            if(esEdicion){
+                if(imagenSeleccionada != null){
+                    productoValidado.setFoto(Files.readAllBytes(imagenSeleccionada.toPath()));
+                }else{
+                    productoValidado.setFoto(productoEdicion.getFoto());
+                }
+                productoValidado.setIdProducto(productoEdicion.getIdProducto());
+                actualizarProducto(productoValidado);
+            }else{
+                productoValidado.setFoto(Files.readAllBytes(imagenSeleccionada.toPath()));
+                registrarProducto(productoValidado);
+            }
+        } catch (IOException e) {
+            Utilidades.mostrarDialogoSimple("Error con imagen",
+                    "Hubo un error para guardar la imagen seleccionada, inténtelo de nuevo",
+                    Alert.AlertType.ERROR);
+        }
     }
     
     private void registrarProducto(Producto productoRegistro){
@@ -222,6 +221,29 @@ public class FXMLProductoFormularioController implements Initializable {
             case Constantes.OPERACION_EXITOSA:
                     Utilidades.mostrarDialogoSimple("Producto Registrado",
                             "El producto fue registrado exitosamente", 
+                            Alert.AlertType.INFORMATION);        
+                    interfazNotificacion.notificarOperacionGuardar();
+                    cerrarVentana();
+                break;
+        }
+    }
+    
+    private void actualizarProducto(Producto productoActualizar){
+        int codigoRespuesta = ProductoDAO.modificarProducto(productoActualizar);
+        switch(codigoRespuesta){
+            case Constantes.ERROR_CONEXION:
+                    Utilidades.mostrarDialogoSimple("Error de conexión",
+                            "Por el momento no hay conexión, por favor inténtelo más tarde"
+                            , Alert.AlertType.ERROR);
+                break;
+            case Constantes.ERROR_CONSULTA:
+                    Utilidades.mostrarDialogoSimple("Error de consulta", 
+                            "Hubo un error al cargar la información por favor intentélo de nuevo más tarde",
+                            Alert.AlertType.INFORMATION);
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                    Utilidades.mostrarDialogoSimple("Producto Actualizado",
+                            "La información del producto fue modificada correctamente", 
                             Alert.AlertType.INFORMATION);        
                     interfazNotificacion.notificarOperacionGuardar();
                     cerrarVentana();

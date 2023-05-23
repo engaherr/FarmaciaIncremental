@@ -172,8 +172,47 @@ public class ProductoDAO {
                 String sentencia = "update producto set nombre = ?, fechaVencimiento = ?,"
                         + " precio = ?, ventaControlada = ?, sucursal_idSucursal = ?, "
                         + "cantidad = ?, presentacion = ?, foto = ? where idProducto = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setString(1, productoEdicion.getNombre());
+                prepararSentencia.setString(2, productoEdicion.getFechaVencimiento());
+                prepararSentencia.setDouble(3,productoEdicion.getPrecio());
+                prepararSentencia.setBoolean(4, productoEdicion.isVentaControlada());
+                prepararSentencia.setInt(5, productoEdicion.getIdSucursal());
+                prepararSentencia.setInt(6, productoEdicion.getCantidad());
+                prepararSentencia.setString(7,productoEdicion.getPresentacion());
+                prepararSentencia.setBytes(8,productoEdicion.getFoto());
+                prepararSentencia.setInt(9, productoEdicion.getIdProducto());
+                int filasAfectadas = prepararSentencia.executeUpdate();
+                respuesta = (filasAfectadas == 1) ?
+                        Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+                conexionBD.close();
             } catch (SQLException e) {
+                respuesta = Constantes.ERROR_CONSULTA;
             }
+        }else{
+            respuesta = Constantes.ERROR_CONEXION;
         }
+        return respuesta;
+    }
+    
+    public static int eliminarProducto(int idProducto){
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                String sentencia = "delete from producto where idProducto = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setInt(1, idProducto);
+                int filasAfectadas = prepararSentencia.executeUpdate();
+                respuesta = (filasAfectadas == 1) ? 
+                        Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+                conexionBD.close();
+            }catch(SQLException e){
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
+        }else{
+            respuesta = Constantes.ERROR_CONEXION;
+        }
+        return respuesta;
     }
 }

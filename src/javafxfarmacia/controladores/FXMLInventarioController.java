@@ -8,8 +8,6 @@ import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -171,6 +169,32 @@ public class FXMLInventarioController implements Initializable, INotificacionOpe
 
     @FXML
     private void clicEliminar(ActionEvent event) {
+        int posicion = tvInventario.getSelectionModel().getSelectedIndex();
+        boolean borrarRegistro = Utilidades.mostrarDialogoConfirmacion("Eliminar Producto", 
+                "¿Eliminar Artículo del inventario?");
+        if(borrarRegistro){
+            int codigoRespuesta = ProductoDAO.eliminarProducto(productos.get(posicion).getIdProducto());
+            switch(codigoRespuesta){
+                case Constantes.ERROR_CONEXION:
+                    Utilidades.mostrarDialogoSimple("Error de Conexión",
+                            "El artículo no pudo ser eliminado debido a un error de conexión "
+                                    + "verifique su conexión e inténtelo más tarde",
+                            Alert.AlertType.ERROR);
+                    break;
+                case Constantes.ERROR_CONSULTA:
+                    Utilidades.mostrarDialogoSimple("Error al eliminar",
+                            "El artículo no pudo ser elimado, por favor inténtelo más tarde",
+                            Alert.AlertType.WARNING);
+                    break;
+                case Constantes.OPERACION_EXITOSA:
+                    Utilidades.mostrarDialogoSimple("Producto eliminado",
+                            "El artículo fue eliminado exitosamente del inventario",
+                            Alert.AlertType.INFORMATION);
+                    cargarInformacionTabla();
+                    break;
+            }
+            
+        }
     }
 
     @FXML
