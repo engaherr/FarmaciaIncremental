@@ -6,7 +6,6 @@ package javafxfarmacia.controladores;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -195,7 +194,10 @@ public class FXMLProductoFormularioController implements Initializable {
                 productoValidado.setIdProducto(productoEdicion.getIdProducto());
                 actualizarProducto(productoValidado);
             }else{
-                productoValidado.setFoto(Files.readAllBytes(imagenSeleccionada.toPath()));
+                if(imagenSeleccionada != null)
+                    productoValidado.setFoto(Files.readAllBytes(imagenSeleccionada.toPath()));
+                else
+                    productoValidado.setFoto(null);
                 registrarProducto(productoValidado);
             }
         } catch (IOException e) {
