@@ -65,7 +65,7 @@ public class ProductoDAO {
                 String consulta = "select idProducto, nombre, fechaVencimiento, precio, ventaControlada, sucursal_idSucursal, \n" +
                                 "cantidad, presentacion, nombreSucursal \n" +
                                 "from producto \n" +
-                                "inner join sucursal on idSucursal = sucursal_idSucursal where nombre like ? order by fechaVencimiento asc;";
+                                "inner join sucursal on idSucursal = sucursal_idSucursal where descripcion like ? order by fechaVencimiento asc;";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 prepararSentencia.setString(1, "%" + busqueda + "%");
                 ResultSet resultado = prepararSentencia.executeQuery();

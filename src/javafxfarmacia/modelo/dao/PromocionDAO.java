@@ -9,10 +9,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javafx.scene.control.Alert;
 import javafxfarmacia.modelo.ConexionBD;
 import javafxfarmacia.modelo.pojo.Promocion;
+import javafxfarmacia.modelo.pojo.PromocionProductoRespuesta;
 import javafxfarmacia.modelo.pojo.PromocionRespuesta;
 import javafxfarmacia.utils.Constantes;
+import javafxfarmacia.utils.Utilidades;
 
 /**
  *
@@ -37,6 +40,8 @@ public class PromocionDAO {
                     promocionTemporal.setFechaInicio(resultado.getString("fechaInicia"));
                     promocionTemporal.setFechaTermino(resultado.getString("fechaTermino"));
                     promocionTemporal.setImagen(resultado.getBytes("imagen"));
+                    
+                                    
                     promocionConsulta.add(promocionTemporal); 
                 }
               
@@ -60,7 +65,7 @@ public class PromocionDAO {
             try {
                 String consulta = "select idPromocion, descripcion,fechaInicia,fechaTermino, "
                         + "imagen from promocion \n" +
-                        "where descripcion like 'pañal' order by fechaTermino asc;";
+                        "where descripcion like ? order by fechaTermino asc;";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 prepararSentencia.setString(1, "%" + busqueda + "%");
                 ResultSet resultado = prepararSentencia.executeQuery();
@@ -71,6 +76,8 @@ public class PromocionDAO {
                     promocionTemporal.setDescripcion(resultado.getString("descripcion"));           
                     promocionTemporal.setFechaInicio(resultado.getString("fechaInicia"));
                     promocionTemporal.setFechaTermino(resultado.getString("fechaTermino"));
+                    promocionTemporal.setImagen(resultado.getBytes("imagen"));
+                    
                     promocionConsulta.add(promocionTemporal);
                 }
                 respuesta.setPromociones(promocionConsulta);
@@ -84,6 +91,9 @@ public class PromocionDAO {
         }
         return respuesta;
     }
+        
+
+       
     
     public static int registrarPromocion(Promocion promocionNueva){
         int respuesta;
@@ -110,5 +120,39 @@ public class PromocionDAO {
         }
         return respuesta;
     }
+    
+    public static Promocion obtenerUltimaPromocionGuardada() {
+    Promocion ultimaPromocion = new Promocion();
+    Connection conexionBD = ConexionBD.abrirConexionBD();
+    
+    if (conexionBD != null) {
+        try {
+            String sentencia = "SELECT * FROM promocion ORDER BY idPromocion DESC LIMIT 1";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+            ResultSet resultSet = prepararSentencia.executeQuery(sentencia);
+            
+            if (resultSet.next()) {
+                int id = resultSet.getInt("idPromocion");
+                String descripcion = resultSet.getString("descripcion");
+                String fechaInicio = resultSet.getString("fechaInicia");
+                String fechaTermino = resultSet.getString("fechaTermino");
+                byte[] imagen = resultSet.getBytes("imagen");
+                
+                ultimaPromocion.setIdPromocion(id);
+                ultimaPromocion.setDescripcion(descripcion);
+                ultimaPromocion.setFechaInicio(fechaInicio);
+                ultimaPromocion.setFechaTermino(fechaTermino);
+                ultimaPromocion.setImagen(imagen);
+            }
+            
+            conexionBD.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    return ultimaPromocion;
+}
+
     
 }

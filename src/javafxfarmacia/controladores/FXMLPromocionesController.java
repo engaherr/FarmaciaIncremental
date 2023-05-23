@@ -44,9 +44,15 @@ public class FXMLPromocionesController implements Initializable {
     @FXML
     private TableColumn colfechaTermino;
     
+    private TableColumn colProducto;
+    @FXML
+    private TableColumn colPrecioFinal;
+    
     private ObservableList <Promocion> promociones;
     private ObservableList <Promocion> promocionesBusqueda;
     private TextField tfBusqueda;
+    @FXML
+
 
     /**
      * Initializes the controller class.
@@ -61,6 +67,9 @@ public class FXMLPromocionesController implements Initializable {
         colDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));
         colFechaInicio.setCellValueFactory(new PropertyValueFactory("fechaInicio"));
         colfechaTermino.setCellValueFactory(new PropertyValueFactory("fechaTermino"));
+        //colProducto.setCellValueFactory(new PropertyValueFactory("productosPromo"));
+
+        
     }
     private void cargarInformacion(){
         promociones = FXCollections.observableArrayList();

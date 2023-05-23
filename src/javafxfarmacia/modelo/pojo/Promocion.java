@@ -4,6 +4,8 @@
  */
 package javafxfarmacia.modelo.pojo;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author jasie
@@ -15,18 +17,45 @@ public class Promocion {
     private String fechaInicio;
     private String fechaTermino;
     private byte[] imagen;
+    private ArrayList<String> productos;
+    private String productosPromo;
 
     public Promocion() {
     }
 
-    public Promocion(int idPromocion, String descripcion, double precioFinal, String fechaInicio, String fechaTermino, byte[] imagen) {
+    public Promocion(int idPromocion, String descripcion, double precioFinal, String fechaInicio, 
+            String fechaTermino, byte[] imagen, ArrayList<String> productos, String productosPromo ) {
         this.idPromocion = idPromocion;
         this.descripcion = descripcion;
         this.precioFinal = precioFinal;
         this.fechaInicio = fechaInicio;
         this.fechaTermino = fechaTermino;
         this.imagen = imagen;
+        this.productos = productos;
+        this.productosPromo = productosPromo;
     }
+
+    public String getProductosPromo() {
+        return productosPromo;
+    }
+
+    public void setProductosPromo(String productosPromo) {
+        this.productosPromo = productosPromo;
+    }
+    
+    
+    
+
+    public ArrayList<String> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(ArrayList<String> productos) {
+        this.productos = productos;
+    }
+
+ 
+    
 
     public int getIdPromocion() {
         return idPromocion;
@@ -76,7 +105,20 @@ public class Promocion {
         this.imagen = imagen;
     }
 
-    
+    public void juntarProductos(ArrayList<String> productos){
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (String elemento : productos) {
+            stringBuilder.append(elemento).append(", ");
+        }
+
+        // Eliminar la última coma y el espacio extra
+        if (stringBuilder.length() > 2) {
+            stringBuilder.setLength(stringBuilder.length() - 2);
+        }
+
+        setProductosPromo(stringBuilder.toString());
+    }
 
 
             
