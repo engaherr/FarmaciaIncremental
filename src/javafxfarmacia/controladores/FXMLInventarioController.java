@@ -13,6 +13,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -150,6 +152,7 @@ public class FXMLInventarioController implements Initializable, INotificacionOpe
             case Constantes.OPERACION_EXITOSA:
                 productos.addAll(respuestaBD.getProductos());
                 tvInventario.setItems(productos);
+                configurarBusquedaTabla();
                 break;
         }
     }
@@ -202,27 +205,35 @@ public class FXMLInventarioController implements Initializable, INotificacionOpe
         Stage escenarioPrincipal = (Stage) tfBusqueda.getScene().getWindow();
         escenarioPrincipal.close();
     }
-
-    @FXML
-    private void buscarProducto(KeyEvent event) {
-        String busqueda = tfBusqueda.getText();
-        productosBusqueda = FXCollections.observableArrayList();
-        ProductoRespuesta respuestaBD = ProductoDAO.obtenerInformacionBusqueda(busqueda);
-        switch(respuestaBD.getCodigoRespuesta()){
-            case Constantes.ERROR_CONEXION:
-                Utilidades.mostrarDialogoSimple("Sin conexion", 
-                        "No se pudo conectar con la base de datos. Intente de nuevo o hágalo más tarde",
-                        Alert.AlertType.ERROR);
-                break;
-            case Constantes.ERROR_CONSULTA:
-                Utilidades.mostrarDialogoSimple("Error al cargar los datos", 
-                        "Hubo un error al cargar la información por favor inténtelo de nuevo más tarde",
-                        Alert.AlertType.WARNING);
-                break;
-            case Constantes.OPERACION_EXITOSA:
-                productosBusqueda.addAll(respuestaBD.getProductos());
-                tvInventario.setItems(FXCollections.observableList(productosBusqueda));
-                break;
+    
+    private void configurarBusquedaTabla(){
+        if(productos.size() > 0){
+            FilteredList<Producto> filtradoProductos = new FilteredList<>(productos, p -> true);
+            tfBusqueda.textProperty().addListener(new ChangeListener<String>(){
+                
+                @Override
+                public void changed(ObservableValue<? extends String> observable, 
+                        String oldValue, String newValue) {
+                    filtradoProductos.setPredicate(productoFiltro -> {
+                        
+                        if(newValue == null || newValue.isEmpty()){
+                            return true;
+                        }
+                        
+                        String lowerNewValue = newValue.toLowerCase();
+                        if(productoFiltro.getNombre().toLowerCase().contains(lowerNewValue))
+                            return true;
+                        else if(productoFiltro.getPresentacion().toLowerCase().contains(lowerNewValue))
+                            return true;
+                        else if(productoFiltro.getNombreSucursal().toLowerCase().contains(lowerNewValue))
+                            return true;
+                        return false;
+                    });
+                }
+            });
+            SortedList<Producto> sortedListProductos = new SortedList<>(filtradoProductos);
+            sortedListProductos.comparatorProperty().bind(tvInventario.comparatorProperty());
+            tvInventario.setItems(sortedListProductos);
         }
     }
 
