@@ -54,6 +54,12 @@ public class ProductoDAO {
    
     }
     
+    
+    
+    
+    
+    
+    
          public static ProductoRespuesta obtenerInformacionBusqueda(String busqueda){
     ProductoRespuesta respuesta = new ProductoRespuesta();
     Connection conexionBD = ConexionBD.abrirConexionBD();

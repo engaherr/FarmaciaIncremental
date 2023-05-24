@@ -66,7 +66,7 @@ private ObservableList<Pedido> pedidos;
     colFechaPedido.setCellValueFactory(new PropertyValueFactory<>("fecha_pedido"));
     colFechaEntrega.setCellValueFactory(new PropertyValueFactory<>("fecha_entrega"));
     colProveedor.setCellValueFactory(new PropertyValueFactory<>("nombre_proveedor"));
-    colProductosCombinados.setCellValueFactory(new PropertyValueFactory<>("productos_combinados"));
+    colProductosCombinados.setCellValueFactory(new PropertyValueFactory<>("nombre"));
     colEstado.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Pedido, ImageView>, ObservableValue<ImageView>>() {
     @Override
     public ObservableValue<ImageView> call(TableColumn.CellDataFeatures<Pedido, ImageView> param) {

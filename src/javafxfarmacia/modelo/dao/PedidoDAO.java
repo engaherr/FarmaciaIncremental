@@ -26,16 +26,17 @@ public class PedidoDAO {
     Connection conexionBD = ConexionBD.abrirConexionBD();
     if (conexionBD != null) {
         try {
-            String consulta = "SELECT pe.fecha_pedido, pe.fecha_entrega, "
-                    + "COALESCE(pr.nombre, su.nombreSucursal) AS nombre_proveedor, "
-                    + "GROUP_CONCAT(DISTINCT p.nombre) AS productos_combinados "
-                    + "FROM pedidos AS pe "
-                    + "JOIN producto AS p ON pe.idProducto = p.idProducto "
-                    + "LEFT JOIN proveedor AS pr ON pe.idProveedor = pr.idProveedor "
-                    + "LEFT JOIN sucursal AS su ON pe.idSucursal = su.idSucursal "
-                    + "GROUP BY pe.fecha_pedido, pe.fecha_entrega, pe.idProveedor, pe.idSucursal "
-                    + "HAVING COUNT(*) > 1";
-            
+           String consulta = "SELECT p.fecha_pedido, p.fecha_entrega, GROUP_CONCAT(pr.nombre SEPARATOR ', ') AS nombres_productos, "
+                    + "CASE "
+                    + "WHEN p.idProveedor IS NOT NULL THEN prov.nombre "
+                    + "ELSE suc.nombreSucursal "
+                    + "END AS nombre_proveedor "
+                    + "FROM pedidos p "
+                    + "JOIN producto_pedido pp ON p.idpedido = pp.idPedido "
+                    + "JOIN producto pr ON pp.idProducto = pr.idProducto "
+                    + "LEFT JOIN proveedor prov ON p.idProveedor = prov.idProveedor "
+                    + "LEFT JOIN sucursal suc ON p.idSucursal = suc.idSucursal "
+                    + "GROUP BY p.fecha_pedido, p.fecha_entrega, nombre_proveedor";
             PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
             ResultSet resultado = prepararSentencia.executeQuery();
             ArrayList<Pedido> pedidoConsulta = new ArrayList();
@@ -44,7 +45,7 @@ public class PedidoDAO {
                 pedido.setFecha_pedido(resultado.getString("fecha_pedido"));
                 pedido.setFecha_entrega(resultado.getString("fecha_entrega"));
                 pedido.setNombre_proveedor(resultado.getString("nombre_proveedor"));
-                pedido.setProductos_combinados(resultado.getString("productos_combinados"));
+                pedido.setNombre(resultado.getString("nombres_productos"));
                 pedidoConsulta.add(pedido);
             }
             respuesta.setPedidos(pedidoConsulta);
@@ -57,21 +58,21 @@ public class PedidoDAO {
     }
     return respuesta;
 }
-
-     
-     
+    
+  public enum TipoProveedor {
+    INTERNO,
+    EXTERNO
+}
      
       public static int guardarPedidoExterno(Pedido pedidoNuevo) {
         int respuesta;
         Connection conexionBD = ConexionBD.abrirConexionBD();
         if (conexionBD != null) {
             try {
-                String sentencia = "INSERT INTO pedidos (fecha_pedido, fecha_entrega, cantidad, idProducto, idProveedor) VALUES (?, ?, ?, ?, ?)";
+                String sentencia = "INSERT INTO pedidos (fecha_pedido, fecha_entrega, idProveedor) VALUES (?, ?, ?)";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
                 prepararSentencia.setString(1, pedidoNuevo.getFecha_pedido());
                 prepararSentencia.setString(2, pedidoNuevo.getFecha_entrega());
-                prepararSentencia.setInt(3, pedidoNuevo.getCantidad());
-                prepararSentencia.setInt(4, pedidoNuevo.getIdProducto());
                 prepararSentencia.setInt(5, pedidoNuevo.getIdProveedor());
 
                 int filasAfectadas = prepararSentencia.executeUpdate();
@@ -91,12 +92,10 @@ public class PedidoDAO {
         Connection conexionBD = ConexionBD.abrirConexionBD();
         if (conexionBD != null) {
             try {
-                String sentencia = "INSERT INTO pedidos (fecha_pedido, fecha_entrega, cantidad, idProducto, idSucursal) VALUES (?, ?, ?, ?, ?)";
+                String sentencia = "INSERT INTO pedidos (fecha_pedido, fecha_entrega, idSucursal) VALUES (?, ?, ?)";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
                 prepararSentencia.setString(1, pedidoNuevo.getFecha_pedido());
                 prepararSentencia.setString(2, pedidoNuevo.getFecha_entrega());
-                prepararSentencia.setInt(3, pedidoNuevo.getCantidad());
-                prepararSentencia.setInt(4, pedidoNuevo.getIdProducto());
                 prepararSentencia.setInt(5, pedidoNuevo.getIdSucursal());
 
                 int filasAfectadas = prepararSentencia.executeUpdate();
@@ -112,15 +111,45 @@ public class PedidoDAO {
     }
 
      
-     
-  public enum TipoProveedor {
-    INTERNO,
-    EXTERNO
+    public static Pedido obtenerUltimoPedidoGuardado(){
+    
+    Pedido ultimoPedido = new Pedido();
+    
+      Connection conexionBD = ConexionBD.abrirConexionBD();
+    
+    if (conexionBD != null) {
+        try {
+            String sentencia = "SELECT * FROM pedidos ORDER BY idPedido DESC LIMIT 1";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+            ResultSet resultSet = prepararSentencia.executeQuery(sentencia);
+            
+            if (resultSet.next()) {
+                int idPedido= resultSet.getInt("idPedido");
+                String fecha_pedido = resultSet.getString("fecha_pedido");
+                String fecha_entrega = resultSet.getString("fecha_entrega");
+                int idProveedor = resultSet.getInt("idProveedor");
+                int idSucursal = resultSet.getInt("idSucursal");
+                
+                ultimoPedido.setIdPedido(idPedido);
+                ultimoPedido.setFecha_pedido(fecha_pedido);
+                ultimoPedido.setFecha_entrega(fecha_entrega);
+                ultimoPedido.setIdProveedor(idProveedor);
+                ultimoPedido.setIdSucursal(idSucursal);
+            }
+            
+            conexionBD.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    return ultimoPedido;
 }
-     
-   
+    
+    
+    
 
-         public static PedidoRespuesta obtenerProveedoresInternos() {
+    public static PedidoRespuesta obtenerProveedoresInternos() {
     PedidoRespuesta respuesta = new PedidoRespuesta();
     respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
     Connection conexionBD = ConexionBD.abrirConexionBD();
@@ -148,7 +177,7 @@ public class PedidoDAO {
 }
 
   
-             public static PedidoRespuesta obtenerProveedoresExternos() {
+    public static PedidoRespuesta obtenerProveedoresExternos() {
     PedidoRespuesta respuesta = new PedidoRespuesta();
     respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
     Connection conexionBD = ConexionBD.abrirConexionBD();
