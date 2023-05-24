@@ -31,6 +31,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafxfarmacia.interfaz.INotificacionOperacion;
 import javafxfarmacia.modelo.dao.ProductoDAO;
 import javafxfarmacia.modelo.dao.PromocionDAO;
 import javafxfarmacia.modelo.dao.PromocionProductoDAO;
@@ -48,6 +49,10 @@ import javax.imageio.ImageIO;
  * @author jasie
  */
 public class FXMLRegistroPromocionController implements Initializable {
+
+    private INotificacionOperacion interfazNotificacion;
+    private boolean esEdicion;
+    private Promocion promocion;
 
     @FXML
     private TextField tfDescripcionPromo;
@@ -121,7 +126,23 @@ public class FXMLRegistroPromocionController implements Initializable {
             }
             
         });
-    }    
+    } 
+    
+    public void inicializarInformacionFormulario(boolean esEdicion, Promocion promocion, INotificacionOperacion interfazNotificacion){
+        this.esEdicion = esEdicion;
+        this.promocion = promocion;
+        this.interfazNotificacion = interfazNotificacion;
+        
+        if(esEdicion){
+            cargarInformacionPromocion();
+        }else{
+            
+        }
+    }
+    
+    private void cargarInformacionPromocion(){
+        
+    }
 
     @FXML
     private void clicRegistrarPromocion(ActionEvent event) {

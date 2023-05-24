@@ -17,14 +17,14 @@ public class Promocion {
     private String fechaInicio;
     private String fechaTermino;
     private byte[] imagen;
-    private ArrayList<String> productos;
+    private PromocionProductoRespuesta productos;
     private String productosPromo;
 
     public Promocion() {
     }
 
     public Promocion(int idPromocion, String descripcion, double precioFinal, String fechaInicio, 
-            String fechaTermino, byte[] imagen, ArrayList<String> productos, String productosPromo ) {
+            String fechaTermino, byte[] imagen, PromocionProductoRespuesta productos, String productosPromo ) {
         this.idPromocion = idPromocion;
         this.descripcion = descripcion;
         this.precioFinal = precioFinal;
@@ -46,11 +46,11 @@ public class Promocion {
     
     
 
-    public ArrayList<String> getProductos() {
+    public PromocionProductoRespuesta getProductos() {
         return productos;
     }
 
-    public void setProductos(ArrayList<String> productos) {
+    public void setProductos(PromocionProductoRespuesta productos) {
         this.productos = productos;
     }
 
@@ -105,19 +105,18 @@ public class Promocion {
         this.imagen = imagen;
     }
 
-    public void juntarProductos(ArrayList<String> productos){
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for (String elemento : productos) {
-            stringBuilder.append(elemento).append(", ");
+    public void juntarProductos(){
+        ArrayList<PromocionProducto> productosPromoc = productos.getPromocionesProductoRespuesta();
+        StringBuilder sb = new StringBuilder();
+        for(PromocionProducto produc : productosPromoc){
+            sb.append(produc.getNombreProducto()).append(", ");
         }
-
-        // Eliminar la última coma y el espacio extra
-        if (stringBuilder.length() > 2) {
-            stringBuilder.setLength(stringBuilder.length() - 2);
+        
+        if(sb.length() > 0){
+            sb.setLength(sb.length() - 2);
         }
-
-        setProductosPromo(stringBuilder.toString());
+        
+        this.productosPromo = sb.toString();
     }
 
 

@@ -41,7 +41,10 @@ public class PromocionDAO {
                     promocionTemporal.setFechaTermino(resultado.getString("fechaTermino"));
                     promocionTemporal.setImagen(resultado.getBytes("imagen"));
                     
-                                    
+                    PromocionProductoRespuesta productos = PromocionProductoDAO.obtenerInformacion(promocionTemporal.getIdPromocion());
+                    promocionTemporal.setProductos(productos);
+                    promocionTemporal.juntarProductos();
+                    System.out.println(promocionTemporal.getProductosPromo());
                     promocionConsulta.add(promocionTemporal); 
                 }
               

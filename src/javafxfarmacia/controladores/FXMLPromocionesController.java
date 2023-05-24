@@ -5,13 +5,19 @@
 package javafxfarmacia.controladores;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -21,6 +27,8 @@ import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafxfarmacia.JavaFXFarmacia;
+import javafxfarmacia.interfaz.INotificacionOperacion;
 import javafxfarmacia.modelo.dao.PromocionDAO;
 import javafxfarmacia.modelo.pojo.Promocion;
 import javafxfarmacia.modelo.pojo.PromocionRespuesta;
@@ -32,8 +40,7 @@ import javafxfarmacia.utils.Utilidades;
  *
  * @author jasie
  */
-public class FXMLPromocionesController implements Initializable {
-
+public class FXMLPromocionesController implements Initializable, INotificacionOperacion {
     @FXML
     private TableView<Promocion> tvPromociones;
     @FXML
@@ -44,6 +51,7 @@ public class FXMLPromocionesController implements Initializable {
     @FXML
     private TableColumn colfechaTermino;
     
+    @FXML
     private TableColumn colProducto;
     @FXML
     private TableColumn colPrecioFinal;
@@ -51,7 +59,6 @@ public class FXMLPromocionesController implements Initializable {
     private ObservableList <Promocion> promociones;
     private ObservableList <Promocion> promocionesBusqueda;
     private TextField tfBusqueda;
-    @FXML
 
 
     /**
@@ -65,9 +72,9 @@ public class FXMLPromocionesController implements Initializable {
     
     private void configurarTabla(){
         colDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));
+        colProducto.setCellValueFactory(new PropertyValueFactory("productosPromo"));
         colFechaInicio.setCellValueFactory(new PropertyValueFactory("fechaInicio"));
         colfechaTermino.setCellValueFactory(new PropertyValueFactory("fechaTermino"));
-        //colProducto.setCellValueFactory(new PropertyValueFactory("productosPromo"));
 
         
     }
@@ -126,6 +133,13 @@ public class FXMLPromocionesController implements Initializable {
 
     @FXML
     private void clicModiificarPromocion(ActionEvent event) {
+        int posicion = tvPromociones.getSelectionModel().getSelectedIndex();
+        if(posicion != -1){
+            irFormulario(true,promociones.get(posicion));
+        }else{
+            Utilidades.mostrarDialogoSimple("Atención","Por favor selecciona "
+                    + "una promoción para poder editar", Alert.AlertType.WARNING);
+        }
     }
 
     @FXML
@@ -141,5 +155,38 @@ public class FXMLPromocionesController implements Initializable {
         Stage escenarioPrincipal = (Stage) tfBusqueda.getScene().getWindow();
         escenarioPrincipal.close();
     }
+    
+    private void irFormulario(boolean esEdicion, Promocion promocion){
+        try{
+            FXMLLoader accesoControlador = new FXMLLoader
+                (JavaFXFarmacia.class.getResource("vistas/FXMLRegistroPromocion.fxml"));
+            Parent vista;
+            vista = accesoControlador.load();
+            
+            FXMLRegistroPromocionController formulario = accesoControlador.getController();
+            formulario.inicializarInformacionFormulario(esEdicion,promocion,this);
+            
+            Stage escenarioFormulario = new Stage();
+            escenarioFormulario.setScene(new Scene(vista));
+            escenarioFormulario.setTitle("Formulario: registro de promoción");
+            escenarioFormulario.initModality(Modality.APPLICATION_MODAL);
+            escenarioFormulario.showAndWait();         
+            
+        }catch(IOException ex){
+            Logger.getLogger(FXMLRegistroPromocionController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void notificarOperacionGuardar(String descripcionPromocion) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void notificarOperacionActualizar(String descripcionPromocion) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    
     
 }
