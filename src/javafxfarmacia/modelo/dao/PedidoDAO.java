@@ -64,28 +64,29 @@ public class PedidoDAO {
     EXTERNO
 }
      
-      public static int guardarPedidoExterno(Pedido pedidoNuevo) {
-        int respuesta;
-        Connection conexionBD = ConexionBD.abrirConexionBD();
-        if (conexionBD != null) {
-            try {
-                String sentencia = "INSERT INTO pedidos (fecha_pedido, fecha_entrega, idProveedor) VALUES (?, ?, ?)";
-                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
-                prepararSentencia.setString(1, pedidoNuevo.getFecha_pedido());
-                prepararSentencia.setString(2, pedidoNuevo.getFecha_entrega());
-                prepararSentencia.setInt(5, pedidoNuevo.getIdProveedor());
-
-                int filasAfectadas = prepararSentencia.executeUpdate();
-                respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
-                conexionBD.close();
-            } catch (SQLException e) {
-                respuesta = Constantes.ERROR_CONSULTA;
-            }
-        } else {
-            respuesta = Constantes.ERROR_CONEXION;
-        }
-        return respuesta;
-    }
+        public static int guardarPedidoExterno(Pedido pedidoNuevo) {
+          int respuesta;
+     
+          Connection conexionBD = ConexionBD.abrirConexionBD();
+          if (conexionBD != null) {
+              try {
+                  String sentencia = "INSERT INTO pedidos (fecha_pedido, fecha_entrega, idProveedor) VALUES (?, ?, ?)";
+                  PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                  prepararSentencia.setString(1, pedidoNuevo.getFecha_pedido());
+                  prepararSentencia.setString(2, pedidoNuevo.getFecha_entrega());
+                  prepararSentencia.setInt(3, pedidoNuevo.getIdProveedor());
+                  
+                  int filasAfectadas = prepararSentencia.executeUpdate();
+                  respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+                  conexionBD.close();
+              } catch (SQLException e) {
+                  respuesta = Constantes.ERROR_CONSULTA;
+              }
+          } else {
+              respuesta = Constantes.ERROR_CONEXION;
+          }
+          return respuesta;
+      }
 
     public static int guardarPedidoInterno(Pedido pedidoNuevo) {
         int respuesta;
@@ -96,7 +97,7 @@ public class PedidoDAO {
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
                 prepararSentencia.setString(1, pedidoNuevo.getFecha_pedido());
                 prepararSentencia.setString(2, pedidoNuevo.getFecha_entrega());
-                prepararSentencia.setInt(5, pedidoNuevo.getIdSucursal());
+                prepararSentencia.setInt(3, pedidoNuevo.getIdSucursal());
 
                 int filasAfectadas = prepararSentencia.executeUpdate();
                 respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;

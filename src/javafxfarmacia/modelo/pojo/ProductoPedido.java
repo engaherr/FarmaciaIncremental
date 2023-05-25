@@ -13,13 +13,25 @@ public class ProductoPedido {
     private int idPedido;
     private int idProducto;
     private int Cantidad;
+    private int idProductoPedido;
 
-    public ProductoPedido(int idPedido, int idProducto, int Cantidad) {
+    public ProductoPedido(int idPedido, int idProducto, int Cantidad, int idProductoPedido) {
         this.idPedido = idPedido;
         this.idProducto = idProducto;
         this.Cantidad = Cantidad;
+        this.idProductoPedido = idProductoPedido;
+    }
+    
+  
+
+    public int getIdProductoPedido() {
+        return idProductoPedido;
     }
 
+    public void setIdProductoPedido(int idProductoPedido) {
+        this.idProductoPedido = idProductoPedido;
+    }
+    
     
     
     public int getIdPedido() {

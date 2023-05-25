@@ -17,7 +17,18 @@ public class Producto {
     private int cantidad; 
     private float precioUnitario;
     private float precioFinal;
+    private int idPedido;
 
+    public int getIdPedido() {
+        return idPedido;
+    }
+
+    public void setIdPedido(int idPedido) {
+        this.idPedido = idPedido;
+    }
+    
+    
+    
     public float getPrecioFinal() {
         return precioFinal;
     }
@@ -81,5 +92,9 @@ public class Producto {
     @Override
     public String toString() {
         return nombre;
+    }
+
+    public void setIdProductoPedido(int productoNuevo) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

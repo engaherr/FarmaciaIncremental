@@ -49,8 +49,10 @@ import javafxfarmacia.modelo.dao.PedidoDAO;
 import javafxfarmacia.modelo.dao.PedidoDAO.TipoProveedor;
 import static javafxfarmacia.modelo.dao.PedidoDAO.guardarPedidoExterno;
 import static javafxfarmacia.modelo.dao.PedidoDAO.guardarPedidoInterno;
+import javafxfarmacia.modelo.dao.ProductoPedidoDAO;
 import javafxfarmacia.modelo.pojo.Pedido;
 import javafxfarmacia.modelo.pojo.PedidoRespuesta;
+import javafxfarmacia.modelo.pojo.ProductoPedido;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
@@ -97,7 +99,8 @@ public class FXMLGenerarPedidoController implements Initializable {
     private ObservableList<Pedido> proveedoresExternos;
     private ObservableList<Pedido> todosLosProveedores;
     private String tipoProveedor;
-    
+ 
+
  private ObservableList<String> possibleSuggestions;
 
 
@@ -312,28 +315,34 @@ private void clicGenerar(ActionEvent event) {
         return;
     }
 
-    for (Producto producto : productosCarrito) {
+
         Pedido pedidoNuevo = new Pedido();
         pedidoNuevo.setFecha_pedido(Utilidades.obtenerFechaActual());
         pedidoNuevo.setFecha_entrega(fechaEntrega.toString());
 
-        pedidoNuevo.setCantidad(producto.getCantidad());
-        pedidoNuevo.setIdProducto(producto.getIdProducto());
-        
+      
 
       if (rbExternos.isSelected()){
           pedidoNuevo.setIdProveedor(proveedorSeleccionado.getIdProveedor());
-          
           guardarPedidoExterno(pedidoNuevo);
+          Pedido pedidoTemporal = PedidoDAO.obtenerUltimoPedidoGuardado();
+                int idPedido = pedidoTemporal.getIdPedido();
+                //TO DO:
+                registrarProductosPromocion( idPedido);
+                
+           
       }
       
       if ( rbInternos.isSelected()){
               pedidoNuevo.setIdSucursal(proveedorSeleccionado.getIdSucursal());
           guardarPedidoInterno(pedidoNuevo);
+           Pedido pedidoTemporal = PedidoDAO.obtenerUltimoPedidoGuardado();
+               int idPedido = pedidoTemporal.getIdPedido();
+                //TO DO:
+                registrarProductosPromocion( idPedido);
       
-      }
-        
-
+      }   
+      
     // Limpiar el carrito
     carrito.clear();
     
@@ -344,8 +353,40 @@ private void clicGenerar(ActionEvent event) {
     // Mostrar mensaje de éxito
     Utilidades.mostrarDialogoSimple("Pedido Generado", "El pedido ha sido generado exitosamente", Alert.AlertType.INFORMATION);
 }
-}
+
     
+private void registrarProductosPromocion(int productoNuevo) {
+    int tamano = carrito.size() - 1;
+    for (int i = 0; i <= tamano; i++) {
+        Producto producto = carrito.get(i);
+
+        // Crea una instancia de ProductoPedido y asigna los valores relevantes del objeto Producto
+        ProductoPedido productoPedido = new ProductoPedido(
+          producto.getIdPedido(),
+            /* idProducto */ producto.getIdProducto(),    // Obtén el valor correspondiente del objeto Producto
+            /* Cantidad */ producto.getCantidad(),
+            /* idProductoPedido */ productoNuevo
+        );
+        productoPedido.setIdPedido(productoNuevo);
+        System.out.println("idpedido "+producto.getIdPedido());
+        int codigoRespuesta = ProductoPedidoDAO.guardarProductoPedido(productoPedido);
+        switch (codigoRespuesta) {
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple("Error de conexión", "Por el momento no hay conexión, "
+                        + "por favor inténtalo más tarde", Alert.AlertType.ERROR);
+                break;
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al registrar los productos de la promoción,"
+                        + " por favor inténtalo más tarde", Alert.AlertType.WARNING);
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                Utilidades.mostrarDialogoSimple("Promoción registrada", "El registro de los productos de la "
+                        + "promoción se realizó con éxito", Alert.AlertType.INFORMATION);
+                break;
+        }
+    }
+}
+
 
 
 @FXML
@@ -405,28 +446,6 @@ public static <T> void makeComboBoxSearchable(ComboBox<T> comboBox, Function<T, 
         });
     });
 }
-
- private void registrarPedido(Pedido pedidoNuevo){
-      
-        int codigoRespuesta = PedidoDAO.guardarPedidoExterno(pedidoNuevo);
-        switch(codigoRespuesta){
-            case Constantes.ERROR_CONEXION:
-                    Utilidades.mostrarDialogoSimple("Error de conexión",
-                            "Por el momento no hay conexión, por favor inténtelo más tarde"
-                            , Alert.AlertType.ERROR);
-                break;
-            case Constantes.ERROR_CONSULTA:
-                    Utilidades.mostrarDialogoSimple("Error de consulta", 
-                            "Hubo un error al cargar la información por favor intentélo de nuevo más tarde",
-                            Alert.AlertType.INFORMATION);
-                break;
-            case Constantes.OPERACION_EXITOSA:
-                    Utilidades.mostrarDialogoSimple("Producto Registrado",
-                            "El producto fue registrado exitosamente", 
-                            Alert.AlertType.INFORMATION);
-                break;
-            }
-    }
 
     @FXML
     private void clicRegresar(MouseEvent event) {

@@ -18,16 +18,17 @@ import javafxfarmacia.utils.Constantes;
 public class ProductoPedidoDAO {
      public static int guardarProductoPedido (ProductoPedido ProductoPedidoNuevo){
         int respuesta;
+             System.out.println("entró a guardarProductoPedido");
         Connection conexionBD = ConexionBD.abrirConexionBD();
         if(conexionBD != null){
             try{
-                String sentencia = "iINSERT INTO producto_pedido (idPedido, idProducto, cantidad)\n" +
+                String sentencia = "INSERT INTO producto_pedido (idPedido, idProducto, cantidad)\n" +
 "VALUES (?, ?, ?);";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
                 prepararSentencia.setInt(1, ProductoPedidoNuevo.getIdPedido());
                 prepararSentencia.setInt(2, ProductoPedidoNuevo.getIdProducto());
                 prepararSentencia.setInt(3, ProductoPedidoNuevo.getCantidad());
-     
+                 System.out.println("sentencia de prod-pedi:  "+ prepararSentencia);
                 int filasAfectadas = prepararSentencia.executeUpdate();
                 respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : 
                         Constantes.ERROR_CONSULTA;
