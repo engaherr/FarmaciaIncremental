@@ -144,13 +144,19 @@ public class ProductoDAO {
                         + " values (?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
                 prepararSentencia.setString(1, productoNuevo.getNombre());
-                prepararSentencia.setString(2, productoNuevo.getFechaVencimiento());
+                if(productoNuevo.getFechaVencimiento() != null)
+                    prepararSentencia.setString(2, productoNuevo.getFechaVencimiento());
+                else
+                    prepararSentencia.setNull(2, java.sql.Types.VARCHAR);
                 prepararSentencia.setDouble(3, productoNuevo.getPrecio());
                 prepararSentencia.setBoolean(4, productoNuevo.isVentaControlada());
                 prepararSentencia.setInt(5, productoNuevo.getIdSucursal());
                 prepararSentencia.setInt(6, productoNuevo.getCantidad());
                 prepararSentencia.setString(7, productoNuevo.getPresentacion());
-                prepararSentencia.setBytes(8, productoNuevo.getFoto());
+                if(productoNuevo.getFoto() != null)
+                    prepararSentencia.setBytes(8, productoNuevo.getFoto());
+                else
+                    prepararSentencia.setNull(8, java.sql.Types.LONGVARBINARY);
                 int filasAfectadas = prepararSentencia.executeUpdate();
                 respuesta = (filasAfectadas == 1) ?
                         Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
@@ -174,13 +180,19 @@ public class ProductoDAO {
                         + "cantidad = ?, presentacion = ?, foto = ? where idProducto = ?";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
                 prepararSentencia.setString(1, productoEdicion.getNombre());
-                prepararSentencia.setString(2, productoEdicion.getFechaVencimiento());
+                if(productoEdicion.getFechaVencimiento() != null)
+                    prepararSentencia.setString(2, productoEdicion.getFechaVencimiento());
+                else
+                    prepararSentencia.setNull(2, java.sql.Types.VARCHAR);
                 prepararSentencia.setDouble(3,productoEdicion.getPrecio());
                 prepararSentencia.setBoolean(4, productoEdicion.isVentaControlada());
                 prepararSentencia.setInt(5, productoEdicion.getIdSucursal());
                 prepararSentencia.setInt(6, productoEdicion.getCantidad());
                 prepararSentencia.setString(7,productoEdicion.getPresentacion());
-                prepararSentencia.setBytes(8,productoEdicion.getFoto());
+                if(productoEdicion.getFoto() != null)
+                    prepararSentencia.setBytes(8, productoEdicion.getFoto());
+                else
+                    prepararSentencia.setNull(8, java.sql.Types.LONGVARBINARY);
                 prepararSentencia.setInt(9, productoEdicion.getIdProducto());
                 int filasAfectadas = prepararSentencia.executeUpdate();
                 respuesta = (filasAfectadas == 1) ?
