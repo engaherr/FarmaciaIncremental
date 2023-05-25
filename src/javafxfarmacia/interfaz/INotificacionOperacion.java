@@ -12,4 +12,6 @@ public interface INotificacionOperacion {
     public void notificarOperacionGuardar(String descripcionPromocion);
     
     public void notificarOperacionActualizar(String descripcionPromocion);
+    
+    //public void notificarOperacionEliminar(String descripcionPromocion);
 }

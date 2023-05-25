@@ -46,11 +46,11 @@
             <Font name="System Bold Italic" size="26.0" />
          </font>
       </Label>
-      <Button layoutX="885.0" layoutY="586.0" mnemonicParsing="false" onAction="#clicRegistrarPromocion" prefHeight="51.0" prefWidth="147.0" style="-fx-background-color: #5FAD56;" text="Registrar" textFill="WHITE">
+      <Button layoutX="885.0" layoutY="592.0" mnemonicParsing="false" onAction="#clicRegistrarPromocion" prefHeight="51.0" prefWidth="147.0" style="-fx-background-color: #5FAD56;" text="Guardar" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="24.0" />
          </font></Button>
-      <Button layoutX="1087.0" layoutY="584.0" mnemonicParsing="false" onAction="#clicCancelarPromocion" prefHeight="51.0" prefWidth="147.0" style="-fx-background-color: #4E8098;" text="Cancelar" textFill="WHITE">
+      <Button layoutX="1087.0" layoutY="590.0" mnemonicParsing="false" onAction="#clicCancelarPromocion" prefHeight="51.0" prefWidth="147.0" style="-fx-background-color: #4E8098;" text="Cancelar" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="24.0" />
          </font></Button>
@@ -66,7 +66,7 @@
             <Font name="System Bold Italic" size="20.0" />
          </font>
       </Button>
-      <TableView fx:id="tvProductosdePromocion" layoutX="46.0" layoutY="345.0" prefHeight="218.0" prefWidth="745.0">
+      <TableView fx:id="tvProductosdePromocion" layoutX="19.0" layoutY="345.0" prefHeight="218.0" prefWidth="745.0">
         <columns>
           <TableColumn fx:id="tcNombreProducto" prefWidth="264.0" text="Nombre del producto" />
             <TableColumn fx:id="tcCantidadProducto" prefWidth="111.0" text="Cantidad" />
@@ -74,14 +74,14 @@
             <TableColumn fx:id="tcPrecioFinal" prefWidth="182.0" text="Precio final" />
         </columns>
       </TableView>
-      <Button layoutX="946.0" layoutY="381.0" mnemonicParsing="false" onAction="#clicAñadirProdcuto" prefHeight="51.0" prefWidth="235.0" style="-fx-background-color: #5FAD56;" text="Añadir producto" textFill="WHITE">
+      <Button fx:id="btnAñadirProducto" layoutX="799.0" layoutY="369.0" mnemonicParsing="false" onAction="#clicAñadirProdcuto" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #5FAD56;" text="Añadir producto" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font name="System Bold Italic" size="24.0" />
+            <Font name="System Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnEliminar" layoutX="946.0" layoutY="466.0" mnemonicParsing="false" onAction="#clicEliminarProducto" style="-fx-background-color: #f25d59;" text="Eliminar producto" textFill="WHITE">
+      <Button fx:id="btnEliminar" layoutX="799.0" layoutY="439.0" mnemonicParsing="false" onAction="#clicEliminarProducto" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #f25d59;" text="Eliminar producto" textFill="WHITE">
          <font>
-            <Font name="System Bold Italic" size="24.0" />
+            <Font name="System Bold Italic" size="18.0" />
          </font>
       </Button>
       <Label layoutX="117.0" layoutY="277.0" text="Cantidad:" textFill="WHITE">
@@ -108,5 +108,15 @@
          </font>
       </Label>
       <TextField fx:id="tfPrecioActualUnidad" layoutX="846.0" layoutY="206.0" prefHeight="39.0" prefWidth="125.0" />
+      <Button fx:id="btnModificar" layoutX="1044.0" layoutY="369.0" mnemonicParsing="false" onAction="#clicModificarProducto" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #4E8098;" text="Modificar producto" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="btnNuevoProducto" layoutX="1045.0" layoutY="439.0" mnemonicParsing="false" onAction="#clicNuevoProducto" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #9F86C0;" text="Nuevo producto" textFill="WHITE">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

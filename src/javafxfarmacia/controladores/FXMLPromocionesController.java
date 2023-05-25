@@ -179,12 +179,16 @@ public class FXMLPromocionesController implements Initializable, INotificacionOp
 
     @Override
     public void notificarOperacionGuardar(String descripcionPromocion) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Utilidades.mostrarDialogoSimple("Notificacion","Se registró de forma "
+                + "exitosa la promoción", Alert.AlertType.INFORMATION);
+        cargarInformacion();
     }
 
     @Override
     public void notificarOperacionActualizar(String descripcionPromocion) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Utilidades.mostrarDialogoSimple("Notificación","Se actualizaron "
+                + "los datos de la promocion", Alert.AlertType.INFORMATION);
+        cargarInformacion();
     }
     
     

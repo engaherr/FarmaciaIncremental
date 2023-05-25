@@ -154,8 +154,31 @@ public class PromocionDAO {
         }
     }
     
-    return ultimaPromocion;
-}
+        return ultimaPromocion;
+    }
 
-    
+    public static int modificarPromocion(Promocion promocionActualizar){
+       int respuesta;
+       Connection conexionBD = ConexionBD.abrirConexionBD();
+       if(conexionBD != null){
+           try{
+               String sentencia = "UPDATE promocion SET descripcion = ?, fechaInicia = ?, "
+                       + "fechaTermino = ?, imagen = ? WHERE idPromocion = ?";
+               PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+               prepararSentencia.setString(1,promocionActualizar.getDescripcion());
+               prepararSentencia.setString(2,promocionActualizar.getFechaInicio());
+               prepararSentencia.setString(3,promocionActualizar.getFechaTermino());
+               prepararSentencia.setBytes(4,promocionActualizar.getImagen());
+               
+               int filasAfectadas = prepararSentencia.executeUpdate();
+               respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA; 
+           }catch(SQLException ex){
+               respuesta = Constantes.ERROR_CONSULTA;
+                        
+           }
+       }else{
+           respuesta = Constantes.ERROR_CONEXION;
+       }
+          return respuesta; 
+    }
 }

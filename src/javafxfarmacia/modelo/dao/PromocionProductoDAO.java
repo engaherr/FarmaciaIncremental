@@ -13,6 +13,7 @@ import javafxfarmacia.modelo.ConexionBD;
 import javafxfarmacia.modelo.pojo.PromocionProducto;
 import javafxfarmacia.modelo.pojo.PromocionProductoRespuesta;
 import javafxfarmacia.utils.Constantes;
+import oracle.jrockit.jfr.tools.ConCatRepository;
 
 /**
  *
@@ -78,6 +79,50 @@ public class PromocionProductoDAO {
                 respuesta = Constantes.ERROR_CONSULTA;
             }
 
+        }else{
+            respuesta = Constantes.ERROR_CONEXION;
+        }
+        return respuesta;
+    }
+    
+    public static int actualizarPromocionProducto(PromocionProducto producPromoActualizar){
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                String sentencia = "UPDATE promocion_producto SET  cantidad = ?, precioUnitario = ?, precioFinal = ? "
+                        + "WHERE idPromocion = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setInt(1,producPromoActualizar.getCantidad());
+                prepararSentencia.setDouble(2, producPromoActualizar.getPrecioUnitario());
+                prepararSentencia.setDouble(3, producPromoActualizar.getPrecioFinal());
+                prepararSentencia.setInt(4, producPromoActualizar.getIdPromocion());
+                int filasAfectadas = prepararSentencia.executeUpdate();
+                respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+                       
+            }catch(SQLException ex){
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
+        }else{
+            respuesta = Constantes.ERROR_CONEXION;
+        }
+        return respuesta;
+    }
+    
+    public int eliminarProductoPromocion (int idPromocion){
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                String sentencia = "DELETE FROM promocion_producto WHERE idPromocion = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setInt(1, idPromocion);
+                int filasAfectadas = prepararSentencia.executeUpdate();
+                respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+                
+            }catch(SQLException ex){
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
         }else{
             respuesta = Constantes.ERROR_CONEXION;
         }
