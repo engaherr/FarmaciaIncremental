@@ -162,13 +162,14 @@ public class PromocionDAO {
        Connection conexionBD = ConexionBD.abrirConexionBD();
        if(conexionBD != null){
            try{
-               String sentencia = "UPDATE promocion SET descripcion = ?, fechaInicia = ?, "
-                       + "fechaTermino = ?, imagen = ? WHERE idPromocion = ?";
+               String sentencia = "UPDATE promocion SET descripcion = ?, fechaInicia = ?,"
+                       + "fechaTermino = ?,imagen = ? WHERE idPromocion = ?";
                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
                prepararSentencia.setString(1,promocionActualizar.getDescripcion());
                prepararSentencia.setString(2,promocionActualizar.getFechaInicio());
                prepararSentencia.setString(3,promocionActualizar.getFechaTermino());
                prepararSentencia.setBytes(4,promocionActualizar.getImagen());
+               prepararSentencia.setInt(5, promocionActualizar.getIdPromocion());
                
                int filasAfectadas = prepararSentencia.executeUpdate();
                respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA; 

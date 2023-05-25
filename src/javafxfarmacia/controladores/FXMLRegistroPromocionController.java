@@ -6,7 +6,6 @@ package javafxfarmacia.controladores;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -15,7 +14,6 @@ import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -230,14 +228,66 @@ public class FXMLRegistroPromocionController implements Initializable {
             case Constantes.OPERACION_EXITOSA:
                 Utilidades.mostrarDialogoSimple("Promocion registrada", "La actualización de la "
                         + "promoción se realizó con éxito", Alert.AlertType.INFORMATION);
-                int idPromocion = promocionActualizar.getIdPromocion();
-                actualizarProductosPromocion(idPromocion);
+                if( productosEditados.isEmpty() == false ){
+                    for(int i = 0; i <= productosEditados.size()-1; i++){
+                        System.out.println("Productos editados");
+                        System.out.println(productosEditados.get(i).getNombreProducto());
+                    }
+                    actualizarProductosPromocion();
+
+                }
+                if(productosEliminados.isEmpty() == false){
+                    eliminarProductosPromocion();
+
+                }
+                cerrarVentana();
+                interfazNotificacion.notificarOperacionActualizar(promocionActualizar.getDescripcion());
+                
                 break;
         }
     }
     
-    private void actualizarProductosPromocion(int idPromocion){
-        
+    private void eliminarProductosPromocion(){
+        int tamano = productosEliminados.size() - 1;
+        for(int i = 0; i <= tamano; i++){
+            int codigoRespuesta = PromocionProductoDAO.eliminarProductoPromocion(productosEliminados.get(i).getIdPromocion());
+            switch(codigoRespuesta){
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple("Error de conexion", "Por el momento no hay conexion, "
+                        + "por favor inténtalos más tarde", Alert.AlertType.ERROR);
+                break;
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al eliminar los productos de la promoción,"
+                        + " por favor inténtelo más tarde", Alert.AlertType.WARNING);
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                Utilidades.mostrarDialogoSimple("Promocion registrada", "La eliminación de los productos de la "
+                        + "promoción se realizó con éxito", Alert.AlertType.INFORMATION);
+                
+                break;
+            }
+        }  
+    }
+    private void actualizarProductosPromocion(){
+        int tamano = productosEditados.size() - 1;
+        for(int i = 0; i <= tamano; i++){
+            int codigoRespuesta = PromocionProductoDAO.actualizarPromocionProducto(productosEditados.get(i));
+            switch(codigoRespuesta){
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple("Error de conexion", "Por el momento no hay conexion, "
+                        + "por favor inténtalos más tarde", Alert.AlertType.ERROR);
+                break;
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al actualizar los productos de la promoción,"
+                        + " por favor inténtelo más tarde", Alert.AlertType.WARNING);
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                Utilidades.mostrarDialogoSimple("Promocion registrada", "La actualización de los productos de la "
+                        + "promoción se realizó con éxito", Alert.AlertType.INFORMATION);
+                
+                break;
+            }
+        }
     }
     
     private void registrarPromocion(Promocion promocionRegistrar){
@@ -257,6 +307,9 @@ public class FXMLRegistroPromocionController implements Initializable {
                 Promocion promocionTemporal = PromocionDAO.obtenerUltimaPromocionGuardada();
                 int idPromocion = promocionTemporal.getIdPromocion();
                 registrarProductosPromocion( idPromocion);
+                cerrarVentana();
+                interfazNotificacion.notificarOperacionActualizar(promocionRegistrar.getDescripcion());
+
                 break;
         }
         
@@ -279,7 +332,6 @@ public class FXMLRegistroPromocionController implements Initializable {
             case Constantes.OPERACION_EXITOSA:
                 Utilidades.mostrarDialogoSimple("Promocion registrada", "El registro de los productos de la "
                         + "promoción se realizó con éxito", Alert.AlertType.INFORMATION);
-                
                 break;
             }
         }
@@ -383,10 +435,11 @@ public class FXMLRegistroPromocionController implements Initializable {
         PromocionProducto productoSeleccionado = tvProductosdePromocion.getSelectionModel().getSelectedItem();
         if(productoSeleccionado != null){
             carrito.remove(productoSeleccionado);
+            productosEliminados.add(productoSeleccionado);
             actualizarTablaPromocion();
             limpiarCeldasProducto();
 
-            if(carrito.size() < 1){
+            if(carrito.size() < 1 ){
                  btnEliminar.setDisable(true);
             }else{
                 btnEliminar.setDisable(false);
@@ -428,6 +481,11 @@ public class FXMLRegistroPromocionController implements Initializable {
         tfPrecioActualUnidad.setText("");
         tfPrecioFinal.setText("");
         cbProductos.getSelectionModel().clearSelection();
+    }
+    
+    private void cerrarVentana(){
+        Stage escenarioBase = (Stage) lbPrecioFinal.getScene().getWindow();
+        escenarioBase.close();
     }
     
 }

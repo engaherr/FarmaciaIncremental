@@ -109,7 +109,7 @@ public class PromocionProductoDAO {
         return respuesta;
     }
     
-    public int eliminarProductoPromocion (int idPromocion){
+    public static int eliminarProductoPromocion (int idPromocion){
         int respuesta;
         Connection conexionBD = ConexionBD.abrirConexionBD();
         if(conexionBD != null){
