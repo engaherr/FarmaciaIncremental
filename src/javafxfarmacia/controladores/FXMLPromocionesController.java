@@ -58,6 +58,7 @@ public class FXMLPromocionesController implements Initializable, INotificacionOp
     
     private ObservableList <Promocion> promociones;
     private ObservableList <Promocion> promocionesBusqueda;
+    @FXML
     private TextField tfBusqueda;
 
 
@@ -73,6 +74,7 @@ public class FXMLPromocionesController implements Initializable, INotificacionOp
     private void configurarTabla(){
         colDescripcion.setCellValueFactory(new PropertyValueFactory("descripcion"));
         colProducto.setCellValueFactory(new PropertyValueFactory("productosPromo"));
+        colPrecioFinal.setCellValueFactory(new PropertyValueFactory("precioFinal"));
         colFechaInicio.setCellValueFactory(new PropertyValueFactory("fechaInicio"));
         colfechaTermino.setCellValueFactory(new PropertyValueFactory("fechaTermino"));
 
@@ -146,9 +148,6 @@ public class FXMLPromocionesController implements Initializable, INotificacionOp
     private void clicEliminarPromocion(ActionEvent event) {
     }
 
-    @FXML
-    private void tfBusqueda(InputMethodEvent event) {
-    }
 
     @FXML
     private void clicVolverVentana(MouseEvent event) {

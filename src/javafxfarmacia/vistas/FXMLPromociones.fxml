@@ -44,8 +44,8 @@
             <Font name="Microsoft JhengHei Light" size="29.0" />
          </font>
       </Label>
-      <TextField layoutX="95.0" layoutY="141.0" onInputMethodTextChanged="#tfBusqueda" prefHeight="39.0" prefWidth="362.0" promptText="Escribe el nombre del producto" />
-      <ImageView fitHeight="55.0" fitWidth="64.0" layoutX="28.0" layoutY="33.0" onMouseClicked="#clicVolverVentana" pickOnBounds="true" preserveRatio="true">
+      <TextField fx:id="tfBusqueda" layoutX="95.0" layoutY="141.0" prefHeight="39.0" prefWidth="362.0" promptText="Escribe el nombre del producto" />
+      <ImageView fitHeight="72.0" fitWidth="47.0" layoutX="28.0" layoutY="33.0" onMouseClicked="#clicVolverVentana" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../recursos/vectorRegresar.png" />
          </image>

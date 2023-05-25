@@ -27,7 +27,7 @@
             <Glow level="0.5" />
          </effect>
       </Button>
-      <ImageView fitHeight="166.0" fitWidth="215.0" layoutX="243.0" layoutY="152.0" pickOnBounds="true">
+      <ImageView fx:id="imPromociones" fitHeight="166.0" fitWidth="215.0" layoutX="243.0" layoutY="152.0" pickOnBounds="true">
          <image>
             <Image url="@../recursos/farmacia.png" />
          </image></ImageView>

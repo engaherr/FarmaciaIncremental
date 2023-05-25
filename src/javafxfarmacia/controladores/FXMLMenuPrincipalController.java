@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafxfarmacia.utils.Utilidades;
@@ -24,6 +25,10 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     @FXML
     private Label lbTitulo;
+    @FXML
+    private ImageView imPromociones;
+    
+    int contador = 1; 
 
     /**
      * Initializes the controller class.
@@ -60,10 +65,13 @@ public class FXMLMenuPrincipalController implements Initializable {
 
     @FXML
     private void clicSiguiente(ActionEvent event) {
+        contador += 1;
     }
 
     @FXML
     private void clicAnterior(ActionEvent event) {
+        contador -= 1;
+        //File
     }
     
 }

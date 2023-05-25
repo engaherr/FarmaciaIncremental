@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Promocion {
     private int idPromocion;
     private String descripcion;
-    private double precioFinal;
+    private String precioFinal;
     private String fechaInicio;
     private String fechaTermino;
     private byte[] imagen;
@@ -23,7 +23,7 @@ public class Promocion {
     public Promocion() {
     }
 
-    public Promocion(int idPromocion, String descripcion, double precioFinal, String fechaInicio, 
+    public Promocion(int idPromocion, String descripcion, String precioFinal, String fechaInicio, 
             String fechaTermino, byte[] imagen, PromocionProductoRespuesta productos, String productosPromo ) {
         this.idPromocion = idPromocion;
         this.descripcion = descripcion;
@@ -65,7 +65,7 @@ public class Promocion {
         return descripcion;
     }
 
-    public double getPrecioFinal() {
+    public String getPrecioFinal() {
         return precioFinal;
     }
 
@@ -89,7 +89,7 @@ public class Promocion {
         this.descripcion = descripcion;
     }
 
-    public void setPrecioFinal(double precioFinal) {
+    public void setPrecioFinal(String precioFinal) {
         this.precioFinal = precioFinal;
     }
 
@@ -117,7 +117,18 @@ public class Promocion {
         }
         
         this.productosPromo = sb.toString();
+        
+        double precioPromo = 0;
+        for(PromocionProducto produc : productosPromoc){
+            precioPromo += produc.getPrecioFinal();
+        }
+       
+        String finalString = String.format("%.2f", precioPromo);
+        finalString = finalString + " MXN";
+        this.precioFinal = finalString;
+
     }
+    
 
 
             

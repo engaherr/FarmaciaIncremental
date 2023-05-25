@@ -9,13 +9,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javafx.scene.control.Alert;
 import javafxfarmacia.modelo.ConexionBD;
 import javafxfarmacia.modelo.pojo.Promocion;
 import javafxfarmacia.modelo.pojo.PromocionProductoRespuesta;
 import javafxfarmacia.modelo.pojo.PromocionRespuesta;
 import javafxfarmacia.utils.Constantes;
-import javafxfarmacia.utils.Utilidades;
+
 
 /**
  *
@@ -44,7 +43,7 @@ public class PromocionDAO {
                     PromocionProductoRespuesta productos = PromocionProductoDAO.obtenerInformacion(promocionTemporal.getIdPromocion());
                     promocionTemporal.setProductos(productos);
                     promocionTemporal.juntarProductos();
-                    System.out.println(promocionTemporal.getProductosPromo());
+         
                     promocionConsulta.add(promocionTemporal); 
                 }
               

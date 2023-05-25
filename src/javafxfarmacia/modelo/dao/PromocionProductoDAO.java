@@ -13,7 +13,6 @@ import javafxfarmacia.modelo.ConexionBD;
 import javafxfarmacia.modelo.pojo.PromocionProducto;
 import javafxfarmacia.modelo.pojo.PromocionProductoRespuesta;
 import javafxfarmacia.utils.Constantes;
-import oracle.jrockit.jfr.tools.ConCatRepository;
 
 /**
  *
@@ -118,7 +117,8 @@ public class PromocionProductoDAO {
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
                 prepararSentencia.setInt(1, idPromocion);
                 int filasAfectadas = prepararSentencia.executeUpdate();
-                respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+                respuesta = (filasAfectadas == 1 ) ? Constantes.OPERACION_EXITOSA :
+                        Constantes.ERROR_CONSULTA;
                 
             }catch(SQLException ex){
                 respuesta = Constantes.ERROR_CONSULTA;

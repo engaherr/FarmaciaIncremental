@@ -33,14 +33,6 @@
             <Font name="System Bold Italic" size="26.0" />
          </font>
       </Label>
-      <TextField fx:id="tfFechaInicio" layoutX="248.0" layoutY="133.0" prefHeight="40.0" prefWidth="179.0" promptText="yyyy-mm-dd">
-         <font>
-            <Font name="System Bold Italic" size="18.0" />
-         </font></TextField>
-      <TextField fx:id="tfFechaTermino" layoutX="753.0" layoutY="133.0" prefHeight="40.0" prefWidth="166.0" promptText="yyyy-mm-dd">
-         <font>
-            <Font name="System Bold Italic" size="18.0" />
-         </font></TextField>
       <Label layoutX="522.0" layoutY="132.0" text="Fecha de término:" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="26.0" />
@@ -118,5 +110,7 @@
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </Button>
+      <DatePicker fx:id="dpFechaInicio" layoutX="244.0" layoutY="132.0" />
+      <DatePicker fx:id="dpFechaTermino" layoutX="754.0" layoutY="132.0" />
    </children>
 </AnchorPane>
