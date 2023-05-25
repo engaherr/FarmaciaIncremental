@@ -1,0 +1,19 @@
+.date-picker .text-field {
+    -fx-control-inner-background: #1b1b1b;
+}
+
+.date-picker .arrow-button {
+    background-color: #313131;
+    -fx-background-color: #313131;
+}
+
+.date-picker .arrow-button:hover {
+    background-color: #313131;
+    -fx-background-color: #313131;
+}
+
+.date-picker .popup-content {
+    background-color: #313131;
+    -fx-background-color: #313131;
+}
+

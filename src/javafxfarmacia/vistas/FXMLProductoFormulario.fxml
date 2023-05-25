@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -12,37 +13,44 @@
 
 <AnchorPane id="AnchorPane" prefHeight="670.0" prefWidth="1175.0" style="-fx-background-color: #1b1b1b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLProductoFormularioController">
    <children>
-      <TextField fx:id="tfNombre" layoutX="60.0" layoutY="163.0" prefHeight="24.0" prefWidth="269.0" promptText="ej. Naproxeno 500mg ASDA5566">
+      <TextField fx:id="tfNombre" layoutX="60.0" layoutY="163.0" prefHeight="24.0" prefWidth="269.0" promptText="ej. Naproxeno 500mg ASDA5566" style="-fx-background-color: #1b1b1b; -fx-text-fill: white;">
          <font>
             <Font name="Microsoft JhengHei Light" size="14.0" />
          </font>
+         <effect>
+            <Glow />
+         </effect>
       </TextField>
       <Label fx:id="lbTitulo" layoutX="60.0" layoutY="51.0" text="Producto" textFill="WHITE">
          <font>
             <Font name="Microsoft JhengHei Light" size="36.0" />
          </font>
       </Label>
-      <TextField fx:id="tfFechaVencimiento" layoutX="360.0" layoutY="163.0" prefHeight="24.0" prefWidth="269.0" promptText="dd/mm/yyyy">
+      <TextField fx:id="tfCantidad" layoutX="60.0" layoutY="292.0" prefHeight="24.0" prefWidth="269.0" promptText="ej. 500" style="-fx-background-color: #1b1b1b; -fx-text-fill: white;">
          <font>
             <Font name="Microsoft JhengHei Light" size="14.0" />
          </font>
+         <effect>
+            <Glow />
+         </effect>
       </TextField>
-      <TextField fx:id="tfCantidad" layoutX="60.0" layoutY="292.0" prefHeight="24.0" prefWidth="269.0" promptText="ej. 500">
-         <font>
-            <Font name="Microsoft JhengHei Light" size="14.0" />
-         </font>
-      </TextField>
-      <CheckBox fx:id="ckboxVentaControlada" layoutX="443.0" layoutY="534.0" mnemonicParsing="false" text="Venta Controlada" textFill="WHITE">
+      <CheckBox fx:id="ckboxVentaControlada" layoutX="443.0" layoutY="534.0" mnemonicParsing="false" style="-fx-background-color: #1b1b1b;" text="Venta Controlada" textFill="WHITE">
          <font>
             <Font name="Microsoft JhengHei Light" size="18.0" />
          </font>
       </CheckBox>
-      <TextField fx:id="tfPresentacion" layoutX="360.0" layoutY="292.0" prefHeight="24.0" prefWidth="269.0" promptText="ej. Tabletas">
+      <TextField fx:id="tfPresentacion" layoutX="360.0" layoutY="292.0" prefHeight="24.0" prefWidth="269.0" promptText="ej. Tabletas" style="-fx-background-color: #1b1b1b; -fx-text-fill: white;">
          <font>
             <Font name="Microsoft JhengHei Light" size="14.0" />
          </font>
+         <effect>
+            <Glow />
+         </effect>
       </TextField>
-      <ComboBox fx:id="cbSucursal" layoutX="60.0" layoutY="529.0" prefHeight="32.0" prefWidth="237.0" style="-fx-text-size: 13;" />
+      <ComboBox fx:id="cbSucursal" layoutX="60.0" layoutY="529.0" prefHeight="32.0" prefWidth="237.0" style="-fx-text-fill: white; -fx-background-color: #1b1b1b; -fx-text-size: 13;">
+         <effect>
+            <Glow />
+         </effect></ComboBox>
       <Button layoutX="556.0" layoutY="611.0" mnemonicParsing="false" onAction="#clicAceptar" style="-fx-background-color: #5fad56;" text="Aceptar" textFill="WHITE">
          <font>
             <Font name="Microsoft JhengHei Bold" size="13.0" />
@@ -68,7 +76,7 @@
             <Font name="Microsoft JhengHei Light" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="361.0" layoutY="266.0" text="Presentación" textFill="WHITE">
+      <Label layoutX="361.0" layoutY="266.0" text="Presentación (opcional)" textFill="WHITE">
          <font>
             <Font name="Microsoft JhengHei Light" size="18.0" />
          </font>
@@ -78,15 +86,21 @@
             <Font name="Microsoft JhengHei Light" size="18.0" />
          </font>
       </Label>
-      <Button layoutX="371.0" layoutY="421.0" mnemonicParsing="false" onAction="#seleccionarFoto" prefHeight="24.0" prefWidth="259.0" style="-fx-background-color: #4e8098;" text="Seleccionar Foto" textFill="WHITE">
+      <Button layoutX="371.0" layoutY="421.0" mnemonicParsing="false" onAction="#seleccionarFoto" prefHeight="24.0" prefWidth="259.0" style="-fx-background-color: #1b1b1b;" text="Seleccionar Foto" textFill="WHITE">
          <font>
             <Font name="Microsoft JhengHei Bold" size="13.0" />
          </font>
+         <effect>
+            <Glow />
+         </effect>
       </Button>
-      <TextField fx:id="tfPrecio" layoutX="60.0" layoutY="422.0" prefHeight="24.0" prefWidth="269.0" promptText="ej. 59.90">
+      <TextField fx:id="tfPrecio" layoutX="60.0" layoutY="422.0" prefHeight="24.0" prefWidth="269.0" promptText="ej. 59.90" style="-fx-background-color: #1b1b1b; -fx-text-fill: white;">
          <font>
             <Font name="Microsoft JhengHei Light" size="14.0" />
          </font>
+         <effect>
+            <Glow />
+         </effect>
       </TextField>
       <Label layoutX="61.0" layoutY="391.0" text="Precio" textFill="WHITE">
          <font>
@@ -102,5 +116,10 @@
             </ImageView>
          </children>
       </StackPane>
+      <DatePicker fx:id="dpFechaVencimiento" layoutX="359.0" layoutY="163.0" prefHeight="25.0" prefWidth="269.0" style="-fx-background-color: #1b1b1b; -fx-control-inner-background: #1b1b1b; -fx-border-color: #1b1b1b;" stylesheets="@FXMLProductoFormularioCSS.css">
+         <effect>
+            <Glow />
+         </effect>
+      </DatePicker>
    </children>
 </AnchorPane>

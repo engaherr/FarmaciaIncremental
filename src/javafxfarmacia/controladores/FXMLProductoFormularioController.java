@@ -6,11 +6,15 @@ package javafxfarmacia.controladores;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.file.Files;
+import java.text.DecimalFormat;
+import java.text.ParsePosition;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -23,12 +27,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.converter.BigDecimalStringConverter;
 import javafxfarmacia.interfaz.INotificacionOperacion;
 import javafxfarmacia.modelo.dao.ProductoDAO;
 import javafxfarmacia.modelo.dao.SucursalDAO;
@@ -51,8 +58,6 @@ public class FXMLProductoFormularioController implements Initializable {
     @FXML
     private Label lbTitulo;
     @FXML
-    private TextField tfFechaVencimiento; //Opcional 
-    @FXML
     private TextField tfCantidad;
     @FXML
     private CheckBox ckboxVentaControlada;
@@ -71,11 +76,27 @@ public class FXMLProductoFormularioController implements Initializable {
     private File imagenSeleccionada;
     
     private INotificacionOperacion interfazNotificacion;
+    @FXML
+    private DatePicker dpFechaVencimiento;
 
-    @Override
+    @Override    
     public void initialize(URL url, ResourceBundle rb) {
         cargarInformacionSucursal();
-    }    
+        formatearTextFieldNumerico(tfCantidad);
+        formatearTextFieldNoNumerico(tfPresentacion);
+        formatearTextFieldFlotante(tfPrecio);
+        dpFechaVencimiento.setOnAction(event -> {
+            LocalDate dateSeleccionada = dpFechaVencimiento.getValue();
+            LocalDate dateActual = LocalDate.now();
+            
+            if(dateSeleccionada != null && dateSeleccionada.isBefore(dateActual)){
+                Utilidades.mostrarDialogoSimple("Fecha no válida",
+                        "Seleccione una fecha posterior a la actual"
+                        , Alert.AlertType.WARNING);
+                dpFechaVencimiento.setValue(null);
+            }
+        });
+    }
     
     public void inicializarInformacionFormulario(boolean esEdicion, 
             Producto producto, INotificacionOperacion interfazNotificacion){
@@ -92,10 +113,18 @@ public class FXMLProductoFormularioController implements Initializable {
     
     private void cargarInformacionEdicion(){
         tfNombre.setText(productoEdicion.getNombre());
+        tfNombre.setEditable(false);
         tfCantidad.setText(Integer.toString(productoEdicion.getCantidad()));
-        tfFechaVencimiento.setText(productoEdicion.getFechaVencimiento());
+        if(productoEdicion.getFechaVencimiento() != null){
+            LocalDate date = LocalDate.parse(productoEdicion.getFechaVencimiento(),
+                    DateTimeFormatter.ISO_DATE);
+            dpFechaVencimiento.setValue(date);
+        }else{
+            dpFechaVencimiento.setValue(null);
+        }
         tfPrecio.setText(Double.toString(productoEdicion.getPrecio()));
-        tfPresentacion.setText(productoEdicion.getPresentacion());
+        if(!"N/A".equals(productoEdicion.getPresentacion()))
+            tfPresentacion.setText(productoEdicion.getPresentacion());
         cbSucursal.getSelectionModel().select(obtenerPosicionComboSucursal(
                 productoEdicion.getIdSucursal()));
         ckboxVentaControlada.setSelected(productoEdicion.isVentaControlada());
@@ -167,65 +196,98 @@ public class FXMLProductoFormularioController implements Initializable {
     }
     
     private void validarCamposRegistro() {
-        String nombre = tfNombre.getText();
-        String fechaVencimiento = tfFechaVencimiento.getText();
-        int cantidad = Integer.parseInt(tfCantidad.getText());
-        double precio = Double.parseDouble(tfPrecio.getText());
-        String presentacion = tfPresentacion.getText();
+        boolean esValido = true;
+        String nombre = null; 
+        if(!tfNombre.getText().trim().isEmpty()){
+            nombre = tfNombre.getText();
+        }else{
+            esValido = false;
+        }
+        int cantidad = 0;
+        try{
+            cantidad = Integer.parseInt(tfCantidad.getText());
+        }catch(NumberFormatException e){
+            esValido = false;
+        }
+        double precio = 0;
+        try{
+            precio = Double.parseDouble(tfPrecio.getText());
+            if(precio <= 0)
+                esValido = false;
+        }catch(NumberFormatException e){
+            esValido = false;
+        }
+        String fechaVencimiento = null;
+        if(dpFechaVencimiento.getValue() != null)
+            fechaVencimiento = dpFechaVencimiento.getValue().format(DateTimeFormatter.ISO_DATE);
+        String presentacion = "N/A";
+        if(!tfPresentacion.getText().isEmpty())
+            presentacion = tfPresentacion.getText();
         boolean esVentaControlada = ckboxVentaControlada.isSelected();
-        int idSucursal = cbSucursal.getValue().getIdSucursal();
-        //TODO Validacion
+        int idSucursal = 0;
+        if(!cbSucursal.getSelectionModel().isEmpty())
+            idSucursal = cbSucursal.getValue().getIdSucursal();
+        else
+            esValido = false;
         
-        Producto productoValidado = new Producto();
-        productoValidado.setCantidad(cantidad);
-        productoValidado.setFechaVencimiento(fechaVencimiento);
-        productoValidado.setIdSucursal(idSucursal);
-        productoValidado.setNombre(nombre);
-        productoValidado.setPrecio(precio);
-        productoValidado.setPresentacion(presentacion);
-        productoValidado.setVentaControlada(esVentaControlada);
-        
-        try {
-            if(esEdicion){
-                if(imagenSeleccionada != null){
-                    productoValidado.setFoto(Files.readAllBytes(imagenSeleccionada.toPath()));
+        if(esValido == true){
+            Producto productoValidado = new Producto();
+            productoValidado.setCantidad(cantidad);
+            productoValidado.setFechaVencimiento(fechaVencimiento);
+            productoValidado.setIdSucursal(idSucursal);
+            productoValidado.setNombre(nombre);
+            productoValidado.setPrecio(precio);
+            productoValidado.setPresentacion(presentacion);
+            productoValidado.setVentaControlada(esVentaControlada);
+
+            try {
+                if(esEdicion){
+                    if(imagenSeleccionada != null){
+                        productoValidado.setFoto(Files.readAllBytes(imagenSeleccionada.toPath()));
+                    }else{
+                        productoValidado.setFoto(productoEdicion.getFoto());
+                    }
+                    productoValidado.setIdProducto(productoEdicion.getIdProducto());
+                    actualizarProducto(productoValidado);
                 }else{
-                    productoValidado.setFoto(productoEdicion.getFoto());
+                    if(imagenSeleccionada != null){
+                        productoValidado.setFoto(Files.readAllBytes(imagenSeleccionada.toPath()));
+                    }
+                    registrarProducto(productoValidado);
                 }
-                productoValidado.setIdProducto(productoEdicion.getIdProducto());
-                actualizarProducto(productoValidado);
-            }else{
-                productoValidado.setFoto(Files.readAllBytes(imagenSeleccionada.toPath()));
-                registrarProducto(productoValidado);
+            } catch (IOException e) {
+                Utilidades.mostrarDialogoSimple("Error con imagen",
+                        "Hubo un error para guardar la imagen seleccionada, inténtelo de nuevo",
+                        Alert.AlertType.ERROR);
             }
-        } catch (IOException e) {
-            Utilidades.mostrarDialogoSimple("Error con imagen",
-                    "Hubo un error para guardar la imagen seleccionada, inténtelo de nuevo",
-                    Alert.AlertType.ERROR);
+        }else{
+           Utilidades.mostrarDialogoSimple("Campos Vacíos",
+                   "Por favor ingrese información o valores en los campos obligatorios",
+                   Alert.AlertType.WARNING);
         }
     }
-    
-    private void registrarProducto(Producto productoRegistro){
-        int codigoRespuesta = ProductoDAO.guardarProducto(productoRegistro);
-        switch(codigoRespuesta){
-            case Constantes.ERROR_CONEXION:
-                    Utilidades.mostrarDialogoSimple("Error de conexión",
-                            "Por el momento no hay conexión, por favor inténtelo más tarde"
-                            , Alert.AlertType.ERROR);
-                break;
-            case Constantes.ERROR_CONSULTA:
-                    Utilidades.mostrarDialogoSimple("Error de consulta", 
-                            "Hubo un error al cargar la información por favor intentélo de nuevo más tarde",
-                            Alert.AlertType.INFORMATION);
-                break;
-            case Constantes.OPERACION_EXITOSA:
-                    Utilidades.mostrarDialogoSimple("Producto Registrado",
-                            "El producto fue registrado exitosamente", 
-                            Alert.AlertType.INFORMATION);        
-                    interfazNotificacion.notificarOperacionGuardar();
-                    cerrarVentana();
-                break;
-        }
+
+        private void registrarProducto(Producto productoRegistro){
+            int codigoRespuesta = ProductoDAO.guardarProducto(productoRegistro);
+            switch(codigoRespuesta){
+                case Constantes.ERROR_CONEXION:
+                        Utilidades.mostrarDialogoSimple("Error de conexión",
+                                "Por el momento no hay conexión, por favor inténtelo más tarde"
+                                , Alert.AlertType.ERROR);
+                    break;
+                case Constantes.ERROR_CONSULTA:
+                        Utilidades.mostrarDialogoSimple("Error de consulta", 
+                                "Hubo un error al cargar la información por favor intentélo de nuevo más tarde",
+                                Alert.AlertType.INFORMATION);
+                    break;
+                case Constantes.OPERACION_EXITOSA:
+                        Utilidades.mostrarDialogoSimple("Producto Registrado",
+                                "El producto fue registrado exitosamente", 
+                                Alert.AlertType.INFORMATION);        
+                        interfazNotificacion.notificarOperacionGuardar();
+                        cerrarVentana();
+                    break;
+            }
     }
     
     private void actualizarProducto(Producto productoActualizar){
@@ -262,5 +324,33 @@ public class FXMLProductoFormularioController implements Initializable {
                 return i;
         }
         return 0;
+    }
+    
+    private void formatearTextFieldNumerico(TextField tfNumerico) {
+        tfNumerico.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                tfNumerico.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+            
+            if (tfNumerico.getText().equals("0")) {
+                tfNumerico.setText("1");
+            }
+        });
+    }
+    
+    private void formatearTextFieldFlotante(TextField tfFlotante){
+        tfFlotante.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*\\.?\\d{0," + 2 + "}")) {
+                tfFlotante.setText(oldValue);
+            }
+        });
+    }
+    
+    private void formatearTextFieldNoNumerico(TextField tfNoNumerico) {
+        tfNoNumerico.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("[a-zA-Z]*")) {
+                tfNoNumerico.setText(newValue.replaceAll("[^a-zA-Z]", ""));
+            }
+        });
     }
 }
