@@ -59,8 +59,7 @@ public class FXMLInventarioController implements Initializable, INotificacionOpe
     private TextField tfBusqueda;
     
     private ObservableList<Producto> productos;
-    private ObservableList<Producto> productosBusqueda;
-
+    private SortedList<Producto> sortedListProductos;
     
     @FXML
     private TableColumn colPresentacion;
@@ -167,7 +166,7 @@ public class FXMLInventarioController implements Initializable, INotificacionOpe
     private void clicModificar(ActionEvent event) {
         int posicion = tvInventario.getSelectionModel().getSelectedIndex();
         if(posicion != -1)
-            irFormulario(true, productos.get(posicion));
+            irFormulario(true, sortedListProductos.get(posicion));
     }
 
     @FXML
@@ -176,7 +175,7 @@ public class FXMLInventarioController implements Initializable, INotificacionOpe
         boolean borrarRegistro = Utilidades.mostrarDialogoConfirmacion("Eliminar Producto", 
                 "¿Eliminar Artículo del inventario?");
         if(borrarRegistro){
-            int codigoRespuesta = ProductoDAO.eliminarProducto(productos.get(posicion).getIdProducto());
+            int codigoRespuesta = ProductoDAO.eliminarProducto(sortedListProductos.get(posicion).getIdProducto());
             switch(codigoRespuesta){
                 case Constantes.ERROR_CONEXION:
                     Utilidades.mostrarDialogoSimple("Error de Conexión",
@@ -231,7 +230,7 @@ public class FXMLInventarioController implements Initializable, INotificacionOpe
                     });
                 }
             });
-            SortedList<Producto> sortedListProductos = new SortedList<>(filtradoProductos);
+            sortedListProductos = new SortedList<>(filtradoProductos);
             sortedListProductos.comparatorProperty().bind(tvInventario.comparatorProperty());
             tvInventario.setItems(sortedListProductos);
         }

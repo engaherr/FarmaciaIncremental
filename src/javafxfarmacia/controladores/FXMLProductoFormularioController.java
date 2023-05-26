@@ -8,11 +8,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.file.Files;
-import java.text.DecimalFormat;
-import java.text.ParsePosition;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -30,12 +27,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.converter.BigDecimalStringConverter;
 import javafxfarmacia.interfaz.INotificacionOperacion;
 import javafxfarmacia.modelo.dao.ProductoDAO;
 import javafxfarmacia.modelo.dao.SucursalDAO;
@@ -115,13 +110,10 @@ public class FXMLProductoFormularioController implements Initializable {
         tfNombre.setText(productoEdicion.getNombre());
         tfNombre.setEditable(false);
         tfCantidad.setText(Integer.toString(productoEdicion.getCantidad()));
-        if(productoEdicion.getFechaVencimiento() != null){
-            LocalDate date = LocalDate.parse(productoEdicion.getFechaVencimiento(),
-                    DateTimeFormatter.ISO_DATE);
-            dpFechaVencimiento.setValue(date);
-        }else{
+        if(productoEdicion.getFechaVencimiento() != null)
+            dpFechaVencimiento.setValue(LocalDate.parse(productoEdicion.getFechaVencimiento()));
+        else
             dpFechaVencimiento.setValue(null);
-        }
         tfPrecio.setText(Double.toString(productoEdicion.getPrecio()));
         if(!"N/A".equals(productoEdicion.getPresentacion()))
             tfPresentacion.setText(productoEdicion.getPresentacion());
@@ -267,7 +259,7 @@ public class FXMLProductoFormularioController implements Initializable {
         }
     }
 
-        private void registrarProducto(Producto productoRegistro){
+    private void registrarProducto(Producto productoRegistro){
             int codigoRespuesta = ProductoDAO.guardarProducto(productoRegistro);
             switch(codigoRespuesta){
                 case Constantes.ERROR_CONEXION:

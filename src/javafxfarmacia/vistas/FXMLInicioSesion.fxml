@@ -12,16 +12,20 @@
    <children>
       <Pane layoutX="-4.0" prefHeight="470.0" prefWidth="354.0" style="-fx-background-color: #f25d59;">
          <children>
-            <Label layoutX="22.0" layoutY="175.0" prefHeight="50.0" prefWidth="310.0" text="¡Bienvenido de nuevo!" textFill="#fffdfd">
-               <font>
-                  <Font name="Microsoft JhengHei Light" size="30.0" />
-               </font>
-            </Label>
-            <Label layoutX="55.0" layoutY="225.0" text="Por favor, inicia sesión para ingresar." textFill="WHITE">
-               <font>
-                  <Font name="Microsoft JhengHei Light" size="15.0" />
-               </font>
-            </Label>
+            <Pane layoutX="11.0" layoutY="167.0" prefHeight="104.0" prefWidth="334.0" style="-fx-background-color: #f25d59;">
+               <children>
+                  <Label layoutX="12.0" layoutY="14.0" prefHeight="50.0" prefWidth="310.0" text="¡Bienvenido de nuevo!" textFill="#fffdfd">
+                     <font>
+                        <Font name="Microsoft JhengHei Light" size="30.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="43.0" layoutY="57.0" text="Por favor, inicia sesión para ingresar." textFill="WHITE">
+                     <font>
+                        <Font name="Microsoft JhengHei Light" size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
          </children>
       </Pane>
       <Label layoutX="443.0" layoutY="119.0" prefHeight="50.0" prefWidth="178.0" text="Inicio de sesión" textFill="#fffdfd">

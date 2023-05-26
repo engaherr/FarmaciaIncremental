@@ -47,10 +47,15 @@
             <Glow />
          </effect>
       </TextField>
-      <ComboBox fx:id="cbSucursal" layoutX="60.0" layoutY="529.0" prefHeight="32.0" prefWidth="237.0" style="-fx-text-fill: white; -fx-background-color: #1b1b1b; -fx-text-size: 13;">
+      <ComboBox fx:id="cbSucursal" layoutX="60.0" layoutY="529.0" prefHeight="32.0" prefWidth="237.0" style="-fx-background-color: #1b1b1b; -fx-text-size: 13;" stylesheets="@FXMLProductoFormularioCSS.css">
          <effect>
             <Glow />
-         </effect></ComboBox>
+         </effect>
+         <styleClass>
+            <String fx:value="custom-combobox" />
+            <String fx:value="white-text-combobox" />
+            <String fx:value="popup-content" />
+         </styleClass></ComboBox>
       <Button layoutX="556.0" layoutY="611.0" mnemonicParsing="false" onAction="#clicAceptar" style="-fx-background-color: #5fad56;" text="Aceptar" textFill="WHITE">
          <font>
             <Font name="Microsoft JhengHei Bold" size="13.0" />
@@ -116,10 +121,14 @@
             </ImageView>
          </children>
       </StackPane>
-      <DatePicker fx:id="dpFechaVencimiento" layoutX="359.0" layoutY="163.0" prefHeight="25.0" prefWidth="269.0" style="-fx-background-color: #1b1b1b; -fx-control-inner-background: #1b1b1b; -fx-border-color: #1b1b1b;" stylesheets="@FXMLProductoFormularioCSS.css">
+      <DatePicker fx:id="dpFechaVencimiento" layoutX="359.0" layoutY="163.0" prefHeight="25.0" prefWidth="269.0" promptText="dd/mm/yyyy" style="-fx-background-color: #1b1b1b; -fx-control-inner-background: #1b1b1b; -fx-border-color: #1b1b1b;" stylesheets="@FXMLProductoFormularioCSS.css">
          <effect>
             <Glow />
          </effect>
+         <styleClass>
+            <String fx:value="jfx-date-picker" />
+            <String fx:value="popup-content" />
+         </styleClass>
       </DatePicker>
    </children>
 </AnchorPane>
