@@ -33,7 +33,7 @@
             <TableColumn fx:id="colProveedor" prefWidth="184.0" sortType="DESCENDING" style="-fx-background-color: #f8f2dc;" text="Proveedor" />
         </columns>
       </TableView>
-      <Button disable="true" layoutX="176.0" layoutY="570.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="303.0" style="-fx-background-color: #4E8098;" text="Modificar" textFill="WHITE">
+      <Button layoutX="176.0" layoutY="570.0" mnemonicParsing="false" onAction="#clicModificar" prefHeight="77.0" prefWidth="303.0" style="-fx-background-color: #4E8098;" text="Modificar" textFill="WHITE">
          <font>
             <Font size="30.0" />
          </font>

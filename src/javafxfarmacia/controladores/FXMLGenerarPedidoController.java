@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 import javafx.beans.value.ChangeListener;
@@ -45,6 +46,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import javafxfarmacia.interfaz.INotificacionOperacion;
 import javafxfarmacia.modelo.dao.PedidoDAO;
 import javafxfarmacia.modelo.dao.PedidoDAO.TipoProveedor;
 import static javafxfarmacia.modelo.dao.PedidoDAO.guardarPedidoExterno;
@@ -55,7 +57,8 @@ import javafxfarmacia.modelo.pojo.PedidoRespuesta;
 import javafxfarmacia.modelo.pojo.ProductoPedido;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 
 
@@ -106,6 +109,9 @@ public class FXMLGenerarPedidoController implements Initializable {
 
     @FXML
     private TextField autoTextField;
+    private boolean esEdicion;
+    private Pedido pedido;
+    private INotificacionOperacion interfazNotificacion;
 
 
     
@@ -167,7 +173,7 @@ if (respuestaExternos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
         cbProveedor.setConverter(new StringConverter<Pedido>() {
     @Override
     public String toString(Pedido pedido) {
-        return pedido != null ? pedido.getNombre() : "";
+        return pedido != null ? pedido.getNombre_proveedor(): "";
     }
 
     @Override
@@ -197,7 +203,11 @@ if (respuestaExternos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
         }
     });
         
-    }
+    
+    
+ 
+    
+     }
 
     private void cargarInformacionProducto(int idProducto) {
         productos = FXCollections.observableArrayList();
@@ -360,7 +370,7 @@ private void registrarProductosPromocion(int productoNuevo) {
     for (int i = 0; i <= tamano; i++) {
         Producto producto = carrito.get(i);
 
-        // Crea una instancia de ProductoPedido y asigna los valores relevantes del objeto Producto
+
         ProductoPedido productoPedido = new ProductoPedido(
           producto.getIdPedido(),
             /* idProducto */ producto.getIdProducto(),    // Obtén el valor correspondiente del objeto Producto
@@ -376,12 +386,12 @@ private void registrarProductosPromocion(int productoNuevo) {
                         + "por favor inténtalo más tarde", Alert.AlertType.ERROR);
                 break;
             case Constantes.ERROR_CONSULTA:
-                Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al registrar los productos de la promoción,"
+                Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al registrar los productos ,"
                         + " por favor inténtalo más tarde", Alert.AlertType.WARNING);
                 break;
             case Constantes.OPERACION_EXITOSA:
-                Utilidades.mostrarDialogoSimple("Promoción registrada", "El registro de los productos de la "
-                        + "promoción se realizó con éxito", Alert.AlertType.INFORMATION);
+                Utilidades.mostrarDialogoSimple("Promoción registrada", "El pedido de los productos  "
+                        + " se realizó con éxito", Alert.AlertType.INFORMATION);
                 break;
         }
     }
@@ -470,8 +480,56 @@ private void clicBuscarProducto(KeyEvent event) {
     }
 }
 
-}
 
+ public void inicializarInformacionFormulario(boolean esEdicion, Pedido pedido, INotificacionOperacion interfazNotificacion){
+        this.esEdicion = esEdicion;
+        this.pedido = pedido;
+        this.interfazNotificacion = interfazNotificacion;
+        
+        if(esEdicion){
+            cargarInformacionPedido();
+          /*  actualizarTablaPromocion();*/
+        }else{
+            
+        }
+    }
+
+  private void cargarInformacionPedido(){
+      
+       cbProveedor.setValue(pedido);
+       Pedido proveedor = cbProveedor.getValue(); 
+      System.out.println("pedido para la lista" + pedido);
+       proveedoresExternos = FXCollections.observableArrayList();
+      PedidoRespuesta respuestaExternos = PedidoDAO.obtenerProveedoresExternos();
+    if (respuestaExternos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
+        ArrayList<Pedido> proveedoresExternosList = respuestaExternos.getPedidos();
+         proveedoresExternos.addAll(proveedoresExternosList);
+         if (proveedoresExternosList.stream().map(Object::toString).anyMatch(pedido.toString()::equals)) {
+            rbExternos.setSelected(true);
+                  }
+        }
+    String fechaEntregaString = pedido.getFecha_entrega();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); 
+    LocalDate fechaEntrega = LocalDate.parse(fechaEntregaString, formatter); 
+    dpDiaEntrega.setValue(fechaEntrega); 
+      System.out.println("ID PEDIDO ANTES DE CARGAR PRODUCTOS" + pedido.getFecha_entrega() + pedido.getNombre_proveedor() + pedido.getIdPedido());
+    cargarProductosPedido();
+    
+    }
+
+ private void cargarProductosPedido(){
+        carrito = FXCollections.observableArrayList();
+        System.out.println("IDPEDIDO" + pedido.getIdPedido());
+         ProductoRespuesta respuestaBD =  ProductoDAO.obtenerInformacionPedido(pedido.getIdPedido());
+      
+        carrito.addAll(respuestaBD.getProductos());
+        tvCarrito.setItems(carrito);
+        actualizarTablaCarrito();
+             
+    }
+
+
+}
     
 
 

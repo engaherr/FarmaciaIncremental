@@ -70,6 +70,11 @@ public class Producto {
 
     }
 
+    public Producto(String nombre, int cantidad) {
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+    }
+
     public int getIdProducto() {
         return idProducto;
     }

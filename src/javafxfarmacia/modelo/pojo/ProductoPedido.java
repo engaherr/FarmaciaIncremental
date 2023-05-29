@@ -14,12 +14,22 @@ public class ProductoPedido {
     private int idProducto;
     private int Cantidad;
     private int idProductoPedido;
+    private String nombre;
 
-    public ProductoPedido(int idPedido, int idProducto, int Cantidad, int idProductoPedido) {
+    public ProductoPedido(int idPedido, int idProducto, int Cantidad, int idProductoPedido,String nombre) {
         this.idPedido = idPedido;
         this.idProducto = idProducto;
         this.Cantidad = Cantidad;
         this.idProductoPedido = idProductoPedido;
+        this.nombre = nombre;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
     
   
@@ -31,6 +41,14 @@ public class ProductoPedido {
     public void setIdProductoPedido(int idProductoPedido) {
         this.idProductoPedido = idProductoPedido;
     }
+
+    public ProductoPedido(int idPedido, int idProducto, int Cantidad, int idProductoPedido) {
+        this.idPedido = idPedido;
+        this.idProducto = idProducto;
+        this.Cantidad = Cantidad;
+        this.idProductoPedido = idProductoPedido;
+    }
+
     
     
     

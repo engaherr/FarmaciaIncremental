@@ -24,12 +24,13 @@ public class Pedido {
     private int idProveedor;
     private int idSucursal;
     private String nombre_proveedor;
+    private ProductoPedidoRespuesta productos;
     private String productos_combinados;
 private TipoProveedor tipoProveedor;
 private List<String> nombreProductos;
 private List<Integer> cantidadProductos;
 
-    public Pedido(int idPedido, String nombre, String fecha_pedido, String fecha_entrega, int cantidad, String estado, float total, int idProducto, int idProveedor, int idSucursal, String nombre_proveedor, String productos_combinados, TipoProveedor tipoProveedor, List<String> nombreProductos, List<Integer> cantidadProductos) {
+    public Pedido(int idPedido, String nombre, String fecha_pedido, String fecha_entrega, int cantidad, String estado, float total, int idProducto, int idProveedor, int idSucursal, String nombre_proveedor, String productos_combinados, TipoProveedor tipoProveedor, List<String> nombreProductos,ProductoPedidoRespuesta productos, List<Integer> cantidadProductos) {
         this.idPedido = idPedido;
         this.nombre = nombre;
         this.fecha_pedido = fecha_pedido;
@@ -45,6 +46,13 @@ private List<Integer> cantidadProductos;
         this.tipoProveedor = tipoProveedor;
         this.nombreProductos = nombreProductos;
         this.cantidadProductos = cantidadProductos;
+        this.productos = productos;
+        
+    }
+
+    public Pedido(int idProveedor, String nombre_proveedor) {
+        this.idProveedor = idProveedor;
+        this.nombre_proveedor = nombre_proveedor;
     }
 
 
@@ -185,6 +193,23 @@ private List<Integer> cantidadProductos;
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    @Override
+    public String toString() {
+        return  nombre_proveedor ;
+    }
+    
+    
+    
+    public ProductoPedidoRespuesta getProductos() {
+        return productos;
+    }
+
+    public void setProductos(ProductoPedidoRespuesta productos) {
+        this.productos = productos;
+    }
+
+    
 }
 
 

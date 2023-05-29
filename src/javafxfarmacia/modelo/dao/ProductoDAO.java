@@ -95,5 +95,43 @@ public class ProductoDAO {
     }
     
     
+         public static ProductoRespuesta obtenerInformacionPedido(int idPedido){
+    ProductoRespuesta respuesta = new ProductoRespuesta();
+    Connection conexionBD = ConexionBD.abrirConexionBD();
+      if(conexionBD != null){
+            try{
+                String consulta = "SELECT producto.nombre, producto.precio,  producto_pedido.idProducto, producto_pedido.cantidad \n" +
+            "FROM producto_pedido \n" +
+            "INNER JOIN producto ON producto.idProducto = producto_pedido.idProducto\n" +
+            " WHERE idPedido = ?;";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                   prepararSentencia.setInt(1, idPedido);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                ArrayList <Producto> productos = new ArrayList();
+                while(resultado.next()){
+                    Producto producto = new Producto();
+                    producto.setIdProducto(resultado.getInt("idProducto"));
+                    producto.setNombre(resultado.getString("nombre"));
+                    producto.setPrecioUnitario(resultado.getInt("precio"));
+                    producto.setCantidad(resultado.getInt("cantidad"));
+                    productos.add(producto);
+                    System.out.println("ID PRODUCTO: "+producto.getIdProducto());
+                
+                }
+                respuesta.setProductos(productos);
+                respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
+
+                conexionBD.close();
+          
+                
+            }catch(SQLException ex){
+                respuesta.setCodigoRespuesta(Constantes.ERROR_CONSULTA);
+            }
+        }else{
+            respuesta.setCodigoRespuesta(Constantes.ERROR_CONEXION);
+        }
+        return respuesta;
+   
+    }
     
 }

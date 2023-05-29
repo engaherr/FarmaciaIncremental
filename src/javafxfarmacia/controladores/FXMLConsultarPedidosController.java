@@ -5,6 +5,7 @@
 package javafxfarmacia.controladores;
 
 
+import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -28,14 +29,23 @@ import javafx.util.Callback;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableRow;
+import javafx.stage.Modality;
+import javafxfarmacia.JavaFXFarmacia;
+import javafxfarmacia.interfaz.INotificacionOperacion;
 
 /**
  * FXML Controller class
  *
  * @author dplat
  */
-public class FXMLConsultarPedidosController implements Initializable {
+public class FXMLConsultarPedidosController implements Initializable, INotificacionOperacion {
 
     @FXML
     private TableView<Pedido> tvPedidos;
@@ -162,5 +172,61 @@ colEstado.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40;-fx-
         Stage escenarioPrincipal = (Stage) tvPedidos.getScene().getWindow();
         escenarioPrincipal.close();
     }
+
+    @FXML
+    private void clicModificar(ActionEvent event) {
+        
+          int posicion = tvPedidos.getSelectionModel().getSelectedIndex();
+    if(posicion != -1){
+        irFormulario(true,pedidos.get(posicion));
+    }else{
+        Utilidades.mostrarDialogoSimple("Atención","Por favor selecciona "
+                + "una promoción para poder editar", Alert.AlertType.WARNING);
+        }
+    }
+    
+    
+    
+     private void irFormulario(boolean esEdicion, Pedido pedido){
+        try{
+            FXMLLoader accesoControlador = new FXMLLoader
+                (JavaFXFarmacia.class.getResource("vistas/FXMLGenerarPedido.fxml"));
+            Parent vista;
+            vista = accesoControlador.load();
+            
+            FXMLGenerarPedidoController formulario = accesoControlador.getController();
+            formulario.inicializarInformacionFormulario(esEdicion,pedido,this);
+            
+            Stage escenarioFormulario = new Stage();
+            escenarioFormulario.setScene(new Scene(vista));
+            escenarioFormulario.setTitle("Formulario: registro de pedido");
+            escenarioFormulario.initModality(Modality.APPLICATION_MODAL);
+            escenarioFormulario.showAndWait();         
+            
+        }catch(IOException ex){
+            Logger.getLogger(FXMLGenerarPedidoController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void notificarOperacionGuardarPedido(int idPedido) {
+Utilidades.mostrarDialogoSimple("Notificacion","Se registró de forma "
+                + "exitosa la promoción", Alert.AlertType.INFORMATION);
+        cargarInformacionTabla();  
+    }
+
+    @Override
+    public void notificarOperacionActualizarPedido(int idPedido) {
+Utilidades.mostrarDialogoSimple("Notificación","Se ACTUALIZÓ "
+                + "los datos de la promocion", Alert.AlertType.INFORMATION);
+                cargarInformacionTabla();  
+
+    }
+    
+     
+     
+    
+
+
     
 }

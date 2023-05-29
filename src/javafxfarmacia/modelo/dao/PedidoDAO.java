@@ -26,17 +26,17 @@ public class PedidoDAO {
     Connection conexionBD = ConexionBD.abrirConexionBD();
     if (conexionBD != null) {
         try {
-           String consulta = "SELECT p.fecha_pedido, p.fecha_entrega, GROUP_CONCAT(pr.nombre SEPARATOR ', ') AS nombres_productos, "
-                    + "CASE "
-                    + "WHEN p.idProveedor IS NOT NULL THEN prov.nombre "
-                    + "ELSE suc.nombreSucursal "
-                    + "END AS nombre_proveedor "
-                    + "FROM pedidos p "
-                    + "JOIN producto_pedido pp ON p.idpedido = pp.idPedido "
-                    + "JOIN producto pr ON pp.idProducto = pr.idProducto "
-                    + "LEFT JOIN proveedor prov ON p.idProveedor = prov.idProveedor "
-                    + "LEFT JOIN sucursal suc ON p.idSucursal = suc.idSucursal "
-                    + "GROUP BY p.fecha_pedido, p.fecha_entrega, nombre_proveedor";
+           String consulta = "SELECT p.idpedido, p.fecha_pedido, p.fecha_entrega, GROUP_CONCAT(pr.nombre SEPARATOR ', ') AS nombres_productos,\n" +
+"       CASE\n" +
+"         WHEN p.idProveedor IS NOT NULL THEN prov.nombre\n" +
+"         ELSE suc.nombreSucursal\n" +
+"       END AS nombre_proveedor\n" +
+"FROM pedidos p\n" +
+"JOIN producto_pedido pp ON p.idpedido = pp.idPedido\n" +
+"JOIN producto pr ON pp.idProducto = pr.idProducto\n" +
+"LEFT JOIN proveedor prov ON p.idProveedor = prov.idProveedor\n" +
+"LEFT JOIN sucursal suc ON p.idSucursal = suc.idSucursal\n" +
+"GROUP BY p.idpedido, p.fecha_pedido, p.fecha_entrega, nombre_proveedor;";
             PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
             ResultSet resultado = prepararSentencia.executeQuery();
             ArrayList<Pedido> pedidoConsulta = new ArrayList();
@@ -46,6 +46,7 @@ public class PedidoDAO {
                 pedido.setFecha_entrega(resultado.getString("fecha_entrega"));
                 pedido.setNombre_proveedor(resultado.getString("nombre_proveedor"));
                 pedido.setNombre(resultado.getString("nombres_productos"));
+                pedido.setIdPedido(resultado.getInt("idpedido"));
                 pedidoConsulta.add(pedido);
             }
             respuesta.setPedidos(pedidoConsulta);
@@ -163,7 +164,7 @@ public class PedidoDAO {
             while (resultado.next()) {
                 Pedido pedido = new Pedido();
                 pedido.setIdSucursal(resultado.getInt("idSucursal")); 
-                pedido.setNombre(resultado.getString("nombreSucursal"));
+                pedido.setNombre_proveedor(resultado.getString("nombreSucursal"));
                 pedidoConsulta.add(pedido);
             }
             respuesta.setPedidos(pedidoConsulta);
@@ -191,7 +192,7 @@ public class PedidoDAO {
             while (resultado.next()) {
                 Pedido pedido = new Pedido();
                 pedido.setIdProveedor(resultado.getInt("idProveedor")); 
-                pedido.setNombre(resultado.getString("nombre"));
+                pedido.setNombre_proveedor(resultado.getString("nombre"));
                 pedidoConsulta.add(pedido);
             }
             respuesta.setPedidos(pedidoConsulta);
