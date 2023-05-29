@@ -9,10 +9,12 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafxfarmacia.JavaFXFarmacia;
 
 /**
@@ -38,5 +40,13 @@ public class Utilidades {
         }
         return escena;
     }
-        
+     
+    public static boolean mostrarDialogoConfirmacion(String titulo,String mensaje){
+        Alert alertaConfirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+        alertaConfirmacion.setTitle(titulo);
+        alertaConfirmacion.setContentText(mensaje);
+        alertaConfirmacion.setHeaderText(null);
+        Optional<ButtonType> botonSeleccion = alertaConfirmacion.showAndWait();
+        return (botonSeleccion.get() == ButtonType.OK);
+    }
 }

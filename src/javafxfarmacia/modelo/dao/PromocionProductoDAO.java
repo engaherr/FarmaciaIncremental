@@ -117,7 +117,7 @@ public class PromocionProductoDAO {
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
                 prepararSentencia.setInt(1, idPromocion);
                 int filasAfectadas = prepararSentencia.executeUpdate();
-                respuesta = (filasAfectadas == 1 ) ? Constantes.OPERACION_EXITOSA :
+                respuesta = (filasAfectadas >= 1 ) ? Constantes.OPERACION_EXITOSA :
                         Constantes.ERROR_CONSULTA;
                 
             }catch(SQLException ex){

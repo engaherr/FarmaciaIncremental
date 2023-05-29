@@ -7,6 +7,7 @@ package javafxfarmacia.controladores;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +31,9 @@ import javafx.stage.Stage;
 import javafxfarmacia.JavaFXFarmacia;
 import javafxfarmacia.interfaz.INotificacionOperacion;
 import javafxfarmacia.modelo.dao.PromocionDAO;
+import javafxfarmacia.modelo.dao.PromocionProductoDAO;
 import javafxfarmacia.modelo.pojo.Promocion;
+import javafxfarmacia.modelo.pojo.PromocionProducto;
 import javafxfarmacia.modelo.pojo.PromocionRespuesta;
 import javafxfarmacia.utils.Constantes;
 import javafxfarmacia.utils.Utilidades;
@@ -146,8 +149,64 @@ public class FXMLPromocionesController implements Initializable, INotificacionOp
 
     @FXML
     private void clicEliminarPromocion(ActionEvent event) {
-    }
+        Promocion promocionSeleccionada = tvPromociones.getSelectionModel().getSelectedItem(); 
+        if(promocionSeleccionada != null){
+            ArrayList<PromocionProducto> productosBorrar = promocionSeleccionada.getProductos().getPromocionesProductoRespuesta();
 
+            boolean borrarRegistro = Utilidades.mostrarDialogoConfirmacion("Confirmar eliminacion"
+                    ,"¿Estás seguro de eliminar la promoción con los productos "+promocionSeleccionada.getProductosPromo()+" ?");
+            if(borrarRegistro){
+                eliminarProductosPromocion(productosBorrar);
+                int codigoRespuesta = PromocionDAO.eliminarPromocion(promocionSeleccionada.getIdPromocion());
+                switch(codigoRespuesta){
+                                
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple("Sin conexión", "Lo sentimos, "
+                        + "por el momento no hay conexión", Alert.AlertType.ERROR);
+                break;
+                
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error al realizar la operación",
+                        "Hubo un error al realizar la eliminación, por favor inténtelo más tarde",
+                        Alert.AlertType.WARNING);
+                break;
+                
+            case Constantes.OPERACION_EXITOSA:
+                Utilidades.mostrarDialogoSimple("Operación realizada",
+                        "La eliminación de la promoción se realizó de forma exitosa",
+                        Alert.AlertType.INFORMATION);
+                cargarInformacion();
+                break;
+                }
+            }
+            
+        }else{
+            Utilidades.mostrarDialogoSimple("Selecciona un alumno", "Para eliminar un "
+                    + "alumno debes seleccionarlo de la tabla",
+                    Alert.AlertType.WARNING);
+        }
+    }
+    
+    
+    private void eliminarProductosPromocion(ArrayList<PromocionProducto> producEliminar){
+            int codigoRespuesta = PromocionProductoDAO.eliminarProductoPromocion(producEliminar.get(0).getIdPromocion());
+            switch(codigoRespuesta){
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple("Error  BD al eliminar los productos de la promoción", "Por el momento no hay conexion, "
+                        + "por favor inténtalos más tarde", Alert.AlertType.ERROR);
+                break;
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error en el proceso", "Hubo un problema al intentar "
+                        + "borrar los productos de la promoción", Alert.AlertType.INFORMATION);
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                Utilidades.mostrarDialogoSimple("Eliminación de productos de promocion hecha", "La eliminación de los productos de la "
+                        + "promoción se realizó con éxito", Alert.AlertType.INFORMATION);
+                
+                break;
+            }
+        
+    }
 
     @FXML
     private void clicVolverVentana(MouseEvent event) {
@@ -167,7 +226,7 @@ public class FXMLPromocionesController implements Initializable, INotificacionOp
             
             Stage escenarioFormulario = new Stage();
             escenarioFormulario.setScene(new Scene(vista));
-            escenarioFormulario.setTitle("Formulario: registro de promoción");
+            escenarioFormulario.setTitle("Formulario: actualización");
             escenarioFormulario.initModality(Modality.APPLICATION_MODAL);
             escenarioFormulario.showAndWait();         
             

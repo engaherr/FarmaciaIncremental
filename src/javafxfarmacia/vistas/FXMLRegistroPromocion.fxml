@@ -10,7 +10,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="670.0" prefWidth="1275.0" style="-fx-background-color: #2e2f40;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLRegistroPromocionController">
    <children>
-      <Text fill="WHITE" layoutX="28.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Registro de promoción">
+      <Text fx:id="txTitulo" fill="WHITE" layoutX="28.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Registro de promoción">
          <font>
             <Font name="System Bold Italic" size="41.0" />
          </font>
@@ -46,7 +46,7 @@
          <font>
             <Font name="System Bold Italic" size="24.0" />
          </font></Button>
-      <Label fx:id="lbPrecioFinal" layoutX="56.0" layoutY="586.0" text="Precio final: $ mxn" textFill="WHITE">
+      <Label fx:id="lbPrecioFinal" layoutX="56.0" layoutY="586.0" text="Precio final: $ MXN" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="42.0" />
          </font>

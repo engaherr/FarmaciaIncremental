@@ -181,4 +181,26 @@ public class PromocionDAO {
        }
           return respuesta; 
     }
+    
+    
+    public static int eliminarPromocion(int idPromocion){
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                System.out.println("Hay conexion y el id es"+ idPromocion);
+                String sentencia = "DELETE FROM promocion where idPromocion = ?;";
+                
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setInt(1,idPromocion);
+                int filasAfectadas = prepararSentencia.executeUpdate();
+                respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+            }catch(SQLException ex){
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
+        }else{
+            respuesta = Constantes.ERROR_CONEXION;
+        }
+        return respuesta;
+    }
 }

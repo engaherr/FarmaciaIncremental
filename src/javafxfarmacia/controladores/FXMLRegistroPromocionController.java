@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -33,6 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafxfarmacia.interfaz.INotificacionOperacion;
@@ -112,6 +111,8 @@ public class FXMLRegistroPromocionController implements Initializable {
     private DatePicker dpFechaInicio;
     @FXML
     private DatePicker dpFechaTermino;
+    @FXML
+    private Text txTitulo;
     
 
     /**
@@ -132,6 +133,7 @@ public class FXMLRegistroPromocionController implements Initializable {
         carrito = FXCollections.observableArrayList();
         productosOriginales = FXCollections.observableArrayList();
         
+        tfPrecioActualUnidad.setEditable(false);
         dpFechaInicio.setEditable(false);
         dpFechaTermino.setEditable(false);
 
@@ -172,8 +174,7 @@ public class FXMLRegistroPromocionController implements Initializable {
         if(esEdicion){
             cargarInformacionPromocion();
             actualizarTablaPromocion();
-        }else{
-            
+            txTitulo.setText("Edición de promoción");
         }
     }
     
@@ -229,6 +230,7 @@ public class FXMLRegistroPromocionController implements Initializable {
                 promocionValida.setIdPromocion(promocion.getIdPromocion());
                 actualizarPromocion(promocionValida);
             }else{
+                promocionValida.setImagen(Files.readAllBytes(archivoFoto.toPath()));
                 registrarPromocion(promocionValida);
             }
         }catch(IOException ex){
@@ -265,9 +267,8 @@ public class FXMLRegistroPromocionController implements Initializable {
     }
     
     private void eliminarProductosPromocion(){
-        int tamano = productosOriginales.size() - 1;
-        for(int i = 0; i <= tamano; i++){
-            int codigoRespuesta = PromocionProductoDAO.eliminarProductoPromocion(productosOriginales.get(i).getIdPromocion());
+
+            int codigoRespuesta = PromocionProductoDAO.eliminarProductoPromocion(productosOriginales.get(0).getIdPromocion());
             switch(codigoRespuesta){
             case Constantes.ERROR_CONEXION:
                 //Utilidades.mostrarDialogoSimple("Error  BD al eliminar los productos de la promoción", "Por el momento no hay conexion, "
@@ -283,7 +284,7 @@ public class FXMLRegistroPromocionController implements Initializable {
                 
                 break;
             }
-        }  
+          
     }
 
     
@@ -305,7 +306,7 @@ public class FXMLRegistroPromocionController implements Initializable {
                 int idPromocion = promocionTemporal.getIdPromocion();
                 registrarProductosPromocion( idPromocion);
                 cerrarVentana();
-                interfazNotificacion.notificarOperacionActualizar(promocionRegistrar.getDescripcion());
+                //interfazNotificacion.notificarOperacionActualizar(promocionRegistrar.getDescripcion());
 
                 break;
         }
@@ -346,37 +347,32 @@ public class FXMLRegistroPromocionController implements Initializable {
 
     @FXML
     private void clicSeleccionarImagen(ActionEvent event) {
-        List<String> tiposDeArchivo = Arrays.asList("*.png", "*.jpg", "*.jpeg");
         FileChooser dialogoSeleccionImg = new FileChooser();
         dialogoSeleccionImg.setTitle("Selecciona una imagen");
-        FileChooser.ExtensionFilter filtroDialogo = 
-                 new FileChooser.ExtensionFilter("Archivos de Imagen(*.png,*.jpg,*.jpeg)",
-                         tiposDeArchivo);      
+        FileChooser.ExtensionFilter filtroDialogo = new 
+            FileChooser.ExtensionFilter("Archivos PNG (*.png*)","*.PNG","*.JPG","*.JPEG");
+        dialogoSeleccionImg.getExtensionFilters().add(filtroDialogo);
         
-        //FileChooser dialogoSeleccionImg = new FileChooser();
-        //dialogoSeleccionImg.setTitle("Selecciona una imagen");
-        //FileChooser.ExtensionFilter filtroDialogo = new 
-        //FileChooser.ExtensionFilter("Archivos PNG (*.png*)","*.PNG","*.JPG","*.JPEG");
-        //dialogoSeleccionImg.getExtensionFilters().add(filtroDialogo);
-        
-        Stage escenarioBase = (Stage) tfDescripcionPromo.getScene().getWindow();
+        Stage escenarioBase = (Stage) lbPrecioFinal.getScene().getWindow();
         archivoFoto = dialogoSeleccionImg.showOpenDialog(escenarioBase);
         visualizarImagen(archivoFoto);
+      
              
     }
     
-    private void visualizarImagen(File imagenSeleccionada){
-        if(imagenSeleccionada != null){
+    private void visualizarImagen(File archivoFoto){
+        if(archivoFoto != null){
             try{
-                BufferedImage bufferImage = ImageIO.read(imagenSeleccionada);
+                BufferedImage bufferImage = ImageIO.read(archivoFoto);
                 Image imagenCodificada = SwingFXUtils.toFXImage(bufferImage, null);
                 imagenPromocion.setImage(imagenCodificada);
                 
                 
             }catch(IOException ex){
-                rutaImagen.setText("Error al tratar de cargar la imagen seleccioanda");
+                System.out.println("Error al tratar de cargar la imagen seleccioanda");
             }
         }
+    
     }
     
     private void cargarInformacionProducto(){
