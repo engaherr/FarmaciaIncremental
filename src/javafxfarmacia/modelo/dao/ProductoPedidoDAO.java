@@ -41,4 +41,26 @@ public class ProductoPedidoDAO {
         }
         return respuesta;
     }
+     
+     
+      public static int eliminarProductoPedido (int idPedido){
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                String sentencia = "DELETE FROM producto_pedido WHERE idPedido = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setInt(1, idPedido);
+                int filasAfectadas = prepararSentencia.executeUpdate();
+                respuesta = (filasAfectadas >= 1 ) ? Constantes.OPERACION_EXITOSA :
+                        Constantes.ERROR_CONSULTA;
+                
+            }catch(SQLException ex){
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
+        }else{
+            respuesta = Constantes.ERROR_CONEXION;
+        }
+        return respuesta;
+    }
 }

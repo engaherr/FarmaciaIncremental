@@ -113,6 +113,40 @@ public class PedidoDAO {
     }
 
      
+       public static int IdentificadorProveedor(String proveedor) {
+        int idRespuesta = 0;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if (conexionBD != null) {
+            try {
+                String sentencia = "SELECT id, nombre\n" +
+        "FROM (\n" +
+        "    SELECT idSucursal AS id, nombreSucursal AS nombre\n" +
+        "    FROM sucursal\n" +
+        "    UNION ALL\n" +
+        "    SELECT idProveedor AS id, nombre\n" +
+        "    FROM proveedor\n" +
+        ") AS result\n" +
+        "WHERE nombre = ? ;";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setString(1, proveedor);
+                ResultSet respuesta = prepararSentencia.executeQuery();
+                    if (respuesta.next()) {
+               idRespuesta = respuesta.getInt("id");
+                
+                
+            }
+            
+                conexionBD.close();
+            } catch (SQLException e) {
+                idRespuesta = Constantes.ERROR_CONSULTA;
+            }
+        } else {
+            idRespuesta = Constantes.ERROR_CONEXION;
+        }
+        return idRespuesta;
+    }
+    
+    
     public static Pedido obtenerUltimoPedidoGuardado(){
     
     Pedido ultimoPedido = new Pedido();
@@ -178,6 +212,52 @@ public class PedidoDAO {
     return respuesta;
 }
 
+    public static int modificarPedidoInterno(Pedido pedidoActualizar) {
+          int respuesta;  
+          Connection conexionBD = ConexionBD.abrirConexionBD();
+          if (conexionBD != null) {
+              try {
+                  String sentencia = "UPDATE pedidos SET fecha_entrega = ?,  idSucursal = ? WHERE idPedido = ?;";
+                  PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                  prepararSentencia.setString(1, pedidoActualizar.getFecha_entrega());
+                  prepararSentencia.setInt(2, pedidoActualizar.getIdSucursal());
+                  prepararSentencia.setInt(3, pedidoActualizar.getIdPedido());
+                  
+                  int filasAfectadas = prepararSentencia.executeUpdate();
+                  respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+                  conexionBD.close();
+              } catch (SQLException e) {
+                  respuesta = Constantes.ERROR_CONSULTA;
+              }
+          } else {
+              respuesta = Constantes.ERROR_CONEXION;
+          }
+          return respuesta;
+      }
+    
+        public static int modificarPedidoExterno(Pedido pedidoActualizar) {
+          int respuesta;  
+          Connection conexionBD = ConexionBD.abrirConexionBD();
+          if (conexionBD != null) {
+              try {
+                  String sentencia = "UPDATE pedidos SET fecha_entrega = ?,  idProveedor = ? WHERE idPedido = ?;";
+                  PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                  prepararSentencia.setString(1, pedidoActualizar.getFecha_entrega());
+                  prepararSentencia.setInt(2, pedidoActualizar.getIdProveedor());
+                  prepararSentencia.setInt(3, pedidoActualizar.getIdPedido());
+                  System.out.println("MODIFICAR PEDIDO EXTERNO :" + prepararSentencia);
+                  int filasAfectadas = prepararSentencia.executeUpdate();
+                  respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+                  conexionBD.close();
+              } catch (SQLException e) {
+                  respuesta = Constantes.ERROR_CONSULTA;
+              }
+          } else {
+              respuesta = Constantes.ERROR_CONEXION;
+          }
+          return respuesta;
+      }
+    
   
     public static PedidoRespuesta obtenerProveedoresExternos() {
     PedidoRespuesta respuesta = new PedidoRespuesta();

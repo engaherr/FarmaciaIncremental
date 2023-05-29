@@ -183,7 +183,6 @@ if (respuestaExternos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
     }
     
     });
-        // Agrega el listener para la búsqueda del producto
        
         cbProveedor.setItems(proveedoresInternos);
 
@@ -283,7 +282,7 @@ private void actualizarTablaCarrito() {
     }
 
     // Mostrar la suma en el Label txTotal
-    txTotal.setText("$" + String.valueOf(sumaPrecios) + " mxn");
+    txTotal.setText("$" + String.valueOf(sumaPrecios) + " MXN");
 }
 
 private void actualizarProveedores() {
@@ -330,8 +329,28 @@ private void clicGenerar(ActionEvent event) {
         pedidoNuevo.setFecha_pedido(Utilidades.obtenerFechaActual());
         pedidoNuevo.setFecha_entrega(fechaEntrega.toString());
 
+      if (esEdicion){
+                if (rbExternos.isSelected()){
+                    pedidoNuevo.setIdPedido(pedido.getIdPedido());
+                    int idProveedor = PedidoDAO.IdentificadorProveedor(cbProveedor.getValue().toString());              
+                    pedidoNuevo.setIdProveedor(idProveedor);
+                    actualizarPedidoExterno(pedidoNuevo);
+             
+              
+           
+      }
       
+      if ( rbInternos.isSelected()){
+                pedidoNuevo.setIdPedido(pedido.getIdPedido());
+                 int idProveedores = PedidoDAO.IdentificadorProveedor(cbProveedor.getValue().toString());              
+                pedidoNuevo.setIdSucursal(idProveedores);
+                System.out.println("idpedido" + pedido.getIdPedido() + "id sucursal" + pedidoNuevo.getIdSucursal());
+                actualizarPedidoInterno(pedidoNuevo);
+            
 
+      }   
+      }else{
+      
       if (rbExternos.isSelected()){
           pedidoNuevo.setIdProveedor(proveedorSeleccionado.getIdProveedor());
           guardarPedidoExterno(pedidoNuevo);
@@ -362,8 +381,9 @@ private void clicGenerar(ActionEvent event) {
 
     // Mostrar mensaje de éxito
     Utilidades.mostrarDialogoSimple("Pedido Generado", "El pedido ha sido generado exitosamente", Alert.AlertType.INFORMATION);
-}
 
+      }
+}
     
 private void registrarProductosPromocion(int productoNuevo) {
     int tamano = carrito.size() - 1;
@@ -528,7 +548,52 @@ private void clicBuscarProducto(KeyEvent event) {
              
     }
 
+ private void actualizarPedidoExterno(Pedido pedidoActualizar){
+        int codigoRespuesta = PedidoDAO.modificarPedidoExterno(pedidoActualizar);
+        switch(codigoRespuesta){
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple("Error de conexion","Por el momento no hay conexión, "
+                        + "por favor inténtelo más tarde", Alert.AlertType.ERROR);
+                break;
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al modificar la promoción,"
+                        + " por favor inténtelo más tarde", Alert.AlertType.WARNING); 
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                Utilidades.mostrarDialogoSimple("Promocion registrada", "La actualización de la "
+                        + "promoción se realizó con éxito", Alert.AlertType.INFORMATION);
+                     ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
+                    registrarProductosPromocion( pedido.getIdPedido());
+                /*cerrarVentana();*/
+              
+        }
+}
 
+ 
+ 
+ private void actualizarPedidoInterno(Pedido pedidoActualizar){
+        int codigoRespuesta = PedidoDAO.modificarPedidoInterno(pedidoActualizar);
+        switch(codigoRespuesta){
+            case Constantes.ERROR_CONEXION:
+                Utilidades.mostrarDialogoSimple("Error de conexion","Por el momento no hay conexión, "
+                        + "por favor inténtelo más tarde", Alert.AlertType.ERROR);
+                break;
+            case Constantes.ERROR_CONSULTA:
+                Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al modificar la promoción,"
+                        + " por favor inténtelo más tarde", Alert.AlertType.WARNING); 
+                break;
+            case Constantes.OPERACION_EXITOSA:
+                Utilidades.mostrarDialogoSimple("Promocion registrada", "La actualización de la "
+                        + "promoción se realizó con éxito", Alert.AlertType.INFORMATION);
+                     ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
+                    registrarProductosPromocion( pedido.getIdPedido());
+                /*cerrarVentana();*/
+              
+        }
+}
+ 
+ 
+ 
 }
     
 
