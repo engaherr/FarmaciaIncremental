@@ -174,16 +174,24 @@ colEstado.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40;-fx-
     }
 
     @FXML
-    private void clicModificar(ActionEvent event) {
+ private void clicModificar(ActionEvent event) {
+    int posicion = tvPedidos.getSelectionModel().getSelectedIndex();
+    if (posicion != -1) {
+        Pedido pedido = pedidos.get(posicion);
+        LocalDate fechaPedido = LocalDate.parse(pedido.getFecha_pedido());
+        LocalDate fechaActual = LocalDate.now();
         
-          int posicion = tvPedidos.getSelectionModel().getSelectedIndex();
-    if(posicion != -1){
-        irFormulario(true,pedidos.get(posicion));
-    }else{
-        Utilidades.mostrarDialogoSimple("Atención","Por favor selecciona "
-                + "una promoción para poder editar", Alert.AlertType.WARNING);
+        if (fechaPedido.isEqual(fechaActual)) {
+            irFormulario(true, pedido);
+        } else {
+            Utilidades.mostrarDialogoSimple("El pedido ya está en camino", "El pedido solo se puede modificar antes de que esté en camino.", Alert.AlertType.WARNING);
         }
+    } else {
+        Utilidades.mostrarDialogoSimple("Atención", "Por favor selecciona un pedido para poder modificarlo.", Alert.AlertType.WARNING);
     }
+}
+
+
     
     
     
@@ -221,6 +229,10 @@ Utilidades.mostrarDialogoSimple("Notificación","Se ACTUALIZÓ "
                 + "los datos de la promocion", Alert.AlertType.INFORMATION);
                 cargarInformacionTabla();  
 
+    }
+
+    @FXML
+    private void clicEliminar(ActionEvent event) {
     }
     
      

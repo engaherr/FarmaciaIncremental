@@ -202,7 +202,17 @@ if (respuestaExternos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
         }
     });
         
-    
+    tfCantidad.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+
+        String character = event.getCharacter();
+
+        // Verificar si el carácter ingresado no es un número
+        if (!character.matches("[0-9]")) {
+            // Consumir el evento para que el carácter no se muestre en el campo de texto
+            event.consume();
+        }
+    });
+
     
  
     
@@ -410,8 +420,8 @@ private void registrarProductosPromocion(int productoNuevo) {
                         + " por favor inténtalo más tarde", Alert.AlertType.WARNING);
                 break;
             case Constantes.OPERACION_EXITOSA:
-                Utilidades.mostrarDialogoSimple("Promoción registrada", "El pedido de los productos  "
-                        + " se realizó con éxito", Alert.AlertType.INFORMATION);
+                Utilidades.mostrarDialogoSimple("Pedido Generado", "El pedido de los productos  "
+                        + "se realizó con éxito", Alert.AlertType.INFORMATION);
                 break;
         }
     }
@@ -556,12 +566,12 @@ private void clicBuscarProducto(KeyEvent event) {
                         + "por favor inténtelo más tarde", Alert.AlertType.ERROR);
                 break;
             case Constantes.ERROR_CONSULTA:
-                Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al modificar la promoción,"
+                Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al modificar el pedido,"
                         + " por favor inténtelo más tarde", Alert.AlertType.WARNING); 
                 break;
             case Constantes.OPERACION_EXITOSA:
-                Utilidades.mostrarDialogoSimple("Promocion registrada", "La actualización de la "
-                        + "promoción se realizó con éxito", Alert.AlertType.INFORMATION);
+                Utilidades.mostrarDialogoSimple("Pedido modificado", "La actualización de el "
+                        + "pedido se realizó con éxito", Alert.AlertType.INFORMATION);
                      ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
                     registrarProductosPromocion( pedido.getIdPedido());
                 /*cerrarVentana();*/
@@ -579,12 +589,12 @@ private void clicBuscarProducto(KeyEvent event) {
                         + "por favor inténtelo más tarde", Alert.AlertType.ERROR);
                 break;
             case Constantes.ERROR_CONSULTA:
-                Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al modificar la promoción,"
+                Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al modificar el pedido,"
                         + " por favor inténtelo más tarde", Alert.AlertType.WARNING); 
                 break;
             case Constantes.OPERACION_EXITOSA:
-                Utilidades.mostrarDialogoSimple("Promocion registrada", "La actualización de la "
-                        + "promoción se realizó con éxito", Alert.AlertType.INFORMATION);
+                Utilidades.mostrarDialogoSimple("Pedido modificado", "La actualización del "
+                        + "pedido se realizó con éxito", Alert.AlertType.INFORMATION);
                      ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
                     registrarProductosPromocion( pedido.getIdPedido());
                 /*cerrarVentana();*/

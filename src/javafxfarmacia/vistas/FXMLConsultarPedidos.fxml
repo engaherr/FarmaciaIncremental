@@ -38,7 +38,7 @@
             <Font size="30.0" />
          </font>
       </Button>
-      <Button disable="true" layoutX="665.0" layoutY="570.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="303.0" style="-fx-background-color: #F25D59;" text="Eliminar" textFill="WHITE">
+      <Button layoutX="665.0" layoutY="570.0" mnemonicParsing="false" onAction="#clicEliminar" prefHeight="77.0" prefWidth="303.0" style="-fx-background-color: #F25D59;" text="Cancelar/Eliminar" textFill="WHITE">
          <font>
             <Font size="30.0" />
          </font>
