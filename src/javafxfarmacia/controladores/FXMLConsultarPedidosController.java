@@ -28,6 +28,7 @@ import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,10 +36,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableRow;
 import javafx.stage.Modality;
 import javafxfarmacia.JavaFXFarmacia;
 import javafxfarmacia.interfaz.INotificacionOperacion;
+import javafxfarmacia.modelo.dao.ProductoPedidoDAO;
 
 /**
  * FXML Controller class
@@ -231,10 +235,92 @@ Utilidades.mostrarDialogoSimple("Notificación","Se ACTUALIZÓ "
 
     }
 
-    @FXML
-    private void clicEliminar(ActionEvent event) {
+   @FXML
+private void clicEliminar(ActionEvent event) {
+    int posicion = tvPedidos.getSelectionModel().getSelectedIndex();
+
+    if (posicion != -1) {
+        Pedido pedido = pedidos.get(posicion);
+        LocalDate fechaEntrega = LocalDate.parse(pedido.getFecha_entrega());
+        LocalDate fechaActual = LocalDate.now();
+
+        if (fechaEntrega.isBefore(fechaActual)) {
+            // Continuar con el flujo normal de eliminación del pedido
+            int codigoRespuesta = ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
+
+            switch (codigoRespuesta) {
+                case Constantes.ERROR_CONEXION:
+                    Utilidades.mostrarDialogoSimple("Error de conexión", "No se pudo establecer conexión con la base de datos. Por favor, inténtelo más tarde.", Alert.AlertType.ERROR);
+                    break;
+                case Constantes.ERROR_CONSULTA:
+                    Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al eliminar el pedido. Por favor, inténtelo más tarde.", Alert.AlertType.WARNING);
+                    break;
+                case Constantes.OPERACION_EXITOSA:
+                    Utilidades.mostrarDialogoSimple("Pedido eliminado", "El pedido ha sido eliminado exitosamente.", Alert.AlertType.INFORMATION);
+                    ProductoPedidoDAO.eliminarPedido(pedido.getIdPedido());
+                    cargarInformacionTabla();
+                    break;
+            }
+        } else if (fechaEntrega.isEqual(fechaActual)) {
+            // Continuar con el flujo normal de eliminación del pedido
+            int codigoRespuesta = ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
+
+            switch (codigoRespuesta) {
+                case Constantes.ERROR_CONEXION:
+                    Utilidades.mostrarDialogoSimple("Error de conexión", "No se pudo establecer conexión con la base de datos. Por favor, inténtelo más tarde.", Alert.AlertType.ERROR);
+                    break;
+                case Constantes.ERROR_CONSULTA:
+                    Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al eliminar el pedido. Por favor, inténtelo más tarde.", Alert.AlertType.WARNING);
+                    break;
+                case Constantes.OPERACION_EXITOSA:
+                    Utilidades.mostrarDialogoSimple("Pedido eliminado", "El pedido ha sido eliminado exitosamente.", Alert.AlertType.INFORMATION);
+                    ProductoPedidoDAO.eliminarPedido(pedido.getIdPedido());
+                    cargarInformacionTabla();
+                    break;
+            }
+        } else {
+            // Mostrar un Alert de confirmación para cancelar el pedido
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmar");
+            alert.setHeaderText("¿Desea cancelar el pedido?");
+            alert.setContentText("El pedido aún no ha sido entregado. ¿Está seguro de que desea cancelarlo?");
+
+            ButtonType buttonTypeSi = new ButtonType("Sí");
+            ButtonType buttonTypeCancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+            alert.getButtonTypes().setAll(buttonTypeSi, buttonTypeCancelar);
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == buttonTypeSi) {
+                // Cancelar el pedido
+                int codigoRespuesta = ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
+
+                switch (codigoRespuesta) {
+                    case Constantes.ERROR_CONEXION:
+                        Utilidades.mostrarDialogoSimple("Error de conexión", "No se pudo establecer conexión con la base de datos. Por favor, inténtelo más tarde.", Alert.AlertType.ERROR);
+                        break;
+                    case Constantes.ERROR_CONSULTA:
+                        Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al cancelar el pedido. Por favor, inténtelo más tarde.", Alert.AlertType.WARNING);
+                        break;
+                    case Constantes.OPERACION_EXITOSA:
+                        Utilidades.mostrarDialogoSimple("Pedido cancelado", "El pedido ha sido cancelado exitosamente.", Alert.AlertType.INFORMATION);
+                        ProductoPedidoDAO.eliminarPedido(pedido.getIdPedido());
+                        cargarInformacionTabla();
+                        break;
+                }
+            }
+        }
     }
-    
+}
+
+    @FXML
+    private void clicAyuda(MouseEvent event) {
+         Utilidades.mostrarDialogoSimple("Consultar pedido", "En la tabla presente se muestran los pedidos que han sido enviados, con sus respectivas fechas pedido y entrega."+
+                 "\nPara modificar un pedido seleccionalo en la tabla y presiona el botón modificar. \n\nSi se desea cancelar un pedido, seleccionalo y presiona el botón Cancelar/Eliminar" +
+                 "\n\nRecuerda que solo se pueden cancelar los pedidos que se estén preparando o en camino. Aquellos que han sido recibidos solo se pueden eliminar de la tabla.", Alert.AlertType.INFORMATION);
+
+    }
+
      
      
     
@@ -242,3 +328,5 @@ Utilidades.mostrarDialogoSimple("Notificación","Se ACTUALIZÓ "
 
     
 }
+
+

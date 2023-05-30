@@ -59,6 +59,11 @@ import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import javafx.scene.control.TextFormatter;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
+
 
 
 
@@ -112,6 +117,7 @@ public class FXMLGenerarPedidoController implements Initializable {
     private boolean esEdicion;
     private Pedido pedido;
     private INotificacionOperacion interfazNotificacion;
+    private Set<String> productosEnCarrito;
 
 
     
@@ -122,6 +128,8 @@ public class FXMLGenerarPedidoController implements Initializable {
     if (respuestaProductos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
         productos = FXCollections.observableArrayList();
         productos.addAll(respuestaProductos.getProductos());
+        productosEnCarrito = new HashSet<>();
+
 
         // Obtener los nombres de los productos y almacenarlos en un ObservableList
         possibleSuggestions = FXCollections.observableArrayList(
@@ -213,7 +221,17 @@ if (respuestaExternos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
         }
     });
 
-    
+    UnaryOperator<TextFormatter.Change> filter = change -> {
+    String text = change.getControlNewText();
+    if (Pattern.matches("[0-9/]*", text)) {
+        return change;
+    }
+    return null;
+};
+
+TextFormatter<String> formatter = new TextFormatter<>(filter);
+dpDiaEntrega.getEditor().setTextFormatter(formatter);
+
  
     
      }
@@ -249,27 +267,35 @@ private void clicAgregar(ActionEvent event) {
     int cantidad = Integer.parseInt(tfCantidad.getText());
 
     if (productoSeleccionado != null && cantidad > 0) {
-        // Crear una nueva instancia de Producto con los mismos datos
-        Producto productoEnCarrito = new Producto();
-        productoEnCarrito.setIdProducto(productoSeleccionado.getIdProducto());
-        productoEnCarrito.setNombre(productoSeleccionado.getNombre());
-        productoEnCarrito.setPrecio(productoSeleccionado.getPrecio());
-        productoEnCarrito.setCantidad(cantidad);
+        String nombreProducto = productoSeleccionado.getNombre();
 
-        // Calcular el precio unitario y el precio final
-        float precioUnitario = productoSeleccionado.getPrecio();
-        float precioFinal = precioUnitario * cantidad;
-        productoEnCarrito.setPrecioUnitario(precioUnitario);
-        productoEnCarrito.setPrecioFinal(precioFinal);
+        if (productosEnCarrito.contains(nombreProducto)) {
+            Utilidades.mostrarDialogoSimple("Error", "El producto ya está en el carrito", Alert.AlertType.ERROR);
+        } else {
+            // Crear una nueva instancia de Producto con los mismos datos
+            Producto productoEnCarrito = new Producto();
+            productoEnCarrito.setIdProducto(productoSeleccionado.getIdProducto());
+            productoEnCarrito.setNombre(nombreProducto);
+            productoEnCarrito.setPrecio(productoSeleccionado.getPrecio());
+            productoEnCarrito.setCantidad(cantidad);
 
-        carrito.add(productoEnCarrito);
+            // Calcular el precio unitario y el precio final
+            float precioUnitario = productoSeleccionado.getPrecio();
+            float precioFinal = precioUnitario * cantidad;
+            productoEnCarrito.setPrecioUnitario(precioUnitario);
+            productoEnCarrito.setPrecioFinal(precioFinal);
 
-        actualizarTablaCarrito();
+            carrito.add(productoEnCarrito);
+            productosEnCarrito.add(nombreProducto);
 
-        tfCantidad.clear();
-        cbProducto.getSelectionModel().clearSelection();
+            actualizarTablaCarrito();
+
+            tfCantidad.clear();
+            cbProducto.getSelectionModel().clearSelection();
+        }
     }
 }
+
 
 private void actualizarTablaCarrito() {
     // Crear una lista observable a partir de la lista 'carrito'
@@ -317,6 +343,18 @@ private void clicGenerar(ActionEvent event) {
         Utilidades.mostrarDialogoSimple("Error", "Por favor, seleccione una fecha de entrega", Alert.AlertType.ERROR);
         return;
     }
+    
+     LocalDate fechaActual = LocalDate.now();
+    
+    // Calcular la diferencia de días entre la fecha actual y la fecha de entrega
+    long diferenciaDias = ChronoUnit.DAYS.between(fechaActual, fechaEntrega);
+    
+    // Verificar si la diferencia de días es igual o menor a 2
+    if (diferenciaDias <= 2) {
+        Utilidades.mostrarDialogoSimple("Error", "La fecha de entrega debe ser mayor a 2 días a partir de la fecha de pedido, es tiempo más rápido de envío.", Alert.AlertType.ERROR);
+        return;
+    }
+    
 
     // Crear el objeto Pedido con la fecha de pedido y fecha de entrega
     Pedido proveedorSeleccionado = cbProveedor.getSelectionModel().getSelectedItem();
@@ -601,6 +639,20 @@ private void clicBuscarProducto(KeyEvent event) {
               
         }
 }
+
+    @FXML
+    private void clicAyudaBusqueda(MouseEvent event) {
+        Utilidades.mostrarDialogoSimple("Ayuda con el buscador", "Selecciona la barra y escribe el nombre del articulo que buscas," 
+         +" puedes elegirlo con las teclas de las flechas y Enter o con el clic izquierdo del mouse, después presiona Enter y estará listo para elegir cantidad y agregar al carrito. ", Alert.AlertType.INFORMATION);
+    }
+
+    @FXML
+    private void clicAyudaGenerar(MouseEvent event) {
+                Utilidades.mostrarDialogoSimple("¿Cómo generar un pedido?", "Para generar un pedido selecciona el articulo en la caja de productos o con ayuda del buscador que deseas añadir al carrito, después ingresa la cantidad en el cuadro de cantidad y presiona añadir al carrito." +
+                 " \n \nDespués, con ayuda de los botones arriba del proveedor, podrás seleccionar el tipo de proveedor que quieras y elegirlo en la caja proveedor. Si deseas eliminar una carrito del producto, seleccionalo y presiona el botón eliminar."
+                 + "\n\nFinalmente presiona el botón del calendario y selecciona una fecha. Con esto puedes presionar Generar Pedido para concluir.  ", Alert.AlertType.INFORMATION);
+
+    }
  
  
  

@@ -43,6 +43,11 @@
             <Font size="30.0" />
          </font>
       </Button>
+      <ImageView fitHeight="90.0" fitWidth="45.0" layoutX="1070.0" layoutY="35.0" onMouseClicked="#clicAyuda" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/vectorAyuda.png" />
+         </image>
+      </ImageView>
    </children>
 
 
