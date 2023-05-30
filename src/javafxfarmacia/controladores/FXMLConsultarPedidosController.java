@@ -316,7 +316,7 @@ private void clicEliminar(ActionEvent event) {
     @FXML
     private void clicAyuda(MouseEvent event) {
          Utilidades.mostrarDialogoSimple("Consultar pedido", "En la tabla presente se muestran los pedidos que han sido enviados, con sus respectivas fechas pedido y entrega."+
-                 "\nPara modificar un pedido seleccionalo en la tabla y presiona el botón modificar. \n\nSi se desea cancelar un pedido, seleccionalo y presiona el botón Cancelar/Eliminar" +
+                 "\nPara modificar un pedido seleccionalo en la tabla y presiona el botón modificar. \n\nSi se desea cancelar un pedido, seleccionalo y presiona el botón Cancelar/Eliminar." +
                  "\n\nRecuerda que solo se pueden cancelar los pedidos que se estén preparando o en camino. Aquellos que han sido recibidos solo se pueden eliminar de la tabla.", Alert.AlertType.INFORMATION);
 
     }

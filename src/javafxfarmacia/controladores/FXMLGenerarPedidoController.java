@@ -429,7 +429,7 @@ private void clicGenerar(ActionEvent event) {
 
     // Mostrar mensaje de éxito
     Utilidades.mostrarDialogoSimple("Pedido Generado", "El pedido ha sido generado exitosamente", Alert.AlertType.INFORMATION);
-
+    cerrarVentana();
       }
 }
     
@@ -654,7 +654,10 @@ private void clicBuscarProducto(KeyEvent event) {
 
     }
  
- 
+     private void cerrarVentana(){
+        Stage escenarioBase = (Stage) cbProducto.getScene().getWindow();
+        escenarioBase.close();
+    }
  
 }
     
