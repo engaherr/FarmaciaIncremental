@@ -155,19 +155,6 @@ public class FXMLInventarioController implements Initializable, INotificacionOpe
         }
     }
 
-
-    @FXML
-    private void clicRegistrar(ActionEvent event) {
-        irFormulario(false,null);
-    }
-
-    @FXML
-    private void clicModificar(ActionEvent event) {
-        int posicion = tvInventario.getSelectionModel().getSelectedIndex();
-        if(posicion != -1)
-            irFormulario(true, sortedListProductos.get(posicion));
-    }
-
     @FXML
     private void clicEliminar(ActionEvent event) {
         int posicion = tvInventario.getSelectionModel().getSelectedIndex();
@@ -205,7 +192,7 @@ public class FXMLInventarioController implements Initializable, INotificacionOpe
     }
     
     private void configurarBusquedaTabla(){
-        if(productos.size() > 0){
+        if(!productos.isEmpty()){
             FilteredList<Producto> filtradoProductos = new FilteredList<>(productos, p -> true);
             tfBusqueda.textProperty().addListener(new ChangeListener<String>(){
                 
@@ -250,6 +237,8 @@ public class FXMLInventarioController implements Initializable, INotificacionOpe
             escenarioFormulario.showAndWait();
         } catch (IOException e) {
             e.getMessage();
+        }catch (Exception e){
+            e.getMessage();
         }
     }
 
@@ -279,5 +268,17 @@ public class FXMLInventarioController implements Initializable, INotificacionOpe
     @Override
     public void notificarOperacionEditar() {
         cargarInformacionTabla();
+    }
+
+    @FXML
+    private void clicRegistrar(ActionEvent event) {
+        irFormulario(false, null);
+    }
+
+    @FXML
+    private void clicModificar(ActionEvent event) {
+        int posicion = tvInventario.getSelectionModel().getSelectedIndex();
+        if(posicion != -1)
+            irFormulario(true, sortedListProductos.get(posicion));
     }
 }

@@ -46,7 +46,7 @@ import javax.imageio.ImageIO;
  *
  * @author kikga
  */
-public class FXMLProductoFormularioController implements Initializable {
+public class FXMLProductoFormularioController implements Initializable{
 
     @FXML
     private TextField tfNombre;
@@ -69,11 +69,12 @@ public class FXMLProductoFormularioController implements Initializable {
     private File imagenSeleccionada;
     
     private INotificacionOperacion interfazNotificacion;
+    
     @FXML
     private DatePicker dpFechaVencimiento;
     
-    String estiloError = "-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 2;";
-    String estiloNormal = tfCantidad.getStyle();
+    private String estiloError = "-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 2;";
+    private String estiloNormal;
     
     @FXML
     private ComboBox<String> cbPresentacion;
@@ -82,8 +83,9 @@ public class FXMLProductoFormularioController implements Initializable {
 
     @Override    
     public void initialize(URL url, ResourceBundle rb) {
-        //listaPresentaciones = FXCollections.observableArrayList("Tabletas", "Cápsulas", "Comprimidos", "Jarabes","Vial","Supositorios","Aerosoles");
-        //cbPresentacion.setItems(listaPresentaciones);
+        estiloNormal = tfCantidad.getStyle();
+        listaPresentaciones = FXCollections.observableArrayList("Tabletas", "Cápsulas", "Comprimidos", "Jarabes","Vial","Supositorios","Aerosoles");
+        cbPresentacion.setItems(listaPresentaciones);
         cargarInformacionSucursal();
         formatearTextFieldNumerico(tfCantidad);
         formatearTextFieldFlotante(tfPrecio);
@@ -98,6 +100,7 @@ public class FXMLProductoFormularioController implements Initializable {
                 dpFechaVencimiento.setValue(null);
             }
         });
+        dpFechaVencimiento.setEditable(false);
     }
     
     public void inicializarInformacionFormulario(boolean esEdicion, 
@@ -123,7 +126,7 @@ public class FXMLProductoFormularioController implements Initializable {
             dpFechaVencimiento.setValue(null);
         tfPrecio.setText(Double.toString(productoEdicion.getPrecio()));
         if("N/A".equals(productoEdicion.getPresentacion()))
-            cbPresentacion.getSelectionModel().select(0);
+            cbPresentacion.getSelectionModel().select(-1);
         else
             cbPresentacion.getSelectionModel().select(productoEdicion.getPresentacion());
         cbSucursal.getSelectionModel().select(obtenerPosicionComboSucursal(

@@ -10,7 +10,7 @@ package javafxfarmacia.interfaz;
  */
 public interface INotificacionOperacion {
     
-    public void notificarOperacionGuardar( );
+    public void notificarOperacionGuardar();
     
-    public void notificarOperacionEditar( );
+    public void notificarOperacionEditar();
 }
