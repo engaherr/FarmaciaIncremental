@@ -84,7 +84,7 @@ public class FXMLProductoFormularioController implements Initializable{
     @Override    
     public void initialize(URL url, ResourceBundle rb) {
         estiloNormal = tfCantidad.getStyle();
-        listaPresentaciones = FXCollections.observableArrayList("Tabletas", "Cápsulas", "Comprimidos", "Jarabes","Vial","Supositorios","Aerosoles");
+        listaPresentaciones = FXCollections.observableArrayList("N/A","Tabletas", "Cápsulas", "Comprimidos", "Jarabe","Inyectable","Supositorio","Aerosol", "Solución", "Emulsión", "Cremas");
         cbPresentacion.setItems(listaPresentaciones);
         cargarInformacionSucursal();
         formatearTextFieldNumerico(tfCantidad);
@@ -142,7 +142,7 @@ public class FXMLProductoFormularioController implements Initializable{
     
     private void cargarInformacionSucursal(){
         sucursales = FXCollections.observableArrayList();
-        SucursalRespuesta sucursalesBD = SucursalDAO.obtenerInformacionProducto();
+        SucursalRespuesta sucursalesBD = SucursalDAO.obtenerInformacionSucursales();
         switch(sucursalesBD.getCodigoRespuesta()){
             case Constantes.ERROR_CONEXION:
                     Utilidades.mostrarDialogoSimple("Error de conexión",

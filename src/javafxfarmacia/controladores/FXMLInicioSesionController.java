@@ -13,7 +13,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafxfarmacia.modelo.dao.SesionDAO;
 import javafxfarmacia.modelo.pojo.Usuario;
