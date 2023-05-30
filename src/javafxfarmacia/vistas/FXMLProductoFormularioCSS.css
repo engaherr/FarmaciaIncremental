@@ -32,5 +32,18 @@
     -fx-text-fill: white;
 }
 
+.custom-checkbox .box {
+    color: #1b1b1b;
+    background-color: #1b1b1b;
+    -fx-background-color: #1b1b1b;
+    border-color: #313131;
+    -fx-border-color: #313131;
+    border-radius: 2px;
+    -fx-border-radius: 2px; 
+}
+
+.custom-checkbox .box .mark {
+    background-color: white; /* Cambia el color de la palomita */
+}
 
 

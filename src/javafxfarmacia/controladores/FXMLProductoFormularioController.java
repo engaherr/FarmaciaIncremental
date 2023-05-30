@@ -57,8 +57,6 @@ public class FXMLProductoFormularioController implements Initializable {
     @FXML
     private CheckBox ckboxVentaControlada;
     @FXML
-    private TextField tfPresentacion; //Opcional si(vacio) = 'N/A'
-    @FXML
     private ComboBox<Sucursal> cbSucursal;
     @FXML
     private ImageView ivFoto;
@@ -73,12 +71,21 @@ public class FXMLProductoFormularioController implements Initializable {
     private INotificacionOperacion interfazNotificacion;
     @FXML
     private DatePicker dpFechaVencimiento;
+    
+    String estiloError = "-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 2;";
+    String estiloNormal = tfCantidad.getStyle();
+    
+    @FXML
+    private ComboBox<String> cbPresentacion;
+    
+    private ObservableList<String> listaPresentaciones;
 
     @Override    
     public void initialize(URL url, ResourceBundle rb) {
+        //listaPresentaciones = FXCollections.observableArrayList("Tabletas", "Cápsulas", "Comprimidos", "Jarabes","Vial","Supositorios","Aerosoles");
+        //cbPresentacion.setItems(listaPresentaciones);
         cargarInformacionSucursal();
         formatearTextFieldNumerico(tfCantidad);
-        formatearTextFieldNoNumerico(tfPresentacion);
         formatearTextFieldFlotante(tfPrecio);
         dpFechaVencimiento.setOnAction(event -> {
             LocalDate dateSeleccionada = dpFechaVencimiento.getValue();
@@ -115,8 +122,10 @@ public class FXMLProductoFormularioController implements Initializable {
         else
             dpFechaVencimiento.setValue(null);
         tfPrecio.setText(Double.toString(productoEdicion.getPrecio()));
-        if(!"N/A".equals(productoEdicion.getPresentacion()))
-            tfPresentacion.setText(productoEdicion.getPresentacion());
+        if("N/A".equals(productoEdicion.getPresentacion()))
+            cbPresentacion.getSelectionModel().select(0);
+        else
+            cbPresentacion.getSelectionModel().select(productoEdicion.getPresentacion());
         cbSucursal.getSelectionModel().select(obtenerPosicionComboSucursal(
                 productoEdicion.getIdSucursal()));
         ckboxVentaControlada.setSelected(productoEdicion.isVentaControlada());
@@ -125,9 +134,7 @@ public class FXMLProductoFormularioController implements Initializable {
             ByteArrayInputStream baisFoto = new ByteArrayInputStream(productoEdicion.getFoto());
             Image imgFoto = new Image(baisFoto);
             ivFoto.setImage(imgFoto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {}
     }
     
     private void cargarInformacionSucursal(){
@@ -188,39 +195,50 @@ public class FXMLProductoFormularioController implements Initializable {
     }
     
     private void validarCamposRegistro() {
+        tfNombre.setStyle(estiloNormal);
+        tfCantidad.setStyle(estiloNormal);
+        tfPrecio.setStyle(estiloNormal);
+        cbSucursal.setStyle(estiloNormal);
         boolean esValido = true;
         String nombre = null; 
         if(!tfNombre.getText().trim().isEmpty()){
             nombre = tfNombre.getText();
         }else{
             esValido = false;
+            tfNombre.setStyle(tfNombre.getStyle() + estiloError);
         }
         int cantidad = 0;
         try{
             cantidad = Integer.parseInt(tfCantidad.getText());
         }catch(NumberFormatException e){
             esValido = false;
+            tfCantidad.setStyle(tfCantidad.getStyle() + estiloError);
         }
         double precio = 0;
         try{
             precio = Double.parseDouble(tfPrecio.getText());
-            if(precio <= 0)
+            if(precio <= 0){
                 esValido = false;
+                tfPrecio.setStyle(tfPrecio.getStyle() + estiloError);
+            }
         }catch(NumberFormatException e){
             esValido = false;
+            tfPrecio.setStyle(tfPrecio.getStyle() + estiloError);
         }
         String fechaVencimiento = null;
         if(dpFechaVencimiento.getValue() != null)
             fechaVencimiento = dpFechaVencimiento.getValue().format(DateTimeFormatter.ISO_DATE);
         String presentacion = "N/A";
-        if(!tfPresentacion.getText().isEmpty())
-            presentacion = tfPresentacion.getText();
+        if(!cbPresentacion.getSelectionModel().isEmpty())
+            presentacion = cbPresentacion.getSelectionModel().getSelectedItem();
         boolean esVentaControlada = ckboxVentaControlada.isSelected();
         int idSucursal = 0;
-        if(!cbSucursal.getSelectionModel().isEmpty())
+        if(!cbSucursal.getSelectionModel().isEmpty()){
             idSucursal = cbSucursal.getValue().getIdSucursal();
-        else
+        }else{
             esValido = false;
+            cbSucursal.setStyle(cbSucursal.getStyle() + estiloError);
+        }
         
         if(esValido == true){
             Producto productoValidado = new Producto();
@@ -260,7 +278,7 @@ public class FXMLProductoFormularioController implements Initializable {
     }
 
     private void registrarProducto(Producto productoRegistro){
-            int codigoRespuesta = ProductoDAO.guardarProducto(productoRegistro);
+        int codigoRespuesta = ProductoDAO.guardarProducto(productoRegistro);
             switch(codigoRespuesta){
                 case Constantes.ERROR_CONEXION:
                         Utilidades.mostrarDialogoSimple("Error de conexión",
@@ -334,14 +352,6 @@ public class FXMLProductoFormularioController implements Initializable {
         tfFlotante.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*\\.?\\d{0," + 2 + "}")) {
                 tfFlotante.setText(oldValue);
-            }
-        });
-    }
-    
-    private void formatearTextFieldNoNumerico(TextField tfNoNumerico) {
-        tfNoNumerico.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("[a-zA-Z]*")) {
-                tfNoNumerico.setText(newValue.replaceAll("[^a-zA-Z]", ""));
             }
         });
     }
