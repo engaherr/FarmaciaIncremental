@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -114,6 +115,10 @@ public class FXMLRegistroPromocionController implements Initializable {
     @FXML
     private Text txTitulo;
     
+    private String estiloError = "-fx-border-color: RED; -fx-border-width: 2; -fx-border-radius: 2;";
+    private String estiloNormal;
+    private LocalDate fechaAnteriorInicio;
+    private LocalDate fechaAnteriorTermino;
 
     /**
      * Initializes the controller class.
@@ -136,6 +141,65 @@ public class FXMLRegistroPromocionController implements Initializable {
         tfPrecioActualUnidad.setEditable(false);
         dpFechaInicio.setEditable(false);
         dpFechaTermino.setEditable(false);
+        
+        estiloNormal = tfDescripcionPromo.getStyle();
+        
+        formatearTextFieldNumerico(tfCantidad);
+        formatearTextFieldFlotante(tfPrecioFinal);
+        
+        dpFechaInicio.setOnAction(event -> {
+            LocalDate dateSeleccionada = dpFechaInicio.getValue();
+            LocalDate dateActual = LocalDate.now();
+            
+            if(dateSeleccionada != null && dateSeleccionada.isBefore(dateActual)){
+                Utilidades.mostrarDialogoSimple("Fecha no válida",
+                        "Seleccione una fecha posterior a la actual"
+                        , Alert.AlertType.WARNING);
+                if(fechaAnteriorInicio == null){
+                   dpFechaInicio.setValue(null);
+                }else{
+                    dpFechaInicio.setValue(fechaAnteriorInicio);
+                }
+            }
+            
+            if (dateSeleccionada != null && dateSeleccionada.getYear() > LocalDate.now().getYear()) {
+                Utilidades.mostrarDialogoSimple("Año inválido", "Solo se aceptan promociones con el año en curso", Alert.AlertType.WARNING);
+                if(fechaAnteriorInicio == null){
+                    dpFechaInicio.setValue(null);
+                }else{
+                    dpFechaInicio.setValue(fechaAnteriorInicio);
+                }                
+            }
+        });
+ 
+        dpFechaTermino.setOnAction(event -> {
+            LocalDate dateSeleccionada = dpFechaTermino.getValue();
+            LocalDate dateInicio = dpFechaInicio.getValue();
+            
+            if(dateSeleccionada != null && dateSeleccionada.isBefore(dateInicio)){
+                Utilidades.mostrarDialogoSimple("Fecha no válida",
+                        "Seleccione una fecha posterior a la del inicio de la promoción"
+                        , Alert.AlertType.WARNING);
+                if(fechaAnteriorInicio == null){
+                    dpFechaTermino.setValue(null);
+                }else{
+                    dpFechaTermino.setValue(fechaAnteriorTermino);
+
+                }
+            }
+            
+            if(dateSeleccionada != null && dateSeleccionada.getMonth() != dateInicio.getMonth()){
+                Utilidades.mostrarDialogoSimple("Fecha no válida",
+                        "Seleccione una fecha posterior a la del inicio de la promoción"
+                        , Alert.AlertType.WARNING);
+                if(fechaAnteriorInicio == null){
+                    dpFechaTermino.setValue(null);
+                }else{
+                    dpFechaTermino.setValue(fechaAnteriorTermino);
+
+                }                
+            }
+        });
 
         
         tvProductosdePromocion.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<PromocionProducto>() {
@@ -148,12 +212,10 @@ public class FXMLRegistroPromocionController implements Initializable {
                 String cantidad = Integer.toString(newValue.getCantidad());
                 String precioFinal = Double.toString(newValue.getPrecioFinal());
                 tfPrecioActualUnidad.setText(precioUnidad);
-                tfCantidad.setText(cantidad);
-                tfPrecioFinal.setText(precioFinal);
-                
+                tfCantidad.setText(cantidad);             
             }
-        
         }); 
+        
         cbProductos.valueProperty().addListener(new ChangeListener<Producto>(){
             @Override
             public void changed(ObservableValue<? extends Producto> observable, Producto oldValue, Producto newValue) {
@@ -165,6 +227,7 @@ public class FXMLRegistroPromocionController implements Initializable {
             
         });
     } 
+    
     
     public void inicializarInformacionFormulario(boolean esEdicion, Promocion promocion, INotificacionOperacion interfazNotificacion){
         this.esEdicion = esEdicion;
@@ -182,6 +245,9 @@ public class FXMLRegistroPromocionController implements Initializable {
         tfDescripcionPromo.setText(promocion.getDescripcion());
         dpFechaInicio.setValue(LocalDate.parse(promocion.getFechaInicio()));
         dpFechaTermino.setValue(LocalDate.parse(promocion.getFechaTermino()));
+        
+        fechaAnteriorInicio = dpFechaInicio.getValue();
+        fechaAnteriorTermino = dpFechaTermino.getValue();
         
         try{
             ByteArrayInputStream inputFoto = new ByteArrayInputStream(promocion.getImagen());
@@ -209,36 +275,79 @@ public class FXMLRegistroPromocionController implements Initializable {
         validarCamposRegistro();
     }
     
-    private void validarCamposRegistro(){
-        String descripcion = tfDescripcionPromo.getText();
-        LocalDate fechaInicio = dpFechaInicio.getValue();
-        LocalDate fechaTermino = dpFechaTermino.getValue();
+    
+ private void validarCamposRegistro() {
+        tfDescripcionPromo.setStyle(estiloNormal);
+        dpFechaInicio.setStyle(estiloNormal);
+        dpFechaTermino.setStyle(estiloNormal);
+        tvProductosdePromocion.setStyle(estiloNormal);
         
+        boolean esValido = true;
         
-        Promocion promocionValida = new Promocion();
-        promocionValida.setDescripcion(descripcion);
-        promocionValida.setFechaInicio(fechaInicio.toString());
-        promocionValida.setFechaTermino(fechaTermino.toString());
-        
-        try{
-            if(esEdicion){
-                if(archivoFoto != null){
-                    promocionValida.setImagen(Files.readAllBytes(archivoFoto.toPath()));
-                }else{
-                    promocionValida.setImagen(promocion.getImagen());
-                }
-                promocionValida.setIdPromocion(promocion.getIdPromocion());
-                actualizarPromocion(promocionValida);
-            }else{
-                promocionValida.setImagen(Files.readAllBytes(archivoFoto.toPath()));
-                registrarPromocion(promocionValida);
-            }
-        }catch(IOException ex){
-            Utilidades.mostrarDialogoSimple("Error con el archivo","Ocurrió un error al intentar guardar la imagen, "
-                    + "por favor vuelva a seleccionar el archivo", Alert.AlertType.ERROR);
+        String descripcion = null; 
+        if(!tfDescripcionPromo.getText().trim().isEmpty()){
+            descripcion = tfDescripcionPromo.getText();
+        }else{
+            esValido = false;
+            tfDescripcionPromo.setStyle(tfDescripcionPromo.getStyle() + estiloError);
         }
+        
+        String fechaInicio = null;
+        if(dpFechaInicio.getValue() != null){
+           fechaInicio = dpFechaInicio.getValue().format(DateTimeFormatter.ISO_DATE);
+        }else{
+            dpFechaInicio.setStyle(estiloError);
+            esValido = false;
+        }
+        
+        
+        String fechaTermino = null;
+        if(dpFechaTermino.getValue() != null){
+            fechaTermino = dpFechaTermino.getValue().format(DateTimeFormatter.ISO_DATE);
+        }else{
+            dpFechaTermino.setStyle(estiloError);
+            esValido = false;
+        }
+        
+        if(carrito.isEmpty()){
+            tvProductosdePromocion.setStyle(estiloError);
+            esValido = false;
+        }
+        
+        if(esValido == true){
+            Promocion promocionValida = new Promocion();
+            promocionValida.setDescripcion(descripcion);
+            promocionValida.setFechaInicio(fechaInicio);
+            promocionValida.setFechaTermino(fechaTermino);
 
+            try {
+                if(esEdicion){
+                    if(archivoFoto != null){
+                        promocionValida.setImagen(Files.readAllBytes(archivoFoto.toPath()));
+                    }else{
+                        promocionValida.setImagen(promocion.getImagen());
+                    }
+                    promocionValida.setIdPromocion(promocion.getIdPromocion());
+                    actualizarPromocion(promocionValida);
+                }else{
+                    if(archivoFoto != null){
+                        promocionValida.setImagen(Files.readAllBytes(archivoFoto.toPath()));
+                    }
+                    registrarPromocion(promocionValida);
+                }
+            } catch (IOException e) {
+                Utilidades.mostrarDialogoSimple("Error con imagen",
+                        "Hubo un error para guardar la imagen seleccionada, inténtelo de nuevo",
+                        Alert.AlertType.ERROR);
+            }
+        }else{
+           Utilidades.mostrarDialogoSimple("Campos Vacíos",
+                   "Por favor ingrese información o valores en los campos obligatorios",
+                   Alert.AlertType.WARNING);
+        }
     }
+    
+    
     private void actualizarPromocion(Promocion promocionActualizar){
         int codigoRespuesta = PromocionDAO.modificarPromocion(promocionActualizar);
         switch(codigoRespuesta){
@@ -253,10 +362,10 @@ public class FXMLRegistroPromocionController implements Initializable {
             case Constantes.OPERACION_EXITOSA:
                 Utilidades.mostrarDialogoSimple("Promocion registrada", "La actualización de la "
                         + "promoción se realizó con éxito", Alert.AlertType.INFORMATION);
-                if(! productosOriginales.equals(carrito) ){
+                
                     eliminarProductosPromocion();
                     registrarProductosPromocion(promocion.getIdPromocion());
-                }
+                
 
                 cerrarVentana();
                 interfazNotificacion.notificarOperacionActualizar(promocionActualizar.getDescripcion());
@@ -314,6 +423,7 @@ public class FXMLRegistroPromocionController implements Initializable {
     }
     
     private void registrarProductosPromocion(int promocionNueva){
+        
         int tamano = carrito.size() - 1;
         for(int i = 0; i <= tamano; i++){
             carrito.get(i).setIdPromocion(promocionNueva);
@@ -396,32 +506,79 @@ public class FXMLRegistroPromocionController implements Initializable {
 
     @FXML
     private void clicAñadirProdcuto(ActionEvent event) {
-        Producto productoSeleccionado = cbProductos.getSelectionModel().getSelectedItem();
-        int unidadesProducto = Integer.parseInt(tfCantidad.getText());
-        double precioFinal = Integer.parseInt(tfPrecioFinal.getText());
+        tfCantidad.setStyle(estiloNormal);
+        tfPrecioFinal.setStyle(estiloNormal);
         
-        if(productoSeleccionado != null && unidadesProducto > 0){
-           PromocionProducto promocionProducto = new PromocionProducto();
+        boolean esValido = true;
+        Producto productoSeleccionado = cbProductos.getSelectionModel().getSelectedItem();
+        
+        if (productoSeleccionado == null){
+            Utilidades.mostrarDialogoSimple("Sin producto seleccionado",
+                    "Por favor seleccione un producto para agregar a la promoción", Alert.AlertType.WARNING);
+            esValido = false;
+        }    
+        for(PromocionProducto producto : carrito ){
+            if(producto.getIdProducto() == productoSeleccionado.getIdProducto()){
+                Utilidades.mostrarDialogoSimple("Producto duplicado","Por favor seleccione otro producto", Alert.AlertType.WARNING);
+                esValido = false;
+            }
+        }    
+            
+        int cantidad = 0;
+        try{
+            cantidad = Integer.parseInt(tfCantidad.getText());
+            if(cantidad >3){
+                Utilidades.mostrarDialogoSimple("Máximo de productos alcanzados", "No se pueden incluir más "
+                        + "de 3 unidades del mismo producto en una promoción", Alert.AlertType.WARNING);
+                esValido = false;
+            }
+        }catch(NumberFormatException e){
+            esValido = false;
+            tfCantidad.setStyle(tfCantidad.getStyle() + estiloError);
+        }
+              
+        double descuento = 0;
+        try{
+            descuento = Double.parseDouble(tfPrecioFinal.getText());
+            if(descuento > 100){
+                esValido = false;
+                tfPrecioFinal.setStyle(tfPrecioFinal.getStyle() + estiloError);
+                Utilidades.mostrarDialogoSimple("Error en la cantidad de descuento",
+                        "Por favor ingrese una cantidad de descuento válida", Alert.AlertType.WARNING);
+            }
+        }catch(NumberFormatException e){
+            esValido = false;
+            tfPrecioFinal.setStyle(tfPrecioFinal.getStyle() + estiloError);
+        }
+                
+        double descuentoReal = 1 - (descuento / 100);
+        double precioUnidad = descuentoReal * productoSeleccionado.getPrecio();
+        double precioFinal = 0;
+        for(int i = 1; i <= cantidad; i++){
+            precioFinal += precioUnidad;
+        }
+        
+        
+        if(esValido == true){
+
+            PromocionProducto promocionProducto = new PromocionProducto();
             promocionProducto.setIdProducto(productoSeleccionado.getIdProducto());
             promocionProducto.setNombreProducto(productoSeleccionado.getNombre());
-            promocionProducto.setCantidad(unidadesProducto);
+            promocionProducto.setCantidad(cantidad);
             promocionProducto.setPrecioUnitario(productoSeleccionado.getPrecio());
             promocionProducto.setPrecioFinal(precioFinal);
             
             carrito.add(promocionProducto);
             actualizarTablaPromocion();
             limpiarCeldasProducto();
-
-            
-        }else{
-            Utilidades.mostrarDialogoSimple("Adevertencia","Por favor selecciona un producto o "
-                    + "ingresa una cantidad mayor a cero", Alert.AlertType.WARNING);
+        
         }
     }
     
     private void actualizarTablaPromocion(){
         ObservableList<PromocionProducto> listaCarrito = FXCollections.observableArrayList(carrito);
         tvProductosdePromocion.setItems(carrito);
+
         double precioTotal = 0;
         
         for(PromocionProducto promocion : listaCarrito){
@@ -449,17 +606,56 @@ public class FXMLRegistroPromocionController implements Initializable {
 
     @FXML
     private void clicModificarProducto(ActionEvent event) {
+        tfCantidad.setStyle(estiloNormal);
+        tfPrecioFinal.setStyle(estiloNormal);
+        
         int posicion = tvProductosdePromocion.getSelectionModel().getSelectedIndex();
-        PromocionProducto productoGuardado = carrito.get(posicion);        
-        double precioFinal = Double.parseDouble(tfPrecioFinal.getText());
-        int cantidad = Integer.parseInt(tfCantidad.getText());
-        productoGuardado.setPrecioFinal(precioFinal);
-        productoGuardado.setCantidad(cantidad);
-        PromocionProducto producNuevo = productoGuardado;
-        carrito.set(posicion, producNuevo);
-        actualizarTablaPromocion();
-
-        limpiarCeldasProducto();
+        PromocionProducto productoGuardado = carrito.get(posicion);     
+        boolean esValido = true;
+        int cantidad = 0;
+        try{
+            cantidad = Integer.parseInt(tfCantidad.getText());
+            if(cantidad >3){
+                Utilidades.mostrarDialogoSimple("Máximo de productos alcanzados", "No se pueden incluir más "
+                        + "de 3 unidades del mismo producto en una promoción", Alert.AlertType.WARNING);
+                esValido = false;
+            }
+        }catch(NumberFormatException e){
+            esValido = false;
+            tfCantidad.setStyle(tfCantidad.getStyle() + estiloError);
+        }
+              
+        double descuento = 0;
+        try{
+            descuento = Double.parseDouble(tfPrecioFinal.getText());
+            if(descuento > 100){
+                esValido = false;
+                tfPrecioFinal.setStyle(tfPrecioFinal.getStyle() + estiloError);
+                Utilidades.mostrarDialogoSimple("Error en la cantidad de descuento",
+                        "Por favor ingrese una cantidad de descuento válida", Alert.AlertType.WARNING);
+            }
+        }catch(NumberFormatException e){
+            esValido = false;
+            tfPrecioFinal.setStyle(tfPrecioFinal.getStyle() + estiloError);
+        }
+        
+        double descuentoReal = 1 - (descuento / 100);
+        double precioUnidad = descuentoReal * productoGuardado.getPrecioUnitario();
+        double precioFinal = 0;
+        for(int i = 1; i <= cantidad; i++){
+            precioFinal += precioUnidad;
+        }        
+        if(esValido == true){           
+            
+            productoGuardado.setPrecioFinal(precioFinal);
+            productoGuardado.setCantidad(cantidad);
+            PromocionProducto producNuevo = productoGuardado;
+            carrito.remove(posicion);
+            carrito.add(producNuevo);
+            actualizarTablaPromocion();
+            limpiarCeldasProducto();            
+        }
+               
     }
 
     @FXML
@@ -479,6 +675,26 @@ public class FXMLRegistroPromocionController implements Initializable {
     private void cerrarVentana(){
         Stage escenarioBase = (Stage) lbPrecioFinal.getScene().getWindow();
         escenarioBase.close();
+    }
+    
+    private void formatearTextFieldNumerico(TextField tfNumerico) {
+        tfNumerico.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                tfNumerico.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+            
+            if (tfNumerico.getText().equals("0")) {
+                tfNumerico.setText("1");
+            }
+        });
+    }
+    
+    private void formatearTextFieldFlotante(TextField tfFlotante){
+        tfFlotante.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*\\.?\\d{0," + 2 + "}")) {
+                tfFlotante.setText(oldValue);
+            }
+        });
     }
     
 }

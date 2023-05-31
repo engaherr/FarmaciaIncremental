@@ -27,7 +27,7 @@
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font></TextField>
-      <ComboBox fx:id="cbProductos" layoutX="250.0" layoutY="203.0" prefHeight="40.0" prefWidth="279.0" />
+      <ComboBox fx:id="cbProductos" layoutX="250.0" layoutY="203.0" prefHeight="40.0" prefWidth="262.0" />
       <Label layoutX="46.0" layoutY="132.0" text="Fecha de inicio:" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="26.0" />
@@ -51,9 +51,12 @@
             <Font name="System Bold Italic" size="42.0" />
          </font>
       </Label>
-      <ImageView fx:id="imagenPromocion" fitHeight="218.0" fitWidth="270.0" layoutX="990.0" layoutY="151.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imagenPromocion" fitHeight="218.0" fitWidth="270.0" layoutX="1014.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../recursos/buscar.png" />
+         </image></ImageView>
       <Label fx:id="rutaImagen" layoutX="993.0" layoutY="445.0" text="Label" />
-      <Button layoutX="1017.0" layoutY="67.0" mnemonicParsing="false" onAction="#clicSeleccionarImagen" text="Seleccionar imagen">
+      <Button layoutX="1032.0" layoutY="60.0" mnemonicParsing="false" onAction="#clicSeleccionarImagen" prefHeight="44.0" prefWidth="218.0" text="Seleccionar imagen">
          <font>
             <Font name="System Bold Italic" size="20.0" />
          </font>
@@ -66,12 +69,12 @@
             <TableColumn fx:id="tcPrecioFinal" prefWidth="182.0" text="Precio final" />
         </columns>
       </TableView>
-      <Button fx:id="btnAñadirProducto" layoutX="799.0" layoutY="369.0" mnemonicParsing="false" onAction="#clicAñadirProdcuto" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #5FAD56;" text="Añadir producto" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="btnAñadirProducto" layoutX="799.0" layoutY="394.0" mnemonicParsing="false" onAction="#clicAñadirProdcuto" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #5FAD56;" text="Añadir producto" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnEliminar" layoutX="799.0" layoutY="439.0" mnemonicParsing="false" onAction="#clicEliminarProducto" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #f25d59;" text="Eliminar producto" textFill="WHITE">
+      <Button fx:id="btnEliminar" layoutX="799.0" layoutY="464.0" mnemonicParsing="false" onAction="#clicEliminarProducto" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #f25d59;" text="Eliminar producto" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>
@@ -81,36 +84,36 @@
             <Font name="System Bold Italic" size="26.0" />
          </font>
       </Label>
-      <Label layoutX="558.0" layoutY="275.0" text="Precio final " textFill="WHITE">
+      <Label layoutX="523.0" layoutY="277.0" prefHeight="38.0" prefWidth="241.0" text="Descuento c/u :" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="26.0" />
          </font>
       </Label>
-      <TextField fx:id="tfCantidad" layoutX="256.0" layoutY="276.0" prefHeight="40.0" prefWidth="119.0" promptText="Ejemplo: 2">
+      <TextField fx:id="tfCantidad" layoutX="256.0" layoutY="276.0" prefHeight="40.0" prefWidth="252.0" promptText="Ejemplo: 2">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font></TextField>
-      <TextField fx:id="tfPrecioFinal" layoutX="724.0" layoutY="276.0" prefHeight="40.0" prefWidth="138.0" promptText="Ejemplo: 100">
+      <TextField fx:id="tfPrecioFinal" layoutX="724.0" layoutY="276.0" prefHeight="40.0" prefWidth="272.0" promptText="Ejemplo: 100">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font></TextField>
-      <Label layoutX="558.0" layoutY="206.0" text="Precio actual unitario:" textFill="WHITE">
+      <Label layoutX="522.0" layoutY="204.0" text="Precio actual unitario:" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="26.0" />
          </font>
       </Label>
-      <TextField fx:id="tfPrecioActualUnidad" layoutX="846.0" layoutY="206.0" prefHeight="39.0" prefWidth="125.0" />
-      <Button fx:id="btnModificar" layoutX="1044.0" layoutY="369.0" mnemonicParsing="false" onAction="#clicModificarProducto" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #4E8098;" text="Modificar producto" textFill="WHITE">
+      <TextField fx:id="tfPrecioActualUnidad" layoutX="814.0" layoutY="204.0" prefHeight="39.0" prefWidth="182.0" />
+      <Button fx:id="btnModificar" layoutX="1044.0" layoutY="394.0" mnemonicParsing="false" onAction="#clicModificarProducto" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #4E8098;" text="Modificar producto" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="btnNuevoProducto" layoutX="1045.0" layoutY="439.0" mnemonicParsing="false" onAction="#clicNuevoProducto" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #9F86C0;" text="Nuevo producto" textFill="WHITE">
+      <Button fx:id="btnNuevoProducto" layoutX="1045.0" layoutY="464.0" mnemonicParsing="false" onAction="#clicNuevoProducto" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #9F86C0;" text="Nuevo producto" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="18.0" />
          </font>
       </Button>
       <DatePicker fx:id="dpFechaInicio" layoutX="244.0" layoutY="132.0" />
-      <DatePicker fx:id="dpFechaTermino" layoutX="754.0" layoutY="132.0" />
+      <DatePicker fx:id="dpFechaTermino" layoutX="754.0" layoutY="132.0" prefHeight="39.0" prefWidth="241.0" />
    </children>
 </AnchorPane>

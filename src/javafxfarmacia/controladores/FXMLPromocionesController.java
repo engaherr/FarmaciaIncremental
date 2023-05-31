@@ -11,12 +11,18 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.animation.TranslateTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -28,6 +34,7 @@ import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafxfarmacia.JavaFXFarmacia;
 import javafxfarmacia.interfaz.INotificacionOperacion;
 import javafxfarmacia.modelo.dao.PromocionDAO;
@@ -72,6 +79,7 @@ public class FXMLPromocionesController implements Initializable, INotificacionOp
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
         cargarInformacion();
+ 
     }  
     
     private void configurarTabla(){
@@ -98,6 +106,7 @@ public class FXMLPromocionesController implements Initializable, INotificacionOp
             case Constantes.OPERACION_EXITOSA:
                 promociones.addAll(respuestaBD.getPromociones());
                 tvPromociones.setItems(promociones);
+                configurarBusquedaTabla();
                 break;
              
                 
@@ -105,27 +114,7 @@ public class FXMLPromocionesController implements Initializable, INotificacionOp
         }
     }
     
-      private void buscarProducto(KeyEvent event) {
-        String busqueda = tfBusqueda.getText();
-        promocionesBusqueda = FXCollections.observableArrayList();
-        PromocionRespuesta respuestaBD = PromocionDAO.obtenerInformacionBusqueda(busqueda);
-        switch(respuestaBD.getCodigoRespuesta()){
-            case Constantes.ERROR_CONEXION:
-                Utilidades.mostrarDialogoSimple("Sin conexion", 
-                        "No se pudo conectar con la base de datos. Intente de nuevo o hágalo más tarde",
-                        Alert.AlertType.ERROR);
-                break;
-            case Constantes.ERROR_CONSULTA:
-                Utilidades.mostrarDialogoSimple("Error al cargar los datos", 
-                        "Hubo un error al cargar la información por favor inténtelo de nuevo más tarde",
-                        Alert.AlertType.WARNING);
-                break;
-            case Constantes.OPERACION_EXITOSA:
-                promocionesBusqueda.addAll(respuestaBD.getPromociones());
-                tvPromociones.setItems(FXCollections.observableList(promocionesBusqueda));
-                break;
-        }
-    }
+ 
 
     @FXML
     private void clicRegistrarPromocion(ActionEvent event) {
@@ -138,9 +127,9 @@ public class FXMLPromocionesController implements Initializable, INotificacionOp
 
     @FXML
     private void clicModiificarPromocion(ActionEvent event) {
-        int posicion = tvPromociones.getSelectionModel().getSelectedIndex();
-        if(posicion != -1){
-            irFormulario(true,promociones.get(posicion));
+        Promocion promocionSeleccionada = tvPromociones.getSelectionModel().getSelectedItem();
+        if(promocionSeleccionada != null){
+            irFormulario(true,promocionSeleccionada);
         }else{
             Utilidades.mostrarDialogoSimple("Atención","Por favor selecciona "
                     + "una promoción para poder editar", Alert.AlertType.WARNING);
@@ -249,6 +238,37 @@ public class FXMLPromocionesController implements Initializable, INotificacionOp
         cargarInformacion();
     }
     
-    
+  
+    private void configurarBusquedaTabla (){
+        if(!promociones.isEmpty()){
+            FilteredList<Promocion> filtradoPromociones = new FilteredList<>(promociones,p -> true);
+            tfBusqueda.textProperty().addListener(new ChangeListener<String>() {
+                @Override
+                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                    filtradoPromociones.setPredicate(promocionFiltro -> {
+                        
+                        if(newValue == null || newValue.isEmpty()){
+                            return true;
+                        }
+                        //criterio de busqueda
+                        String lowerNewValue = newValue.toLowerCase();
+                        if(promocionFiltro.getDescripcion().toLowerCase().contains(lowerNewValue)){
+                            return true;
+                        }else if(promocionFiltro.getProductosPromo().toLowerCase().contains(lowerNewValue)){
+                            return true;
+                        }
+                        return false;
+                    });
+                    
+                }
+            });
+            SortedList<Promocion> sortedListaPromociones = new SortedList<>(filtradoPromociones);
+            sortedListaPromociones.comparatorProperty().bind(tvPromociones.comparatorProperty());
+            tvPromociones.setItems(sortedListaPromociones);
+        
+        }
+    }
+
+
     
 }
