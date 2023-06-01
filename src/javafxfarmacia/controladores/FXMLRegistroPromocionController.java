@@ -368,7 +368,7 @@ public class FXMLRegistroPromocionController implements Initializable {
                 
 
                 cerrarVentana();
-                interfazNotificacion.notificarOperacionActualizar(promocionActualizar.getDescripcion());
+                interfazNotificacion.notificarOperacionEditar();
                
 
                 break;

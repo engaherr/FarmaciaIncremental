@@ -6,6 +6,7 @@ package javafxfarmacia.interfaz;
 
 /**
  *
+<<<<<<< HEAD
  * @author kikga
  */
 public interface INotificacionOperacion {

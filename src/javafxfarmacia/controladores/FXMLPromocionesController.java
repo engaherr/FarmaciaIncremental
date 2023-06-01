@@ -224,21 +224,6 @@ public class FXMLPromocionesController implements Initializable, INotificacionOp
         }
     }
 
-    @Override
-    public void notificarOperacionGuardar(String descripcionPromocion) {
-        Utilidades.mostrarDialogoSimple("Notificacion","Se registró de forma "
-                + "exitosa la promoción", Alert.AlertType.INFORMATION);
-        cargarInformacion();
-    }
-
-    @Override
-    public void notificarOperacionActualizar(String descripcionPromocion) {
-        Utilidades.mostrarDialogoSimple("Notificación","Se actualizaron "
-                + "los datos de la promocion", Alert.AlertType.INFORMATION);
-        cargarInformacion();
-    }
-    
-  
     private void configurarBusquedaTabla (){
         if(!promociones.isEmpty()){
             FilteredList<Promocion> filtradoPromociones = new FilteredList<>(promociones,p -> true);
@@ -269,6 +254,17 @@ public class FXMLPromocionesController implements Initializable, INotificacionOp
         }
     }
 
+    @Override
+    public void notificarOperacionGuardar() {
+        Utilidades.mostrarDialogoSimple("Notificacion","Se registró de forma "
+                + "exitosa la promoción", Alert.AlertType.INFORMATION);
+        cargarInformacion();
+    }
 
-    
+    @Override
+    public void notificarOperacionEditar() {
+        Utilidades.mostrarDialogoSimple("Notificación","Se actualizaron "
+                + "los datos de la promocion", Alert.AlertType.INFORMATION);
+        cargarInformacion();
+    }
 }
