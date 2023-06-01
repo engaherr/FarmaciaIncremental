@@ -19,7 +19,7 @@ import javafxfarmacia.utils.Constantes;
  * @author kikga
  */
 public class SucursalDAO {
-    public static SucursalRespuesta obtenerInformacionProducto(){
+    public static SucursalRespuesta obtenerInformacionSucursales(){
         SucursalRespuesta respuesta = new SucursalRespuesta();
         respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
         Connection conexionBD = ConexionBD.abrirConexionBD();

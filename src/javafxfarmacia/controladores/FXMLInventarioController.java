@@ -8,13 +8,13 @@ import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,19 +28,19 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafxfarmacia.JavaFXFarmacia;
+import javafxfarmacia.interfaz.INotificacionOperacion;
 import javafxfarmacia.modelo.dao.ProductoDAO;
 import javafxfarmacia.modelo.pojo.Producto;
 import javafxfarmacia.modelo.pojo.ProductoRespuesta;
 import javafxfarmacia.utils.Constantes;
 import javafxfarmacia.utils.Utilidades;
 
-public class FXMLInventarioController implements Initializable {
+public class FXMLInventarioController implements Initializable, INotificacionOperacion {
 
     @FXML
     private TableView<Producto> tvInventario;
@@ -58,8 +58,7 @@ public class FXMLInventarioController implements Initializable {
     private TextField tfBusqueda;
     
     private ObservableList<Producto> productos;
-    private ObservableList<Producto> productosBusqueda;
-
+    private SortedList<Producto> sortedListProductos;
     
     @FXML
     private TableColumn colPresentacion;
@@ -151,22 +150,39 @@ public class FXMLInventarioController implements Initializable {
             case Constantes.OPERACION_EXITOSA:
                 productos.addAll(respuestaBD.getProductos());
                 tvInventario.setItems(productos);
+                configurarBusquedaTabla();
                 break;
         }
     }
 
-
-    @FXML
-    private void clicRegistrar(ActionEvent event) {
-        irFormulario();
-    }
-
-    @FXML
-    private void clicModificar(ActionEvent event) {
-    }
-
     @FXML
     private void clicEliminar(ActionEvent event) {
+        int posicion = tvInventario.getSelectionModel().getSelectedIndex();
+        boolean borrarRegistro = Utilidades.mostrarDialogoConfirmacion("Eliminar Producto", 
+                "¿Eliminar Artículo del inventario?");
+        if(borrarRegistro){
+            int codigoRespuesta = ProductoDAO.eliminarProducto(sortedListProductos.get(posicion).getIdProducto());
+            switch(codigoRespuesta){
+                case Constantes.ERROR_CONEXION:
+                    Utilidades.mostrarDialogoSimple("Error de Conexión",
+                            "El artículo no pudo ser eliminado debido a un error de conexión "
+                                    + "verifique su conexión e inténtelo más tarde",
+                            Alert.AlertType.ERROR);
+                    break;
+                case Constantes.ERROR_CONSULTA:
+                    Utilidades.mostrarDialogoSimple("Error al eliminar",
+                            "El artículo no pudo ser elimado, por favor inténtelo más tarde",
+                            Alert.AlertType.WARNING);
+                    break;
+                case Constantes.OPERACION_EXITOSA:
+                    Utilidades.mostrarDialogoSimple("Producto eliminado",
+                            "El artículo fue eliminado exitosamente del inventario",
+                            Alert.AlertType.INFORMATION);
+                    cargarInformacionTabla();
+                    break;
+            }
+            
+        }
     }
 
     @FXML
@@ -174,37 +190,45 @@ public class FXMLInventarioController implements Initializable {
         Stage escenarioPrincipal = (Stage) tfBusqueda.getScene().getWindow();
         escenarioPrincipal.close();
     }
-
-    @FXML
-    private void buscarProducto(KeyEvent event) {
-        String busqueda = tfBusqueda.getText();
-        productosBusqueda = FXCollections.observableArrayList();
-        ProductoRespuesta respuestaBD = ProductoDAO.obtenerInformacionBusqueda(busqueda);
-        switch(respuestaBD.getCodigoRespuesta()){
-            case Constantes.ERROR_CONEXION:
-                Utilidades.mostrarDialogoSimple("Sin conexion", 
-                        "No se pudo conectar con la base de datos. Intente de nuevo o hágalo más tarde",
-                        Alert.AlertType.ERROR);
-                break;
-            case Constantes.ERROR_CONSULTA:
-                Utilidades.mostrarDialogoSimple("Error al cargar los datos", 
-                        "Hubo un error al cargar la información por favor inténtelo de nuevo más tarde",
-                        Alert.AlertType.WARNING);
-                break;
-            case Constantes.OPERACION_EXITOSA:
-                productosBusqueda.addAll(respuestaBD.getProductos());
-                tvInventario.setItems(FXCollections.observableList(productosBusqueda));
-                break;
+    
+    private void configurarBusquedaTabla(){
+        if(!productos.isEmpty()){
+            FilteredList<Producto> filtradoProductos = new FilteredList<>(productos, p -> true);
+            tfBusqueda.textProperty().addListener(new ChangeListener<String>(){
+                
+                @Override
+                public void changed(ObservableValue<? extends String> observable, 
+                        String oldValue, String newValue) {
+                    filtradoProductos.setPredicate(productoFiltro -> {
+                        
+                        if(newValue == null || newValue.isEmpty()){
+                            return true;
+                        }
+                        
+                        String lowerNewValue = newValue.toLowerCase();
+                        if(productoFiltro.getNombre().toLowerCase().contains(lowerNewValue))
+                            return true;
+                        else if(productoFiltro.getPresentacion().toLowerCase().contains(lowerNewValue))
+                            return true;
+                        else if(productoFiltro.getNombreSucursal().toLowerCase().contains(lowerNewValue))
+                            return true;
+                        return false;
+                    });
+                }
+            });
+            sortedListProductos = new SortedList<>(filtradoProductos);
+            sortedListProductos.comparatorProperty().bind(tvInventario.comparatorProperty());
+            tvInventario.setItems(sortedListProductos);
         }
     }
 
-    private void irFormulario() {
+    private void irFormulario(boolean esEdicion, Producto productoEdicion) {
         try {
             FXMLLoader accesoControlador = new FXMLLoader(
                     JavaFXFarmacia.class.getResource("vistas/FXMLProductoFormulario.fxml"));
             Parent vista = accesoControlador.load();
             FXMLProductoFormularioController formulario = accesoControlador.getController();
-            formulario.inicializarInformacionFormulario(false, null);
+            formulario.inicializarInformacionFormulario(esEdicion, productoEdicion, this);
             
             Stage escenarioFormulario = new Stage();
             escenarioFormulario.setScene(new Scene(vista));
@@ -212,6 +236,8 @@ public class FXMLInventarioController implements Initializable {
             escenarioFormulario.initModality(Modality.APPLICATION_MODAL);
             escenarioFormulario.showAndWait();
         } catch (IOException e) {
+            e.getMessage();
+        }catch (Exception e){
             e.getMessage();
         }
     }
@@ -232,5 +258,27 @@ public class FXMLInventarioController implements Initializable {
         } catch (IOException ex) {
             ex.getMessage();
         }
+    }
+
+    @Override
+    public void notificarOperacionGuardar() {
+        cargarInformacionTabla();
+    }
+
+    @Override
+    public void notificarOperacionEditar() {
+        cargarInformacionTabla();
+    }
+
+    @FXML
+    private void clicRegistrar(ActionEvent event) {
+        irFormulario(false, null);
+    }
+
+    @FXML
+    private void clicModificar(ActionEvent event) {
+        int posicion = tvInventario.getSelectionModel().getSelectedIndex();
+        if(posicion != -1)
+            irFormulario(true, sortedListProductos.get(posicion));
     }
 }

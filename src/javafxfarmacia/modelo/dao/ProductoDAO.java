@@ -146,13 +146,19 @@ public class ProductoDAO {
                         + " values (?, ?, ?, ?, ?, ?, ?, ?)";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
                 prepararSentencia.setString(1, productoNuevo.getNombre());
-                prepararSentencia.setString(2, productoNuevo.getFechaVencimiento());
+                if(productoNuevo.getFechaVencimiento() != null)
+                    prepararSentencia.setString(2, productoNuevo.getFechaVencimiento());
+                else
+                    prepararSentencia.setNull(2, java.sql.Types.VARCHAR);
                 prepararSentencia.setDouble(3, productoNuevo.getPrecio());
                 prepararSentencia.setBoolean(4, productoNuevo.isVentaControlada());
                 prepararSentencia.setInt(5, productoNuevo.getIdSucursal());
                 prepararSentencia.setInt(6, productoNuevo.getCantidad());
                 prepararSentencia.setString(7, productoNuevo.getPresentacion());
-                prepararSentencia.setBytes(8, productoNuevo.getFoto());
+                if(productoNuevo.getFoto() != null)
+                    prepararSentencia.setBytes(8, productoNuevo.getFoto());
+                else
+                    prepararSentencia.setNull(8, java.sql.Types.LONGVARBINARY);
                 int filasAfectadas = prepararSentencia.executeUpdate();
                 respuesta = (filasAfectadas == 1) ?
                         Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
@@ -166,44 +172,99 @@ public class ProductoDAO {
         return respuesta;
     }
     
-    
-         public static ProductoRespuesta obtenerInformacionPedido(int idPedido){
-    ProductoRespuesta respuesta = new ProductoRespuesta();
-    Connection conexionBD = ConexionBD.abrirConexionBD();
-      if(conexionBD != null){
-            try{
-                String consulta = "SELECT producto.nombre, producto.precio,  producto_pedido.idProducto, producto_pedido.cantidad \n" +
-            "FROM producto_pedido \n" +
-            "INNER JOIN producto ON producto.idProducto = producto_pedido.idProducto\n" +
-            " WHERE idPedido = ?;";
-                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
-                   prepararSentencia.setInt(1, idPedido);
-                ResultSet resultado = prepararSentencia.executeQuery();
-                ArrayList <Producto> productos = new ArrayList();
-                while(resultado.next()){
-                    Producto producto = new Producto();
-                    producto.setIdProducto(resultado.getInt("idProducto"));
-                    producto.setNombre(resultado.getString("nombre"));
-                    producto.setPrecioUnitario(resultado.getInt("precio"));
-                    producto.setCantidad(resultado.getInt("cantidad"));
-                    productos.add(producto);
-                    System.out.println("ID PRODUCTO: "+producto.getIdProducto());
-                
-                }
-                respuesta.setProductos(productos);
-                respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
-
+    public static int modificarProducto(Producto productoEdicion){
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try {
+                String sentencia = "update producto set nombre = ?, fechaVencimiento = ?,"
+                        + " precio = ?, ventaControlada = ?, sucursal_idSucursal = ?, "
+                        + "cantidad = ?, presentacion = ?, foto = ? where idProducto = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setString(1, productoEdicion.getNombre());
+                if(productoEdicion.getFechaVencimiento() != null)
+                    prepararSentencia.setString(2, productoEdicion.getFechaVencimiento());
+                else
+                    prepararSentencia.setNull(2, java.sql.Types.VARCHAR);
+                prepararSentencia.setDouble(3,productoEdicion.getPrecio());
+                prepararSentencia.setBoolean(4, productoEdicion.isVentaControlada());
+                prepararSentencia.setInt(5, productoEdicion.getIdSucursal());
+                prepararSentencia.setInt(6, productoEdicion.getCantidad());
+                prepararSentencia.setString(7,productoEdicion.getPresentacion());
+                if(productoEdicion.getFoto() != null)
+                    prepararSentencia.setBytes(8, productoEdicion.getFoto());
+                else
+                    prepararSentencia.setNull(8, java.sql.Types.LONGVARBINARY);
+                prepararSentencia.setInt(9, productoEdicion.getIdProducto());
+                int filasAfectadas = prepararSentencia.executeUpdate();
+                respuesta = (filasAfectadas == 1) ?
+                        Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
                 conexionBD.close();
-          
-                
-            }catch(SQLException ex){
-                respuesta.setCodigoRespuesta(Constantes.ERROR_CONSULTA);
+            } catch (SQLException e) {
+                respuesta = Constantes.ERROR_CONSULTA;
             }
         }else{
-            respuesta.setCodigoRespuesta(Constantes.ERROR_CONEXION);
+            respuesta = Constantes.ERROR_CONEXION;
         }
         return respuesta;
-   
     }
     
+    public static ProductoRespuesta obtenerInformacionPedido(int idPedido){
+        ProductoRespuesta respuesta = new ProductoRespuesta();
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+                try{
+                    String consulta = "SELECT producto.nombre, producto.precio,  producto_pedido.idProducto, producto_pedido.cantidad \n" +
+                "FROM producto_pedido \n" +
+                "INNER JOIN producto ON producto.idProducto = producto_pedido.idProducto\n" +
+                " WHERE idPedido = ?;";
+                    PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                    prepararSentencia.setInt(1, idPedido);
+                    ResultSet resultado = prepararSentencia.executeQuery();
+                    ArrayList <Producto> productos = new ArrayList();
+                    while(resultado.next()){
+                        Producto producto = new Producto();
+                        producto.setIdProducto(resultado.getInt("idProducto"));
+                        producto.setNombre(resultado.getString("nombre"));
+                        producto.setPrecioUnitario(resultado.getInt("precio"));
+                        producto.setCantidad(resultado.getInt("cantidad"));
+                        productos.add(producto);
+                        System.out.println("ID PRODUCTO: "+producto.getIdProducto());
+                    
+                    }
+                    respuesta.setProductos(productos);
+                    respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
+
+                    conexionBD.close();
+            
+                    
+                }catch(SQLException ex){
+                    respuesta.setCodigoRespuesta(Constantes.ERROR_CONSULTA);
+                }
+            }else{
+                respuesta.setCodigoRespuesta(Constantes.ERROR_CONEXION);
+            }
+        return respuesta;
+    }
+    
+    public static int eliminarProducto(int idProducto){
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                String sentencia = "delete from producto where idProducto = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setInt(1, idProducto);
+                int filasAfectadas = prepararSentencia.executeUpdate();
+                respuesta = (filasAfectadas == 1) ? 
+                        Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+                conexionBD.close();
+            }catch(SQLException e){
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
+        }else{
+            respuesta = Constantes.ERROR_CONEXION;
+        }
+        return respuesta;
+    }
 }

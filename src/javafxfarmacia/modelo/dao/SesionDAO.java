@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javafxfarmacia.modelo.ConexionBD;
 import javafxfarmacia.modelo.pojo.Usuario;
 import javafxfarmacia.utils.Constantes;
 import javafxfarmacia.modelo.ConexionBD;

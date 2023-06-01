@@ -6,12 +6,11 @@ package javafxfarmacia.interfaz;
 
 /**
  *
- * @author dplat
+ * @author kikga
  */
 public interface INotificacionOperacion {
-        public void notificarOperacionGuardarPedido(int idPedido);
     
-    public void notificarOperacionActualizarPedido(int idPedido);
+    public void notificarOperacionGuardar();
     
-  /* seguiré con este pedo y ya cuando no me jale me explicas en donde es que le mando el idpedido, mejor. jijiji*/
+    public void notificarOperacionEditar();
 }

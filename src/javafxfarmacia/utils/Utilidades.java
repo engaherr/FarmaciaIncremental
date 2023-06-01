@@ -5,16 +5,16 @@
 package javafxfarmacia.utils;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafxfarmacia.JavaFXFarmacia;
 
 /**
@@ -28,6 +28,15 @@ public class Utilidades {
         alertaSimple.setContentText(mensaje);
         alertaSimple.setHeaderText(null);
         alertaSimple.showAndWait();
+    }
+    
+    public static boolean mostrarDialogoConfirmacion(String titulo, String mensaje){
+        Alert alertaConfirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+        alertaConfirmacion.setTitle(titulo);
+        alertaConfirmacion.setHeaderText(null);
+        alertaConfirmacion.setContentText(mensaje);
+        Optional<ButtonType> botonClic = alertaConfirmacion.showAndWait();
+        return (botonClic.get() == ButtonType.OK);
     }
     
     public static String obtenerFechaActual() {
@@ -46,5 +55,4 @@ public class Utilidades {
         }
         return escena;
     }
-        
 }
