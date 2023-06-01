@@ -24,13 +24,9 @@ import javafx.scene.input.KeyEvent;
 import javafxfarmacia.modelo.dao.ProductoDAO;
 import javafxfarmacia.modelo.pojo.Producto;
 import javafxfarmacia.modelo.pojo.ProductoRespuesta;
-import javafxfarmacia.modelo.pojo.Tipo;
 import javafxfarmacia.utils.Constantes;
 import javafxfarmacia.utils.Utilidades;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import javafx.application.Platform;
-import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
@@ -49,6 +45,7 @@ import org.controlsfx.control.textfield.TextFields;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Set;
 import javafx.scene.control.TextFormatter;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
@@ -265,7 +262,7 @@ private void clicAgregar(ActionEvent event) {
             productoEnCarrito.setCantidad(cantidad);
 
      
-            float precioUnitario = productoSeleccionado.getPrecio();
+            float precioUnitario = (float) productoSeleccionado.getPrecio();
             float precioFinal = precioUnitario * cantidad;
             productoEnCarrito.setPrecioUnitario(precioUnitario);
             productoEnCarrito.setPrecioFinal(precioFinal);

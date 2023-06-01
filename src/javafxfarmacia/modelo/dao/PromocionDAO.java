@@ -11,8 +11,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javafxfarmacia.modelo.ConexionBD;
 import javafxfarmacia.modelo.pojo.Promocion;
+import javafxfarmacia.modelo.pojo.PromocionProductoRespuesta;
 import javafxfarmacia.modelo.pojo.PromocionRespuesta;
 import javafxfarmacia.utils.Constantes;
+
 
 /**
  *
@@ -37,6 +39,11 @@ public class PromocionDAO {
                     promocionTemporal.setFechaInicio(resultado.getString("fechaInicia"));
                     promocionTemporal.setFechaTermino(resultado.getString("fechaTermino"));
                     promocionTemporal.setImagen(resultado.getBytes("imagen"));
+                    
+                    PromocionProductoRespuesta productos = PromocionProductoDAO.obtenerInformacion(promocionTemporal.getIdPromocion());
+                    promocionTemporal.setProductos(productos);
+                    promocionTemporal.juntarProductos();
+         
                     promocionConsulta.add(promocionTemporal); 
                 }
               
@@ -60,7 +67,7 @@ public class PromocionDAO {
             try {
                 String consulta = "select idPromocion, descripcion,fechaInicia,fechaTermino, "
                         + "imagen from promocion \n" +
-                        "where descripcion like 'pañal' order by fechaTermino asc;";
+                        "where descripcion like ? order by fechaTermino asc;";
                 PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
                 prepararSentencia.setString(1, "%" + busqueda + "%");
                 ResultSet resultado = prepararSentencia.executeQuery();
@@ -71,6 +78,8 @@ public class PromocionDAO {
                     promocionTemporal.setDescripcion(resultado.getString("descripcion"));           
                     promocionTemporal.setFechaInicio(resultado.getString("fechaInicia"));
                     promocionTemporal.setFechaTermino(resultado.getString("fechaTermino"));
+                    promocionTemporal.setImagen(resultado.getBytes("imagen"));
+                    
                     promocionConsulta.add(promocionTemporal);
                 }
                 respuesta.setPromociones(promocionConsulta);
@@ -84,6 +93,9 @@ public class PromocionDAO {
         }
         return respuesta;
     }
+        
+
+       
     
     public static int registrarPromocion(Promocion promocionNueva){
         int respuesta;
@@ -111,4 +123,84 @@ public class PromocionDAO {
         return respuesta;
     }
     
+    public static Promocion obtenerUltimaPromocionGuardada() {
+    Promocion ultimaPromocion = new Promocion();
+    Connection conexionBD = ConexionBD.abrirConexionBD();
+    
+    if (conexionBD != null) {
+        try {
+            String sentencia = "SELECT * FROM promocion ORDER BY idPromocion DESC LIMIT 1";
+            PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+            ResultSet resultSet = prepararSentencia.executeQuery(sentencia);
+            
+            if (resultSet.next()) {
+                int id = resultSet.getInt("idPromocion");
+                String descripcion = resultSet.getString("descripcion");
+                String fechaInicio = resultSet.getString("fechaInicia");
+                String fechaTermino = resultSet.getString("fechaTermino");
+                byte[] imagen = resultSet.getBytes("imagen");
+                
+                ultimaPromocion.setIdPromocion(id);
+                ultimaPromocion.setDescripcion(descripcion);
+                ultimaPromocion.setFechaInicio(fechaInicio);
+                ultimaPromocion.setFechaTermino(fechaTermino);
+                ultimaPromocion.setImagen(imagen);
+            }
+            
+            conexionBD.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+        return ultimaPromocion;
+    }
+
+    public static int modificarPromocion(Promocion promocionActualizar){
+       int respuesta;
+       Connection conexionBD = ConexionBD.abrirConexionBD();
+       if(conexionBD != null){
+           try{
+               String sentencia = "UPDATE promocion SET descripcion = ?, fechaInicia = ?,"
+                       + "fechaTermino = ?,imagen = ? WHERE idPromocion = ?";
+               PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+               prepararSentencia.setString(1,promocionActualizar.getDescripcion());
+               prepararSentencia.setString(2,promocionActualizar.getFechaInicio());
+               prepararSentencia.setString(3,promocionActualizar.getFechaTermino());
+               prepararSentencia.setBytes(4,promocionActualizar.getImagen());
+               prepararSentencia.setInt(5, promocionActualizar.getIdPromocion());
+               
+               int filasAfectadas = prepararSentencia.executeUpdate();
+               respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA; 
+           }catch(SQLException ex){
+               respuesta = Constantes.ERROR_CONSULTA;
+                        
+           }
+       }else{
+           respuesta = Constantes.ERROR_CONEXION;
+       }
+          return respuesta; 
+    }
+    
+    
+    public static int eliminarPromocion(int idPromocion){
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                System.out.println("Hay conexion y el id es"+ idPromocion);
+                String sentencia = "DELETE FROM promocion where idPromocion = ?;";
+                
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setInt(1,idPromocion);
+                int filasAfectadas = prepararSentencia.executeUpdate();
+                respuesta = (filasAfectadas == 1) ? Constantes.OPERACION_EXITOSA : Constantes.ERROR_CONSULTA;
+            }catch(SQLException ex){
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
+        }else{
+            respuesta = Constantes.ERROR_CONEXION;
+        }
+        return respuesta;
+    }
 }
