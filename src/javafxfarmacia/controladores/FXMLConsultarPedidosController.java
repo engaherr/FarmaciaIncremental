@@ -28,6 +28,7 @@ import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,10 +36,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableRow;
 import javafx.stage.Modality;
 import javafxfarmacia.JavaFXFarmacia;
 import javafxfarmacia.interfaz.INotificacionOperacion;
+import javafxfarmacia.modelo.dao.ProductoPedidoDAO;
 
 /**
  * FXML Controller class
@@ -80,16 +84,15 @@ private ObservableList<Pedido> pedidos;
         Pedido pedido = param.getValue();
         ImageView imageView = new ImageView();
 
-        // Obtener la fecha actual
+     
         LocalDate fechaActual = LocalDate.now();
 
-        // Obtener la fecha en la columna colFechaPedido
+      
         LocalDate fechaPedido = LocalDate.parse(pedido.getFecha_pedido());
          LocalDate fechaEntrega = LocalDate.parse(pedido.getFecha_entrega());
 
-        // Verificar si la fecha es igual a la fecha actual
      if (fechaPedido.isEqual(fechaActual)) {
-            // Cargar imagen para mostrar
+      
             Image imagenEstado = new Image("javafxfarmacia/recursos/stepper1.png");
             imageView.setImage(imagenEstado);
              double anchoDeseado = 286; 
@@ -97,7 +100,7 @@ private ObservableList<Pedido> pedidos;
             imageView.setFitWidth(anchoDeseado);
             imageView.setFitHeight(altoDeseado);
         } else if (fechaEntrega.isEqual(fechaActual)  || fechaEntrega.isBefore(fechaActual)) {
-            // Cargar otra imagen si la fecha de entrega es igual a la fecha actual
+          
             Image otraImagen = new Image("javafxfarmacia/recursos/stepper3.png");
             imageView.setImage(otraImagen);
             double anchoDeseado = 286; 
@@ -105,7 +108,7 @@ private ObservableList<Pedido> pedidos;
             imageView.setFitWidth(anchoDeseado);
             imageView.setFitHeight(altoDeseado);
         } else {
-            // Cargar imagen por defecto si no cumple ninguna de las condiciones anteriores
+       
             Image imagenDefault = new Image("javafxfarmacia/recursos/stepper2.png");
             imageView.setImage(imagenDefault);
             double anchoDeseado = 286; 
@@ -122,17 +125,17 @@ private ObservableList<Pedido> pedidos;
 
  tvPedidos.getColumns().add(colEstado);
  
- // Establecer estilo de la tabla
+
 tvPedidos.setStyle("-fx-background-color: #f8f2dc;");
 
-// Establecer estilo de las filas
+
 tvPedidos.setRowFactory(tv -> {
     TableRow<Pedido> row = new TableRow<>();
     row.setStyle("-fx-background-color: #f8f2dc;");
     return row;
 });
 
-// Establecer estilo de los encabezados de columna
+
 colFechaPedido.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40; -fx-border-width: 1px;");
 colFechaEntrega.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40;-fx-border-width: 1px;");
 colProveedor.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40;-fx-border-width: 1px;");
@@ -171,16 +174,24 @@ colEstado.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40;-fx-
     }
 
     @FXML
-    private void clicModificar(ActionEvent event) {
+ private void clicModificar(ActionEvent event) {
+    int posicion = tvPedidos.getSelectionModel().getSelectedIndex();
+    if (posicion != -1) {
+        Pedido pedido = pedidos.get(posicion);
+        LocalDate fechaPedido = LocalDate.parse(pedido.getFecha_pedido());
+        LocalDate fechaActual = LocalDate.now();
         
-          int posicion = tvPedidos.getSelectionModel().getSelectedIndex();
-    if(posicion != -1){
-        irFormulario(true,pedidos.get(posicion));
-    }else{
-        Utilidades.mostrarDialogoSimple("Atención","Por favor selecciona "
-                + "una promoción para poder editar", Alert.AlertType.WARNING);
+        if (fechaPedido.isEqual(fechaActual)) {
+            irFormulario(true, pedido);
+        } else {
+            Utilidades.mostrarDialogoSimple("El pedido ya está en camino", "El pedido solo se puede modificar antes de que esté en camino.", Alert.AlertType.WARNING);
         }
+    } else {
+        Utilidades.mostrarDialogoSimple("Atención", "Por favor selecciona un pedido para poder modificarlo.", Alert.AlertType.WARNING);
     }
+}
+
+
     
     
     
@@ -208,14 +219,109 @@ colEstado.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40;-fx-
     @Override
     public void notificarOperacionGuardar() {
         Utilidades.mostrarDialogoSimple("Notificacion","Se registró de forma "
-                + "exitosa la promoción", Alert.AlertType.INFORMATION);
+                + "exitosa el pedido", Alert.AlertType.INFORMATION);
         cargarInformacionTabla();  
     }
 
     @Override
     public void notificarOperacionEditar() {
         Utilidades.mostrarDialogoSimple("Notificación","Se ACTUALIZÓ "
-                + "los datos de la promocion", Alert.AlertType.INFORMATION);
+                + "los datos del pedido", Alert.AlertType.INFORMATION);
         cargarInformacionTabla();
     }
+
+   @FXML
+    private void clicEliminar(ActionEvent event) {
+        int posicion = tvPedidos.getSelectionModel().getSelectedIndex();
+
+        if (posicion != -1) {
+            Pedido pedido = pedidos.get(posicion);
+            LocalDate fechaEntrega = LocalDate.parse(pedido.getFecha_entrega());
+            LocalDate fechaActual = LocalDate.now();
+
+            if (fechaEntrega.isBefore(fechaActual)) {
+            
+                int codigoRespuesta = ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
+
+                switch (codigoRespuesta) {
+                    case Constantes.ERROR_CONEXION:
+                        Utilidades.mostrarDialogoSimple("Error de conexión", "No se pudo establecer conexión con la base de datos. Por favor, inténtelo más tarde.", Alert.AlertType.ERROR);
+                        break;
+                    case Constantes.ERROR_CONSULTA:
+                        Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al eliminar el pedido. Por favor, inténtelo más tarde.", Alert.AlertType.WARNING);
+                        break;
+                    case Constantes.OPERACION_EXITOSA:
+                        Utilidades.mostrarDialogoSimple("Pedido eliminado", "El pedido ha sido eliminado exitosamente.", Alert.AlertType.INFORMATION);
+                        ProductoPedidoDAO.eliminarPedido(pedido.getIdPedido());
+                        cargarInformacionTabla();
+                        break;
+                }
+            } else if (fechaEntrega.isEqual(fechaActual)) {
+
+                int codigoRespuesta = ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
+
+                switch (codigoRespuesta) {
+                    case Constantes.ERROR_CONEXION:
+                        Utilidades.mostrarDialogoSimple("Error de conexión", "No se pudo establecer conexión con la base de datos. Por favor, inténtelo más tarde.", Alert.AlertType.ERROR);
+                        break;
+                    case Constantes.ERROR_CONSULTA:
+                        Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al eliminar el pedido. Por favor, inténtelo más tarde.", Alert.AlertType.WARNING);
+                        break;
+                    case Constantes.OPERACION_EXITOSA:
+                        Utilidades.mostrarDialogoSimple("Pedido eliminado", "El pedido ha sido eliminado exitosamente.", Alert.AlertType.INFORMATION);
+                        ProductoPedidoDAO.eliminarPedido(pedido.getIdPedido());
+                        cargarInformacionTabla();
+                        break;
+                }
+            } else {
+
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmar");
+                alert.setHeaderText("¿Desea cancelar el pedido?");
+                alert.setContentText("El pedido aún no ha sido entregado. ¿Está seguro de que desea cancelarlo?");
+
+                ButtonType buttonTypeSi = new ButtonType("Sí");
+                ButtonType buttonTypeCancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                alert.getButtonTypes().setAll(buttonTypeSi, buttonTypeCancelar);
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.isPresent() && result.get() == buttonTypeSi) {
+        
+                    int codigoRespuesta = ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
+
+                    switch (codigoRespuesta) {
+                        case Constantes.ERROR_CONEXION:
+                            Utilidades.mostrarDialogoSimple("Error de conexión", "No se pudo establecer conexión con la base de datos. Por favor, inténtelo más tarde.", Alert.AlertType.ERROR);
+                            break;
+                        case Constantes.ERROR_CONSULTA:
+                            Utilidades.mostrarDialogoSimple("Error de consulta", "Ocurrió un error al cancelar el pedido. Por favor, inténtelo más tarde.", Alert.AlertType.WARNING);
+                            break;
+                        case Constantes.OPERACION_EXITOSA:
+                            Utilidades.mostrarDialogoSimple("Pedido cancelado", "El pedido ha sido cancelado exitosamente.", Alert.AlertType.INFORMATION);
+                            ProductoPedidoDAO.eliminarPedido(pedido.getIdPedido());
+                            cargarInformacionTabla();
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
+    @FXML
+    private void clicAyuda(MouseEvent event) {
+         Utilidades.mostrarDialogoSimple("Consultar pedido", "En la tabla presente se muestran los pedidos que han sido enviados, con sus respectivas fechas pedido y entrega."+
+                 "\nPara modificar un pedido seleccionalo en la tabla y presiona el botón modificar. \n\nSi se desea cancelar un pedido, seleccionalo y presiona el botón Cancelar/Eliminar." +
+                 "\n\nRecuerda que solo se pueden cancelar los pedidos que se estén preparando o en camino. Aquellos que han sido recibidos solo se pueden eliminar de la tabla.", Alert.AlertType.INFORMATION);
+
+    }
+
+     
+     
+    
+
+
+    
 }
+
+

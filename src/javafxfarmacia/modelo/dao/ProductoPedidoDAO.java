@@ -63,4 +63,50 @@ public class ProductoPedidoDAO {
         }
         return respuesta;
     }
+      
+           public static int eliminarPedido (int idPedido){
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                String sentencia = "DELETE FROM pedidos WHERE idpedido = ?";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setInt(1, idPedido);
+                 System.out.println("eliminar pedido query" + prepararSentencia );
+                int filasAfectadas = prepararSentencia.executeUpdate();
+               
+                respuesta = (filasAfectadas >= 1 ) ? Constantes.OPERACION_EXITOSA :
+                        Constantes.ERROR_CONSULTA;
+                
+            }catch(SQLException ex){
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
+        }else{
+            respuesta = Constantes.ERROR_CONEXION;
+        }
+        return respuesta;
+    }
+        
+        
+        public static int eliminarProductos (int idPedido){
+        int respuesta;
+        Connection conexionBD = ConexionBD.abrirConexionBD();
+        if(conexionBD != null){
+            try{
+                String sentencia = "DELETE FROM producto_pedido \n" +
+                    "WHERE idPedido = ?;";
+              PreparedStatement prepararSentencia = conexionBD.prepareStatement(sentencia);
+                prepararSentencia.setInt(1, idPedido);
+                int filasAfectadas = prepararSentencia.executeUpdate();
+                respuesta = (filasAfectadas >= 1 ) ? Constantes.OPERACION_EXITOSA :
+                        Constantes.ERROR_CONSULTA;
+                
+            }catch(SQLException ex){
+                respuesta = Constantes.ERROR_CONSULTA;
+            }
+        }else{
+            respuesta = Constantes.ERROR_CONEXION;
+        }
+        return respuesta;
+    }
 }
