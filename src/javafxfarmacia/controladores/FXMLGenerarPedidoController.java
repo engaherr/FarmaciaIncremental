@@ -1,14 +1,9 @@
 package javafxfarmacia.controladores;
 
-import com.sun.javafx.scene.control.skin.ComboBoxListViewSkin;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -27,19 +22,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafxfarmacia.modelo.dao.ProductoDAO;
-import javafxfarmacia.modelo.dao.TipoProductoDAO;
 import javafxfarmacia.modelo.pojo.Producto;
 import javafxfarmacia.modelo.pojo.ProductoRespuesta;
 import javafxfarmacia.modelo.pojo.Tipo;
-import javafxfarmacia.modelo.pojo.TipoRespuesta;
 import javafxfarmacia.utils.Constantes;
 import javafxfarmacia.utils.Utilidades;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
-import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
@@ -48,14 +39,12 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafxfarmacia.interfaz.INotificacionOperacion;
 import javafxfarmacia.modelo.dao.PedidoDAO;
-import javafxfarmacia.modelo.dao.PedidoDAO.TipoProveedor;
 import static javafxfarmacia.modelo.dao.PedidoDAO.guardarPedidoExterno;
 import static javafxfarmacia.modelo.dao.PedidoDAO.guardarPedidoInterno;
 import javafxfarmacia.modelo.dao.ProductoPedidoDAO;
 import javafxfarmacia.modelo.pojo.Pedido;
 import javafxfarmacia.modelo.pojo.PedidoRespuesta;
 import javafxfarmacia.modelo.pojo.ProductoPedido;
-import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -64,7 +53,6 @@ import java.time.format.DateTimeFormatter;
 
 public class FXMLGenerarPedidoController implements Initializable {
 
-    private ObservableList<Tipo> tipos;
     @FXML
     private ComboBox<Pedido> cbProveedor;
     @FXML
@@ -77,8 +65,6 @@ public class FXMLGenerarPedidoController implements Initializable {
     private TableView<Producto> tvCarrito;
     @FXML
     private DatePicker dpDiaEntrega;
-    private TextField tfBusqueda;
-    private ObservableList<Producto> productosBusqueda;
 
     private ObservableList<Producto> carrito;
 
@@ -101,7 +87,6 @@ public class FXMLGenerarPedidoController implements Initializable {
     private ObservableList<Pedido> proveedoresInternos;
     private ObservableList<Pedido> proveedoresExternos;
     private ObservableList<Pedido> todosLosProveedores;
-    private String tipoProveedor;
     
     private ObservableList<String> possibleSuggestions;
 
@@ -110,7 +95,6 @@ public class FXMLGenerarPedidoController implements Initializable {
     private TextField autoTextField;
     private boolean esEdicion;
     private Pedido pedido;
-    private INotificacionOperacion interfazNotificacion;
 
 
     
@@ -288,10 +272,8 @@ private void actualizarTablaCarrito() {
 private void actualizarProveedores() {
     if (rbInternos.isSelected()) {
         cbProveedor.setItems(proveedoresInternos);
-        tipoProveedor = "interno";
     } else if (rbExternos.isSelected()) {
         cbProveedor.setItems(proveedoresExternos);
-        tipoProveedor = "externo"; 
     
     }
 }
@@ -504,7 +486,6 @@ private void clicBuscarProducto(KeyEvent event) {
  public void inicializarInformacionFormulario(boolean esEdicion, Pedido pedido, INotificacionOperacion interfazNotificacion){
         this.esEdicion = esEdicion;
         this.pedido = pedido;
-        this.interfazNotificacion = interfazNotificacion;
         
         if(esEdicion){
             cargarInformacionPedido();

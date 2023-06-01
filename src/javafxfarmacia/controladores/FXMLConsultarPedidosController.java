@@ -67,10 +67,7 @@ private ObservableList<Pedido> pedidos;
     public void initialize(URL url, ResourceBundle rb) {
         configurarTabla();
         cargarInformacionTabla();
-    }    
-    
-    
-    
+    }
     
    public void configurarTabla() {
     colFechaPedido.setCellValueFactory(new PropertyValueFactory<>("fecha_pedido"));
@@ -209,24 +206,16 @@ colEstado.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40;-fx-
     }
 
     @Override
-    public void notificarOperacionGuardarPedido(int idPedido) {
-Utilidades.mostrarDialogoSimple("Notificacion","Se registró de forma "
+    public void notificarOperacionGuardar() {
+        Utilidades.mostrarDialogoSimple("Notificacion","Se registró de forma "
                 + "exitosa la promoción", Alert.AlertType.INFORMATION);
         cargarInformacionTabla();  
     }
 
     @Override
-    public void notificarOperacionActualizarPedido(int idPedido) {
-Utilidades.mostrarDialogoSimple("Notificación","Se ACTUALIZÓ "
+    public void notificarOperacionEditar() {
+        Utilidades.mostrarDialogoSimple("Notificación","Se ACTUALIZÓ "
                 + "los datos de la promocion", Alert.AlertType.INFORMATION);
-                cargarInformacionTabla();  
-
+        cargarInformacionTabla();
     }
-    
-     
-     
-    
-
-
-    
 }
