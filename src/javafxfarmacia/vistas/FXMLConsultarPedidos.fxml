@@ -25,17 +25,15 @@
             <Image url="@../recursos/vectorAvionBlanco.png" />
          </image>
       </ImageView>
-      <TableView fx:id="tvPedidos" layoutX="66.0" layoutY="119.0" prefHeight="430.0" prefWidth="1026.0" style="-fx-background-color: #f8f2dc;">
+      <TableView fx:id="tvPedidos" layoutX="75.0" layoutY="120.0" prefHeight="430.0" prefWidth="1026.0" style="-fx-background-color: #f8f2dc;">
         <columns>
-          <TableColumn fx:id="colPedido" prefWidth="170.0" sortType="DESCENDING" text="ID pedido" />
-          <TableColumn fx:id="colEstado" prefWidth="170.0" sortType="DESCENDING" text="Estado" />
-            <TableColumn fx:id="colProducto" prefWidth="170.0" sortType="DESCENDING" text="Productos" />
-            <TableColumn fx:id="colCantidad" prefWidth="170.0" sortType="DESCENDING" text="Cantidad" />
-            <TableColumn fx:id="colFechaPedido" prefWidth="170.0" sortType="DESCENDING" text="Fecha de pedido" />
-            <TableColumn fx:id="colFechaEntrega" prefWidth="175.0" sortType="DESCENDING" text="Fecha de entrega" />
+            <TableColumn fx:id="colFechaPedido" prefWidth="147.3333282470703" sortType="DESCENDING" style="-fx-background-color: #f8f2dc;" text="Fecha de pedido" />
+            <TableColumn fx:id="colFechaEntrega" prefWidth="139.33331298828125" sortType="DESCENDING" style="-fx-background-color: #f8f2dc;" text="Fecha de entrega" />
+            <TableColumn fx:id="colProductosCombinados" prefWidth="427.3333435058594" sortType="DESCENDING" style="-fx-background-color: #f8f2dc;" text="Productos" />
+            <TableColumn fx:id="colProveedor" prefWidth="184.0" sortType="DESCENDING" style="-fx-background-color: #f8f2dc;" text="Proveedor" />
         </columns>
       </TableView>
-      <Button disable="true" layoutX="176.0" layoutY="570.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="303.0" style="-fx-background-color: #4E8098;" text="Modificar" textFill="WHITE">
+      <Button layoutX="176.0" layoutY="570.0" mnemonicParsing="false" onAction="#clicModificar" prefHeight="77.0" prefWidth="303.0" style="-fx-background-color: #4E8098;" text="Modificar" textFill="WHITE">
          <font>
             <Font size="30.0" />
          </font>

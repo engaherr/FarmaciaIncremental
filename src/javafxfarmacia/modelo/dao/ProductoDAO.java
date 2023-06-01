@@ -96,41 +96,43 @@ public class ProductoDAO {
    
     }
     
+    
+    
+    
+    
+    
+    
     public static ProductoRespuesta obtenerInformacionBusqueda(String busqueda){
         ProductoRespuesta respuesta = new ProductoRespuesta();
-        respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
         Connection conexionBD = ConexionBD.abrirConexionBD();
         if(conexionBD != null){
-            try {
-                String consulta = "select idProducto, nombre, fechaVencimiento, precio, ventaControlada, sucursal_idSucursal, \n" +
-                                "cantidad, presentacion, nombreSucursal \n" +
-                                "from producto \n" +
-                                "inner join sucursal on idSucursal = sucursal_idSucursal where nombre like ? order by fechaVencimiento asc;";
-                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
-                prepararSentencia.setString(1, "%" + busqueda + "%");
-                ResultSet resultado = prepararSentencia.executeQuery();
-                ArrayList<Producto> productosConsulta = new ArrayList();
-                while(resultado.next()){
-                    Producto producto = new Producto();
-                    producto.setIdProducto(resultado.getInt("idProducto"));
-                    producto.setFechaVencimiento(resultado.getString("fechaVencimiento"));
-                    producto.setNombre(resultado.getString("nombre"));
-                    producto.setPrecio(resultado.getDouble("precio"));
-                    producto.setVentaControlada(resultado.getBoolean("ventaControlada"));
-                    producto.setIdSucursal(resultado.getInt("sucursal_idSucursal"));
-                    producto.setNombreSucursal(resultado.getString("nombreSucursal"));
-                    producto.setCantidad(resultado.getInt("cantidad"));
-                    producto.setPresentacion(resultado.getString("presentacion"));
-                    productosConsulta.add(producto);
+                try{
+                    String consulta = "SELECT idProducto,nombre FROM producto";
+                    PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                    prepararSentencia.setString(1, "%" + busqueda + "%");
+                    ResultSet resultado = prepararSentencia.executeQuery();
+                    ArrayList<Producto> productosConsulta = new ArrayList();
+                    while(resultado.next()){
+                        Producto producto = new Producto();
+                        producto.setIdProducto(resultado.getInt("idProducto"));
+                        producto.setFechaVencimiento(resultado.getString("fechaVencimiento"));
+                        producto.setNombre(resultado.getString("nombre"));
+                        producto.setPrecio(resultado.getDouble("precio"));
+                        producto.setVentaControlada(resultado.getBoolean("ventaControlada"));
+                        producto.setIdSucursal(resultado.getInt("sucursal_idSucursal"));
+                        producto.setNombreSucursal(resultado.getString("nombreSucursal"));
+                        producto.setCantidad(resultado.getInt("cantidad"));
+                        producto.setPresentacion(resultado.getString("presentacion"));
+                        productosConsulta.add(producto);
+                    }
+                    respuesta.setProductos(productosConsulta);
+                    conexionBD.close();
+                } catch (SQLException e) {
+                    respuesta.setCodigoRespuesta(Constantes.ERROR_CONSULTA);
                 }
-                respuesta.setProductos(productosConsulta);
-                conexionBD.close();
-            } catch (SQLException e) {
-                respuesta.setCodigoRespuesta(Constantes.ERROR_CONSULTA);
+            }else{
+                respuesta.setCodigoRespuesta(Constantes.ERROR_CONEXION);
             }
-        }else{
-            respuesta.setCodigoRespuesta(Constantes.ERROR_CONEXION);
-        }
         return respuesta;
     }
     
@@ -165,5 +167,43 @@ public class ProductoDAO {
     }
     
     
+         public static ProductoRespuesta obtenerInformacionPedido(int idPedido){
+    ProductoRespuesta respuesta = new ProductoRespuesta();
+    Connection conexionBD = ConexionBD.abrirConexionBD();
+      if(conexionBD != null){
+            try{
+                String consulta = "SELECT producto.nombre, producto.precio,  producto_pedido.idProducto, producto_pedido.cantidad \n" +
+            "FROM producto_pedido \n" +
+            "INNER JOIN producto ON producto.idProducto = producto_pedido.idProducto\n" +
+            " WHERE idPedido = ?;";
+                PreparedStatement prepararSentencia = conexionBD.prepareStatement(consulta);
+                   prepararSentencia.setInt(1, idPedido);
+                ResultSet resultado = prepararSentencia.executeQuery();
+                ArrayList <Producto> productos = new ArrayList();
+                while(resultado.next()){
+                    Producto producto = new Producto();
+                    producto.setIdProducto(resultado.getInt("idProducto"));
+                    producto.setNombre(resultado.getString("nombre"));
+                    producto.setPrecioUnitario(resultado.getInt("precio"));
+                    producto.setCantidad(resultado.getInt("cantidad"));
+                    productos.add(producto);
+                    System.out.println("ID PRODUCTO: "+producto.getIdProducto());
+                
+                }
+                respuesta.setProductos(productos);
+                respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);
+
+                conexionBD.close();
+          
+                
+            }catch(SQLException ex){
+                respuesta.setCodigoRespuesta(Constantes.ERROR_CONSULTA);
+            }
+        }else{
+            respuesta.setCodigoRespuesta(Constantes.ERROR_CONEXION);
+        }
+        return respuesta;
+   
+    }
     
 }

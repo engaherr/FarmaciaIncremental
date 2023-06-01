@@ -18,6 +18,17 @@ public class Producto {
     private double precioFinal;
     private byte[] foto;
 
+    private float precio;
+
+    private int idPedido;
+
+    public int getIdPedido() {
+        return idPedido;
+    }
+
+    public void setIdPedido(int idPedido) {
+        this.idPedido = idPedido;
+    }
 
     public double getPrecioUnitario() {
         return precioUnitario;
@@ -52,24 +63,6 @@ public class Producto {
 
     public void setPrecioFinal(double precioFinal) {
         this.precioFinal = precioFinal;
-    }
-
-    
-    
-    public int getIdProducto() {
-        return idProducto;
-    }
-
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public String getFechaVencimiento() {
@@ -135,10 +128,34 @@ public class Producto {
     public void setFoto(byte[] foto) {
         this.foto = foto;
     }
+
+    public Producto(String nombre, int cantidad) {
+        this.nombre = nombre;
+        this.cantidad = cantidad;
+    }
+
+    public int getIdProducto() {
+        return idProducto;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+
+
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+
     @Override
     public String toString() {
         return nombre;
     }
 
-    
 }
