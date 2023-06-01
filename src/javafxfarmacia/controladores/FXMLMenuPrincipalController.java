@@ -45,8 +45,8 @@ public class FXMLMenuPrincipalController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        animacionTransicion(0.5, panel1, 829);
         animacionTransicion(0.5, panel2, 829);
+        animacionTransicion(0.5, panel3, 829);
        
     }    
 
@@ -79,11 +79,11 @@ public class FXMLMenuPrincipalController implements Initializable {
     @FXML
     private void clicSiguiente(ActionEvent event) {
         if(mostrar == 0){
-            animacionTransicion(0.5,panel1,-829);
+            animacionTransicion(0.5,panel2,-829);
             mostrar++;
             
         }else if(mostrar == 1){
-            animacionTransicion(0.5,panel2,-829);
+            animacionTransicion(0.5,panel3,-829);
             mostrar++;
         }    
     }
@@ -91,10 +91,10 @@ public class FXMLMenuPrincipalController implements Initializable {
     @FXML
     private void clicAnterior(ActionEvent event) {
         if(mostrar == 1){
-            animacionTransicion(0.5,panel1,829);
+            animacionTransicion(0.5,panel2,829);
             mostrar--;
         }else if(mostrar == 2){
-            animacionTransicion(0.5,panel2,829);
+            animacionTransicion(0.5,panel3,829);
             mostrar--;
         }
     }
