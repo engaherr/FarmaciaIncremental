@@ -49,6 +49,10 @@ import java.util.Set;
 import javafx.scene.control.TextFormatter;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
+import java.text.DecimalFormat;
+import javafx.scene.control.TableCell;
+import javafx.util.Callback;
+
 
 
 
@@ -254,16 +258,16 @@ private void clicAgregar(ActionEvent event) {
         if (productosEnCarrito.contains(nombreProducto)) {
             Utilidades.mostrarDialogoSimple("Error", "El producto ya está en el carrito", Alert.AlertType.ERROR);
         } else {
-         
             Producto productoEnCarrito = new Producto();
             productoEnCarrito.setIdProducto(productoSeleccionado.getIdProducto());
             productoEnCarrito.setNombre(nombreProducto);
             productoEnCarrito.setPrecio(productoSeleccionado.getPrecio());
             productoEnCarrito.setCantidad(cantidad);
 
-     
-            float precioUnitario = (float) productoSeleccionado.getPrecio();
-            float precioFinal = precioUnitario * cantidad;
+            double precioUnitario = productoSeleccionado.getPrecio();
+            double precioFinal = precioUnitario * cantidad;
+            precioUnitario = Math.round(precioUnitario * 100) / 100.0;
+            precioFinal = Math.round(precioFinal * 100) / 100.0;
             productoEnCarrito.setPrecioUnitario(precioUnitario);
             productoEnCarrito.setPrecioFinal(precioFinal);
 
@@ -280,12 +284,11 @@ private void clicAgregar(ActionEvent event) {
 
 
 private void actualizarTablaCarrito() {
-    
     ObservableList<Producto> listaCarrito = FXCollections.observableArrayList(carrito);
 
-    
     for (Producto producto : listaCarrito) {
         double precioFinal = producto.getPrecioUnitario() * producto.getCantidad();
+        precioFinal = Math.round(precioFinal * 100) / 100.0;
         producto.setPrecioFinal(precioFinal);
     }
 
@@ -293,13 +296,11 @@ private void actualizarTablaCarrito() {
 
     double sumaPrecios = 0;
 
-
     for (Producto producto : listaCarrito) {
         sumaPrecios += producto.getPrecioFinal();
     }
 
-
-    txTotal.setText("$" + String.valueOf(sumaPrecios) + " MXN");
+    txTotal.setText("$" + String.format("%.2f", sumaPrecios) + " MXN");
 }
 
 private void actualizarProveedores() {
