@@ -57,8 +57,8 @@ public class ProductoDAO {
         return respuesta;
     }
     
-    public static ProductoRespuesta obtenerInformacionProducto(int idProducto){
-    ProductoRespuesta respuesta = new ProductoRespuesta();
+    public static ProductoRespuesta obtenerInformacionProductoAdqui(int idProducto){
+   ProductoRespuesta respuesta = new ProductoRespuesta();
     Connection conexionBD = ConexionBD.abrirConexionBD();
       if(conexionBD != null){
             try{
@@ -71,14 +71,10 @@ public class ProductoDAO {
                     Producto producto = new Producto();
                     producto.setIdProducto(resultado.getInt("idProducto"));
                     producto.setNombre(resultado.getString("nombre"));
-                    producto.setPrecio(resultado.getDouble("precio"));
-                    producto.setVentaControlada(resultado.getBoolean("ventaControlada"));
-                    producto.setIdSucursal(resultado.getInt("sucursal_idSucursal"));
-                    producto.setNombreSucursal(resultado.getString("nombreSucursal"));
-                    producto.setCantidad(resultado.getInt("cantidad"));
-                    producto.setPresentacion(resultado.getString("presentacion"));
-                    producto.setFoto(resultado.getBytes("foto"));
+                    producto.setPrecio(resultado.getFloat("precio"));
                     productos.add(producto);
+                    
+                
                 }
                 respuesta.setProductos(productos);
                 respuesta.setCodigoRespuesta(Constantes.OPERACION_EXITOSA);

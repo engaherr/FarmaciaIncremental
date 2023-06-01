@@ -105,7 +105,7 @@ public class FXMLGenerarPedidoController implements Initializable {
     @Override
     
      public void initialize(URL url, ResourceBundle rb) {
-    ProductoRespuesta respuestaProductos = ProductoDAO.obtenerInformacionProducto(0);
+    ProductoRespuesta respuestaProductos = ProductoDAO.obtenerInformacionProductoAdqui(0);
     if (respuestaProductos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
         productos = FXCollections.observableArrayList();
         productos.addAll(respuestaProductos.getProductos());
@@ -220,7 +220,7 @@ dpDiaEntrega.getEditor().setTextFormatter(formatter);
 
     private void cargarInformacionProducto(int idProducto) {
         productos = FXCollections.observableArrayList();
-        ProductoRespuesta productosBD = ProductoDAO.obtenerInformacionProducto(idProducto);
+        ProductoRespuesta productosBD = ProductoDAO.obtenerInformacionProductoAdqui(idProducto);
         switch (productosBD.getCodigoRespuesta
 ()) {
 case Constantes.ERROR_CONEXION:
