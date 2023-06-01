@@ -131,21 +131,21 @@ public class FXMLGenerarPedidoController implements Initializable {
         productosEnCarrito = new HashSet<>();
 
 
-        // Obtener los nombres de los productos y almacenarlos en un ObservableList
+ 
         possibleSuggestions = FXCollections.observableArrayList(
             productos.stream()
                 .map(Producto::getNombre)
                 .collect(Collectors.toList())
         );
 
-        // Asignar las sugerencias al campo de búsqueda
+  
         TextFields.bindAutoCompletion(autoTextField, possibleSuggestions);
     }
 
         rbInternos.setSelected(true);
         proveedoresInternos = FXCollections.observableArrayList();
         
-    // Obtener los proveedores internos utilizando PedidoDAO
+
     PedidoRespuesta respuesta = PedidoDAO.obtenerProveedoresInternos();
     if (respuesta.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
         ArrayList<Pedido> proveedoresInternosList = respuesta.getPedidos();
@@ -162,7 +162,7 @@ if (respuestaExternos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
 } else {
     Utilidades.mostrarDialogoSimple("Error de conexión", "Error de conexión con la base de datos", Alert.AlertType.ERROR);
 }
-        makeComboBoxSearchable(cbProducto, Producto::toString);
+  
         cargarInformacionProducto(0);
         carrito = FXCollections.observableArrayList();
         tcCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
@@ -173,7 +173,7 @@ if (respuestaExternos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
         tvCarrito.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Producto>() {
             @Override
             public void changed(ObservableValue<? extends Producto> observable, Producto oldValue, Producto newValue) {
-                // Habilita el botón "Eliminar" solo si hay una fila seleccionada
+              
                 btnEliminar.setDisable(newValue == null);
             }
         });
@@ -186,7 +186,7 @@ if (respuestaExternos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
 
     @Override
     public Pedido fromString(String string) {
-        // Implementación necesaria solo si se requiere la edición del ComboBox
+     
         return null;
     }
     
@@ -214,9 +214,9 @@ if (respuestaExternos.getCodigoRespuesta() == Constantes.OPERACION_EXITOSA) {
 
         String character = event.getCharacter();
 
-        // Verificar si el carácter ingresado no es un número
+    
         if (!character.matches("[0-9]")) {
-            // Consumir el evento para que el carácter no se muestre en el campo de texto
+            
             event.consume();
         }
     });
@@ -272,14 +272,14 @@ private void clicAgregar(ActionEvent event) {
         if (productosEnCarrito.contains(nombreProducto)) {
             Utilidades.mostrarDialogoSimple("Error", "El producto ya está en el carrito", Alert.AlertType.ERROR);
         } else {
-            // Crear una nueva instancia de Producto con los mismos datos
+         
             Producto productoEnCarrito = new Producto();
             productoEnCarrito.setIdProducto(productoSeleccionado.getIdProducto());
             productoEnCarrito.setNombre(nombreProducto);
             productoEnCarrito.setPrecio(productoSeleccionado.getPrecio());
             productoEnCarrito.setCantidad(cantidad);
 
-            // Calcular el precio unitario y el precio final
+     
             float precioUnitario = productoSeleccionado.getPrecio();
             float precioFinal = precioUnitario * cantidad;
             productoEnCarrito.setPrecioUnitario(precioUnitario);
@@ -298,26 +298,25 @@ private void clicAgregar(ActionEvent event) {
 
 
 private void actualizarTablaCarrito() {
-    // Crear una lista observable a partir de la lista 'carrito'
+    
     ObservableList<Producto> listaCarrito = FXCollections.observableArrayList(carrito);
 
-    // Calcular el precio final para cada producto y actualizar la lista 'carrito'
+    
     for (Producto producto : listaCarrito) {
         float precioFinal = producto.getPrecioUnitario() * producto.getCantidad();
         producto.setPrecioFinal(precioFinal);
     }
 
-    // Asignar la lista observable a la tabla
     tvCarrito.setItems(listaCarrito);
 
     float sumaPrecios = 0;
 
-    // Calcular la suma de los precios finales
+
     for (Producto producto : listaCarrito) {
         sumaPrecios += producto.getPrecioFinal();
     }
 
-    // Mostrar la suma en el Label txTotal
+
     txTotal.setText("$" + String.valueOf(sumaPrecios) + " MXN");
 }
 
@@ -335,10 +334,9 @@ private void actualizarProveedores() {
 
 @FXML
 private void clicGenerar(ActionEvent event) {
-    // Obtener la fecha de entrega seleccionada
+
     LocalDate fechaEntrega = dpDiaEntrega.getValue();
 
-    // Verificar que se haya seleccionado una fecha de entrega
     if (fechaEntrega == null) {
         Utilidades.mostrarDialogoSimple("Error", "Por favor, seleccione una fecha de entrega", Alert.AlertType.ERROR);
         return;
@@ -346,27 +344,25 @@ private void clicGenerar(ActionEvent event) {
     
      LocalDate fechaActual = LocalDate.now();
     
-    // Calcular la diferencia de días entre la fecha actual y la fecha de entrega
+
     long diferenciaDias = ChronoUnit.DAYS.between(fechaActual, fechaEntrega);
     
-    // Verificar si la diferencia de días es igual o menor a 2
+
     if (diferenciaDias <= 2) {
         Utilidades.mostrarDialogoSimple("Error", "La fecha de entrega debe ser mayor a 2 días a partir de la fecha de pedido, es tiempo más rápido de envío.", Alert.AlertType.ERROR);
         return;
     }
     
 
-    // Crear el objeto Pedido con la fecha de pedido y fecha de entrega
     Pedido proveedorSeleccionado = cbProveedor.getSelectionModel().getSelectedItem();
     if (proveedorSeleccionado == null) {
         Utilidades.mostrarDialogoSimple("Error", "Por favor, seleccione un proveedor", Alert.AlertType.ERROR);
         return;
     }
 
-    // Obtener los productos del carrito
+
     ObservableList<Producto> productosCarrito = tvCarrito.getItems();
 
-    // Verificar que el carrito no esté vacío
     if (productosCarrito.isEmpty()) {
         Utilidades.mostrarDialogoSimple("Error", "El carrito está vacío", Alert.AlertType.ERROR);
         return;
@@ -389,6 +385,7 @@ private void clicGenerar(ActionEvent event) {
       }
       
       if ( rbInternos.isSelected()){
+                
                 pedidoNuevo.setIdPedido(pedido.getIdPedido());
                  int idProveedores = PedidoDAO.IdentificadorProveedor(cbProveedor.getValue().toString());              
                 pedidoNuevo.setIdSucursal(idProveedores);
@@ -404,8 +401,8 @@ private void clicGenerar(ActionEvent event) {
           guardarPedidoExterno(pedidoNuevo);
           Pedido pedidoTemporal = PedidoDAO.obtenerUltimoPedidoGuardado();
                 int idPedido = pedidoTemporal.getIdPedido();
-                //TO DO:
-                registrarProductosPromocion( idPedido);
+          
+                registrarProductosPedido( idPedido);
                 
            
       }
@@ -415,25 +412,25 @@ private void clicGenerar(ActionEvent event) {
           guardarPedidoInterno(pedidoNuevo);
            Pedido pedidoTemporal = PedidoDAO.obtenerUltimoPedidoGuardado();
                int idPedido = pedidoTemporal.getIdPedido();
-                //TO DO:
-                registrarProductosPromocion( idPedido);
+              
+                registrarProductosPedido( idPedido);
       
       }   
       
-    // Limpiar el carrito
+  
     carrito.clear();
     
     actualizarTablaCarrito();
     cbProveedor.getSelectionModel().clearSelection();
     dpDiaEntrega.setValue(null);
 
-    // Mostrar mensaje de éxito
+  
     Utilidades.mostrarDialogoSimple("Pedido Generado", "El pedido ha sido generado exitosamente", Alert.AlertType.INFORMATION);
     cerrarVentana();
       }
 }
     
-private void registrarProductosPromocion(int productoNuevo) {
+private void registrarProductosPedido(int productoNuevo) {
     int tamano = carrito.size() - 1;
     for (int i = 0; i <= tamano; i++) {
         Producto producto = carrito.get(i);
@@ -441,7 +438,7 @@ private void registrarProductosPromocion(int productoNuevo) {
 
         ProductoPedido productoPedido = new ProductoPedido(
           producto.getIdPedido(),
-            /* idProducto */ producto.getIdProducto(),    // Obtén el valor correspondiente del objeto Producto
+            /* idProducto */ producto.getIdProducto(),   
             /* Cantidad */ producto.getCantidad(),
             /* idProductoPedido */ productoNuevo
         );
@@ -471,59 +468,17 @@ private void registrarProductosPromocion(int productoNuevo) {
 private void clicEliminar(ActionEvent event) {
     Producto productoSeleccionado = tvCarrito.getSelectionModel().getSelectedItem();
     if (productoSeleccionado != null) {
-        // Elimina el producto seleccionado de la tabla
+
         tvCarrito.getItems().remove(productoSeleccionado);
 
-        // Elimina el producto seleccionado del listado 'carrito'
+      
         carrito.remove(productoSeleccionado);
 
-        // Deshabilita el botón "Eliminar" después de la eliminación
+
         btnEliminar.setDisable(true);
     }
 }
 
-
-
-
-
-
-public static <T> void makeComboBoxSearchable(ComboBox<T> comboBox, Function<T, String> toString) {
-    comboBox.setConverter(new StringConverter<T>() {
-        @Override
-        public String toString(T t) {
-            return t == null ? "" : toString.apply(t);
-        }
-
-        @Override
-        public T fromString(String s) {
-            return comboBox.getItems().stream()
-                    .filter(item -> toString.apply(item).equalsIgnoreCase(s))
-                    .findFirst()
-                    .orElse(null);
-        }
-    });
-
-    comboBox.setEditable(false);
-
-    final FilteredList<T> filteredItems = new FilteredList<>(comboBox.getItems(), item -> true);
-    comboBox.setItems(filteredItems);
-
-    comboBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
-        final T selected = comboBox.getSelectionModel().getSelectedItem();
-        final TextField editor = comboBox.getEditor();
-
-        Platform.runLater(() -> {
-            if (selected == null || !toString.apply(selected).equalsIgnoreCase(editor.getText())) {
-                filteredItems.setPredicate(item -> {
-                    if (newValue == null || newValue.isEmpty()) {
-                        return true;
-                    }
-                    return toString.apply(item).toLowerCase().contains(newValue.toLowerCase());
-                });
-            }
-        });
-    });
-}
 
     @FXML
     private void clicRegresar(MouseEvent event) {
@@ -556,7 +511,7 @@ private void clicBuscarProducto(KeyEvent event) {
         
         if(esEdicion){
             cargarInformacionPedido();
-          /*  actualizarTablaPromocion();*/
+      
         }else{
             
         }
@@ -611,8 +566,8 @@ private void clicBuscarProducto(KeyEvent event) {
                 Utilidades.mostrarDialogoSimple("Pedido modificado", "La actualización de el "
                         + "pedido se realizó con éxito", Alert.AlertType.INFORMATION);
                      ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
-                    registrarProductosPromocion( pedido.getIdPedido());
-                /*cerrarVentana();*/
+                    registrarProductosPedido( pedido.getIdPedido());
+                
               
         }
 }
@@ -634,8 +589,8 @@ private void clicBuscarProducto(KeyEvent event) {
                 Utilidades.mostrarDialogoSimple("Pedido modificado", "La actualización del "
                         + "pedido se realizó con éxito", Alert.AlertType.INFORMATION);
                      ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
-                    registrarProductosPromocion( pedido.getIdPedido());
-                /*cerrarVentana();*/
+                    registrarProductosPedido( pedido.getIdPedido());
+              
               
         }
 }

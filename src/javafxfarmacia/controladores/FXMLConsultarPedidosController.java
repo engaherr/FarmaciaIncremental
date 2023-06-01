@@ -87,16 +87,15 @@ private ObservableList<Pedido> pedidos;
         Pedido pedido = param.getValue();
         ImageView imageView = new ImageView();
 
-        // Obtener la fecha actual
+     
         LocalDate fechaActual = LocalDate.now();
 
-        // Obtener la fecha en la columna colFechaPedido
+      
         LocalDate fechaPedido = LocalDate.parse(pedido.getFecha_pedido());
          LocalDate fechaEntrega = LocalDate.parse(pedido.getFecha_entrega());
 
-        // Verificar si la fecha es igual a la fecha actual
      if (fechaPedido.isEqual(fechaActual)) {
-            // Cargar imagen para mostrar
+      
             Image imagenEstado = new Image("javafxfarmacia/recursos/stepper1.png");
             imageView.setImage(imagenEstado);
              double anchoDeseado = 286; 
@@ -104,7 +103,7 @@ private ObservableList<Pedido> pedidos;
             imageView.setFitWidth(anchoDeseado);
             imageView.setFitHeight(altoDeseado);
         } else if (fechaEntrega.isEqual(fechaActual)  || fechaEntrega.isBefore(fechaActual)) {
-            // Cargar otra imagen si la fecha de entrega es igual a la fecha actual
+          
             Image otraImagen = new Image("javafxfarmacia/recursos/stepper3.png");
             imageView.setImage(otraImagen);
             double anchoDeseado = 286; 
@@ -112,7 +111,7 @@ private ObservableList<Pedido> pedidos;
             imageView.setFitWidth(anchoDeseado);
             imageView.setFitHeight(altoDeseado);
         } else {
-            // Cargar imagen por defecto si no cumple ninguna de las condiciones anteriores
+       
             Image imagenDefault = new Image("javafxfarmacia/recursos/stepper2.png");
             imageView.setImage(imagenDefault);
             double anchoDeseado = 286; 
@@ -129,17 +128,17 @@ private ObservableList<Pedido> pedidos;
 
  tvPedidos.getColumns().add(colEstado);
  
- // Establecer estilo de la tabla
+
 tvPedidos.setStyle("-fx-background-color: #f8f2dc;");
 
-// Establecer estilo de las filas
+
 tvPedidos.setRowFactory(tv -> {
     TableRow<Pedido> row = new TableRow<>();
     row.setStyle("-fx-background-color: #f8f2dc;");
     return row;
 });
 
-// Establecer estilo de los encabezados de columna
+
 colFechaPedido.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40; -fx-border-width: 1px;");
 colFechaEntrega.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40;-fx-border-width: 1px;");
 colProveedor.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40;-fx-border-width: 1px;");
@@ -223,14 +222,14 @@ colEstado.setStyle("-fx-background-color: #f8f2dc;-fx-border-color: #2E2F40;-fx-
     @Override
     public void notificarOperacionGuardarPedido(int idPedido) {
 Utilidades.mostrarDialogoSimple("Notificacion","Se registró de forma "
-                + "exitosa la promoción", Alert.AlertType.INFORMATION);
+                + "exitosa el pedido", Alert.AlertType.INFORMATION);
         cargarInformacionTabla();  
     }
 
     @Override
     public void notificarOperacionActualizarPedido(int idPedido) {
 Utilidades.mostrarDialogoSimple("Notificación","Se ACTUALIZÓ "
-                + "los datos de la promocion", Alert.AlertType.INFORMATION);
+                + "los datos del del pedido", Alert.AlertType.INFORMATION);
                 cargarInformacionTabla();  
 
     }
@@ -245,7 +244,7 @@ private void clicEliminar(ActionEvent event) {
         LocalDate fechaActual = LocalDate.now();
 
         if (fechaEntrega.isBefore(fechaActual)) {
-            // Continuar con el flujo normal de eliminación del pedido
+          
             int codigoRespuesta = ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
 
             switch (codigoRespuesta) {
@@ -262,7 +261,7 @@ private void clicEliminar(ActionEvent event) {
                     break;
             }
         } else if (fechaEntrega.isEqual(fechaActual)) {
-            // Continuar con el flujo normal de eliminación del pedido
+
             int codigoRespuesta = ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
 
             switch (codigoRespuesta) {
@@ -279,7 +278,7 @@ private void clicEliminar(ActionEvent event) {
                     break;
             }
         } else {
-            // Mostrar un Alert de confirmación para cancelar el pedido
+
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmar");
             alert.setHeaderText("¿Desea cancelar el pedido?");
@@ -292,7 +291,7 @@ private void clicEliminar(ActionEvent event) {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == buttonTypeSi) {
-                // Cancelar el pedido
+    
                 int codigoRespuesta = ProductoPedidoDAO.eliminarProductoPedido(pedido.getIdPedido());
 
                 switch (codigoRespuesta) {
