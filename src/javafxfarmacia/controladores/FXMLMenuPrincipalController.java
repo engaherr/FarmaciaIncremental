@@ -47,12 +47,7 @@ public class FXMLMenuPrincipalController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         animacionTransicion(0.5, panel2, 829);
         animacionTransicion(0.5, panel3, 829);
-       
     }    
-
-
-
-
 
     @FXML
     private void clicPromociones(ActionEvent event) {
