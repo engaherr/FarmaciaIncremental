@@ -64,12 +64,18 @@
       </ImageView>
       <AnchorPane fx:id="panel2" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="190.0" AnchorPane.topAnchor="150.0">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fitHeight="200.0" fitWidth="320.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../recursos/P,Ibu%20mas%20Tempra.png" />
+               </image></ImageView>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="panel3" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="120.0" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="190.0" AnchorPane.topAnchor="150.0">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fitHeight="200.0" fitWidth="320.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../recursos/P,3x2%20en%20pañales.png" />
+               </image></ImageView>
          </children>
       </AnchorPane>
    </children>

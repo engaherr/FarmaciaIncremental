@@ -415,8 +415,6 @@ public class FXMLRegistroPromocionController implements Initializable {
                 int idPromocion = promocionTemporal.getIdPromocion();
                 registrarProductosPromocion( idPromocion);
                 cerrarVentana();
-                //interfazNotificacion.notificarOperacionActualizar(promocionRegistrar.getDescripcion());
-
                 break;
         }
         
@@ -487,7 +485,7 @@ public class FXMLRegistroPromocionController implements Initializable {
     
     private void cargarInformacionProducto(){
         productos = FXCollections.observableArrayList();
-        ProductoRespuesta productosBD = ProductoDAO.obtenerInformacionProducto();
+        ProductoRespuesta productosBD = ProductoDAO.obtenerInformacionProductoSucursal();
         switch(productosBD.getCodigoRespuesta()){
             case Constantes.ERROR_CONEXION:
                 Utilidades.mostrarDialogoSimple("Error de conexion", "POr el momento no hay conexion, "
