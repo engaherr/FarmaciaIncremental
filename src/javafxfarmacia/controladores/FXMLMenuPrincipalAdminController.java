@@ -132,7 +132,7 @@ public class FXMLMenuPrincipalAdminController implements Initializable {
         Utilidades.mostrarDialogoSimple("Cierre de sesión",
             "Adiós usuario,vuelva pronto",
             Alert.AlertType.INFORMATION);
-        Stage escenarioBase = (Stage) ivPromocion.getScene().getWindow();
+        Stage escenarioBase = (Stage) panel1.getScene().getWindow();
         escenarioBase.setScene(Utilidades.inicializaEscena("vistas/FXMLInicioSesion.fxml"));
         escenarioBase.setTitle("Inicio de Sesión");
         escenarioBase.show();
