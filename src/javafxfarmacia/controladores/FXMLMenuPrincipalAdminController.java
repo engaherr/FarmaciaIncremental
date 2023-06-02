@@ -6,15 +6,19 @@ package javafxfarmacia.controladores;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafxfarmacia.utils.Utilidades;
 
 /**
@@ -24,17 +28,30 @@ import javafxfarmacia.utils.Utilidades;
  */
 public class FXMLMenuPrincipalAdminController implements Initializable {
 
-    @FXML
     private ImageView ivPromocion;
     @FXML
     private Button btnAnteriorImagen;
     @FXML 
     private Button btnSiguienteImagen;
-    
+    @FXML
+    private AnchorPane panel1;
+    @FXML
+    private AnchorPane panel2;
+    @FXML
+    private AnchorPane panel3;
+
+    int mostrar = 0;    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        animacionTransicion(0.5, panel2, 829);
+        animacionTransicion(0.5, panel3, 829);
     }    
+        
+    public void animacionTransicion(double duracion, Node nodo, double anchura){
+        TranslateTransition transicion = new TranslateTransition(Duration.seconds(duracion), nodo);
+        transicion.setByX(anchura);
+        transicion.play();
+    }
 
     @FXML
     private void cursorEnBotonIzq(MouseEvent event) {
@@ -45,9 +62,27 @@ public class FXMLMenuPrincipalAdminController implements Initializable {
     private void salidaCursorBotonIzq(MouseEvent event){
         btnAnteriorImagen.setOpacity(0.5);
     }
-
+    @FXML
+    private void clicSiguiente(ActionEvent event) {
+        if(mostrar == 0){
+            animacionTransicion(0.5,panel2,-829);
+            mostrar++;
+            
+        }else if(mostrar == 1){
+            animacionTransicion(0.5,panel3,-829);
+            mostrar++;
+        }           
+        
+    }
     @FXML
     private void clicAnterior(ActionEvent event) {
+                if(mostrar == 1){
+            animacionTransicion(0.5,panel2,829);
+            mostrar--;
+        }else if(mostrar == 2){
+            animacionTransicion(0.5,panel3,829);
+            mostrar--;
+        }
     }
 
     @FXML
@@ -60,11 +95,6 @@ public class FXMLMenuPrincipalAdminController implements Initializable {
         btnSiguienteImagen.setOpacity(0.5);
     }
     
-    @FXML
-    private void clicSiguiente(ActionEvent event) {
-        
-    }
-
     @FXML
     private void clicInventario(MouseEvent event) {
         Stage escenarioInventario = new Stage();

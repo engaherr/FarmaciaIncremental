@@ -11,11 +11,6 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="700.0" style="-fx-background-color: #1b1b1b;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxfarmacia.controladores.FXMLMenuPrincipalAdminController">
    <children>
-      <ImageView fx:id="ivPromocion" fitHeight="494.0" fitWidth="470.0" layoutX="204.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../recursos/farmacia.png" />
-         </image>
-      </ImageView>
       <Pane prefHeight="470.0" prefWidth="161.0" style="-fx-background-color: #4e8098;">
          <children>
             <ImageView fitHeight="157.0" fitWidth="195.0" layoutX="2.0" layoutY="-19.0" pickOnBounds="true" preserveRatio="true">
@@ -111,5 +106,32 @@
             <Font name="System Bold Italic" size="30.0" />
          </font>
       </Button>
+      <AnchorPane fx:id="panel1" layoutX="303.0" layoutY="99.0" prefHeight="259.0" prefWidth="225.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <ImageView fitHeight="270.0" fitWidth="320.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../recursos/P,2x1%20en%20mariguanol.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="panel2" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <ImageView fitHeight="270.0" fitWidth="320.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../recursos/P,3x2%20en%20pañales.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="panel3" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="100.0">
+         <children>
+            <ImageView fitHeight="270.0" fitWidth="320.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../recursos/P,Ibu%20mas%20Tempra.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
